@@ -59,6 +59,9 @@ android {
 }
 
 dependencies {
+    implementation project(':data')
+    implementation project(':remote')
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
 
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"

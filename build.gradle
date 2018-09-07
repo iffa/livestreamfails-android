@@ -50,6 +50,39 @@ buildscript {
                 mockito: "com.nhaarman:mockito-kotlin:${versions.mockito}",
                 assertj: "org.assertj:assertj-core:${versions.assertj}"
         ]
+
+        dataDependencies = [
+                daggerCompiler : "com.google.dagger:dagger-compiler:${versions.dagger}",
+                dagger         : "com.google.dagger:dagger:${versions.dagger}",
+                rxKotlin       : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
+                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${versions.kotlin}",
+                javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
+                javaxInject    : "javax.inject:javax.inject:${versions.javax_inject}",
+        ]
+
+        dataTestDependencies = [
+                junit      : "junit:junit:${versions.junit}",
+                kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+                assertj    : "org.assertj:assertj-core:${versions.assertj}",
+                mockito    : "com.nhaarman:mockito-kotlin:${versions.mockito}",
+        ]
+
+        remoteDependencies = [
+                daggerCompiler : "com.google.dagger:dagger-compiler:${versions.dagger}",
+                dagger         : "com.google.dagger:dagger:${versions.dagger}",
+                rxKotlin       : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
+                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${versions.kotlin}",
+                javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
+                javaxInject    : "javax.inject:javax.inject:${versions.javax_inject}",
+                jsoup          : "org.jsoup:jsoup:${versions.jsoup}"
+        ]
+
+        remoteTestDependencies = [
+                junit      : "junit:junit:${versions.junit}",
+                kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+                assertj    : "org.assertj:assertj-core:${versions.assertj}",
+                mockito    : "com.nhaarman:mockito-kotlin:${versions.mockito}",
+        ]
     }
 
     dependencies {
@@ -62,6 +95,10 @@ buildscript {
 
         classpath 'io.github.rockerhieu:versionberg:1.0.2'
     }
+}
+
+plugins {
+    id 'com.github.ben-manes.versions' version "0.20.0"
 }
 
 allprojects {
