@@ -81,12 +81,11 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
 
-    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:retrofit-mock:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:${versions.retrofit}"
-    implementation "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
-
     implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
+
+    implementation "org.jsoup:jsoup:${versions.jsoup}"
+
+    implementation "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"
 
     implementation 'com.github.ajalt:timberkt:1.5.1'
 
