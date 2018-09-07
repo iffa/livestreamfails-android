@@ -1,0 +1,78 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+buildscript {
+    ext.versions = [
+            'android_gradle': '3.2.0-rc02',
+            'kotlin'        : '1.2.61',
+            'ktlint'        : '0.19.0',
+            'androidx'      : [
+                    'appcompat'        : '1.0.0-rc02',
+                    'constraint_layout': '1.1.2',
+                    'design'           : '1.0.0-rc01',
+                    'core_ktx'         : '1.0.0-rc02',
+                    'lifecycle'        : '2.0.0-rc01',
+                    'room'             : '2.0.0-rc01',
+                    'test_runner'      : '1.1.0-alpha4',
+                    'test_rules'       : '1.1.0-alpha4'
+            ],
+            'rx'            : '2.2.2',
+            'rxkotlin'      : '2.3.0',
+            'rxlint'        : '1.6.1',
+            'dagger'        : '2.16',
+            'threetenabp'   : '1.1.0',
+            'moshi'         : '1.6.0',
+            'retrofit'      : '2.4.0',
+            'espresso'      : '3.1.0-alpha4'
+    ]
+
+    ext.buildConfig = [
+            'compileSdk': 28,
+            'minSdk'    : 21,
+            'targetSdk' : 28,
+    ]
+
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.android.tools.build:gradle:${versions.android_gradle}"
+
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
+
+        classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
+
+        classpath 'io.github.rockerhieu:versionberg:1.0.2'
+    }
+}
+
+plugins {
+    id "com.diffplug.gradle.spotless" version "3.14.0"
+    id 'com.github.ben-manes.versions' version "0.20.0"
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+
+subprojects {
+    apply plugin: 'com.diffplug.gradle.spotless'
+    spotless {
+        kotlin {
+            target "**/*.kt"
+            ktlint(versions.ktlint)
+            licenseHeaderFile project.rootProject.file('spotless/copyright.kt')
+        }
+    }
+}
+
+String propOrDef(String propertyName, String defaultValue) {
+    def propertyValue = project.properties[propertyName]
+    return propertyValue != null ? propertyValue : defaultValue
+}
