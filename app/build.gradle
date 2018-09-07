@@ -25,13 +25,13 @@ versionberg {
 }
 
 android {
-    compileSdkVersion buildConfig.compileSdk
+    compileSdkVersion androidBuildConfig.compileSdk
 
     defaultConfig {
         applicationId "xyz.santeri.citybike"
 
-        minSdkVersion buildConfig.minSdk
-        targetSdkVersion buildConfig.targetSdk
+        minSdkVersion androidBuildConfig.minSdk
+        targetSdkVersion androidBuildConfig.targetSdk
 
         resConfigs "en"
 
