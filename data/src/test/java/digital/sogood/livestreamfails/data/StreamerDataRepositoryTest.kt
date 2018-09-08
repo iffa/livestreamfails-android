@@ -35,8 +35,8 @@ class StreamerDataRepositoryTest {
     }
 
     @Test
-    fun getFailsCompletes() {
-        stubGetFails(Single.just(
+    fun getStreamersCompletes() {
+        stubGetStreamers(Single.just(
                 StreamerFactory.makeStreamerEntityList(2)
         ))
         val testObserver = dataRepository.getStreamers(0).test()
@@ -44,15 +44,15 @@ class StreamerDataRepositoryTest {
     }
 
     @Test
-    fun getFailsReturnsData() {
+    fun getStreamersReturnsData() {
         val items = StreamerFactory.makeStreamerList(2)
         val entities = StreamerFactory.makeStreamerEntityList(2)
 
-        items.forEachIndexed { index, fail ->
-            stubMapFromEntity(entities[index], fail)
+        items.forEachIndexed { index, item ->
+            stubMapFromEntity(entities[index], item)
         }
 
-        stubGetFails(Single.just(entities))
+        stubGetStreamers(Single.just(entities))
 
         val testObserver = dataRepository.getStreamers(0).test()
         testObserver.assertValue(items)
@@ -63,7 +63,7 @@ class StreamerDataRepositoryTest {
                 .thenReturn(remoteDataStore)
     }
 
-    private fun stubGetFails(single: Single<List<StreamerEntity>>) {
+    private fun stubGetStreamers(single: Single<List<StreamerEntity>>) {
         whenever(remoteDataStore.getStreamers(ArgumentMatchers.any()))
                 .thenReturn(single)
     }

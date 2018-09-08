@@ -1,4 +1,4 @@
-package digital.sogood.livestreamfails.data.test.factory
+package digital.sogood.livestreamfails.remote.test.factory
 
 import java.util.concurrent.ThreadLocalRandom
 

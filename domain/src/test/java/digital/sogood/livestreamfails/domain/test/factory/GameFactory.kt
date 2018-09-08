@@ -1,6 +1,7 @@
 package digital.sogood.livestreamfails.domain.test.factory
 
 import digital.sogood.livestreamfails.domain.model.Game
+import digital.sogood.livestreamfails.domain.test.factory.DataFactory.Factory.randomInt
 import digital.sogood.livestreamfails.domain.test.factory.DataFactory.Factory.randomUuid
 
 /**
@@ -19,7 +20,7 @@ class GameFactory {
         }
 
         fun makeGame(): Game {
-            return Game(randomUuid())
+            return Game(randomUuid(), randomInt(), randomUuid())
         }
     }
 }

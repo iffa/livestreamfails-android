@@ -35,7 +35,7 @@ class GameDataRepositoryTest {
     }
 
     @Test
-    fun getFailsCompletes() {
+    fun getGamesCompletes() {
         stubGetGames(Single.just(
                 GameFactory.makeGameEntityList(2)
         ))
@@ -44,12 +44,12 @@ class GameDataRepositoryTest {
     }
 
     @Test
-    fun getFailsReturnsData() {
+    fun getGamesReturnsData() {
         val items = GameFactory.makeGameList(2)
         val entities = GameFactory.makeGameEntityList(2)
 
-        items.forEachIndexed { index, fail ->
-            stubMapFromEntity(entities[index], fail)
+        items.forEachIndexed { index, item ->
+            stubMapFromEntity(entities[index], item)
         }
 
         stubGetGames(Single.just(entities))

@@ -8,20 +8,29 @@ import digital.sogood.livestreamfails.remote.model.GameModel
 import digital.sogood.livestreamfails.remote.model.StreamerModel
 import javax.inject.Inject
 
+/**
+ * Map a [GameModel] to a [GameEntity] instance.
+ */
 open class GameEntityMapper @Inject constructor() : EntityMapper<GameModel, GameEntity> {
     override fun mapFromRemote(type: GameModel): GameEntity {
-        TODO("Not implemented")
+        return GameEntity(type.name, type.fails, type.imageUrl)
     }
 }
 
+/**
+ * Map a [StreamerModel] to a [StreamerEntity] instance.
+ */
 open class StreamerEntityMapper @Inject constructor() : EntityMapper<StreamerModel, StreamerEntity> {
     override fun mapFromRemote(type: StreamerModel): StreamerEntity {
-        TODO("Not implemented")
+        return StreamerEntity(type.name, type.fails, type.imageUrl)
     }
 }
 
+/**
+ * Map a [FailModel] to a [FailEntity] instance.
+ */
 open class FailEntityMapper @Inject constructor() : EntityMapper<FailModel, FailEntity> {
     override fun mapFromRemote(type: FailModel): FailEntity {
-        TODO("Not implemented")
+        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl)
     }
 }

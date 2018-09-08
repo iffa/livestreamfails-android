@@ -48,8 +48,8 @@ class FailDataRepositoryTest {
         val items = FailFactory.makeFailList(2)
         val entities = FailFactory.makeFailEntityList(2)
 
-        items.forEachIndexed { index, fail ->
-            stubMapFromEntity(entities[index], fail)
+        items.forEachIndexed { index, item ->
+            stubMapFromEntity(entities[index], item)
         }
 
         stubGetFails(Single.just(entities))

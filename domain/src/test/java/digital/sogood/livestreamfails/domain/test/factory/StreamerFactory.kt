@@ -1,6 +1,7 @@
 package digital.sogood.livestreamfails.domain.test.factory
 
 import digital.sogood.livestreamfails.domain.model.Streamer
+import digital.sogood.livestreamfails.domain.test.factory.DataFactory.Factory.randomInt
 import digital.sogood.livestreamfails.domain.test.factory.DataFactory.Factory.randomUuid
 
 /**
@@ -19,7 +20,7 @@ class StreamerFactory {
         }
 
         fun makeStreamer(): Streamer {
-            return Streamer(randomUuid())
+            return Streamer(randomUuid(), randomInt(), randomUuid())
         }
     }
 }

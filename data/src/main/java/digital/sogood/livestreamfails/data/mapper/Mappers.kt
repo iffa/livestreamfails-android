@@ -8,6 +8,9 @@ import digital.sogood.livestreamfails.domain.model.Game
 import digital.sogood.livestreamfails.domain.model.Streamer
 import javax.inject.Inject
 
+/**
+ * Map a [GameEntity] to and from a [Game] instance.
+ */
 open class GameMapper @Inject constructor() : Mapper<GameEntity, Game> {
     override fun mapFromEntity(type: GameEntity): Game {
         return Game(type.name, type.fails, type.imageUrl)
@@ -18,6 +21,9 @@ open class GameMapper @Inject constructor() : Mapper<GameEntity, Game> {
     }
 }
 
+/**
+ * Map a [StreamerEntity] to and from a [Streamer] instance.
+ */
 open class StreamerMapper @Inject constructor() : Mapper<StreamerEntity, Streamer> {
     override fun mapFromEntity(type: StreamerEntity): Streamer {
         return Streamer(type.name, type.fails, type.imageUrl)
@@ -28,6 +34,9 @@ open class StreamerMapper @Inject constructor() : Mapper<StreamerEntity, Streame
     }
 }
 
+/**
+ * Map a [FailEntity] to and from a [Fail] instance.
+ */
 open class FailMapper @Inject constructor() : Mapper<FailEntity, Fail> {
     override fun mapFromEntity(type: FailEntity): Fail {
         return Fail(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl)

@@ -1,8 +1,11 @@
 package digital.sogood.livestreamfails.remote.service
 
 import digital.sogood.livestreamfails.remote.service.fail.FailService
+import digital.sogood.livestreamfails.remote.service.fail.FailServiceImpl
 import digital.sogood.livestreamfails.remote.service.game.GameService
+import digital.sogood.livestreamfails.remote.service.game.GameServiceImpl
 import digital.sogood.livestreamfails.remote.service.streamer.StreamerService
+import digital.sogood.livestreamfails.remote.service.streamer.StreamerServiceImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import java.util.concurrent.TimeUnit
@@ -39,15 +42,15 @@ object ServiceFactory {
     }
 
     private fun makeFailService(okHttpClient: OkHttpClient): FailService {
-        return FailService(okHttpClient)
+        return FailServiceImpl(okHttpClient)
     }
 
     private fun makeGameService(okHttpClient: OkHttpClient): GameService {
-        return GameService(okHttpClient)
+        return GameServiceImpl(okHttpClient)
     }
 
     private fun makeStreamerService(okHttpClient: OkHttpClient): StreamerService {
-        return StreamerService(okHttpClient)
+        return StreamerServiceImpl(okHttpClient)
     }
 
     private fun makeOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
