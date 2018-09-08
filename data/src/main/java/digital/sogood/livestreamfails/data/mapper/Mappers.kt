@@ -10,30 +10,30 @@ import javax.inject.Inject
 
 open class GameMapper @Inject constructor() : Mapper<GameEntity, Game> {
     override fun mapFromEntity(type: GameEntity): Game {
-        TODO("Not implemented")
+        return Game(type.name, type.fails, type.imageUrl)
     }
 
     override fun mapToEntity(type: Game): GameEntity {
-        TODO("Not implemented")
+        return GameEntity(type.name, type.fails, type.imageUrl)
     }
 }
 
 open class StreamerMapper @Inject constructor() : Mapper<StreamerEntity, Streamer> {
     override fun mapFromEntity(type: StreamerEntity): Streamer {
-        TODO("Not implemented")
+        return Streamer(type.name, type.fails, type.imageUrl)
     }
 
     override fun mapToEntity(type: Streamer): StreamerEntity {
-        TODO("Not implemented")
+        return StreamerEntity(type.name, type.fails, type.imageUrl)
     }
 }
 
 open class FailMapper @Inject constructor() : Mapper<FailEntity, Fail> {
     override fun mapFromEntity(type: FailEntity): Fail {
-        TODO("Not implemented")
+        return Fail(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl)
     }
 
     override fun mapToEntity(type: Fail): FailEntity {
-        TODO("Not implemented")
+        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl)
     }
 }

@@ -5,6 +5,7 @@ targetCompatibility = 1.7
 
 dependencies {
     implementation project(':data')
+    implementation project(':domain')
 
     implementation remoteDependencies.javaxAnnotation
 
@@ -12,6 +13,8 @@ dependencies {
     implementation remoteDependencies.javaxInject
     implementation remoteDependencies.rxKotlin
     implementation remoteDependencies.jsoup
+    implementation remoteDependencies.okHttp
+    implementation remoteDependencies.okHttpLogger
 
     testImplementation remoteTestDependencies.junit
     testImplementation remoteTestDependencies.kotlinJUnit

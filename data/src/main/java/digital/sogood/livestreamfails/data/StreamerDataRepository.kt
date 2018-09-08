@@ -8,12 +8,22 @@ import io.reactivex.Single
 import javax.inject.Inject
 
 /**
+ * Provides an implementation of the [StreamerRepository] interface for communicating to and from
+ * data sources.
+ *
  * @author Santeri Elo <me@santeri.xyz>
  */
 class StreamerDataRepository @Inject constructor(private val factory: StreamerDataStoreFactory,
                                                  private val mapper: StreamerMapper)
     : StreamerRepository {
     override fun getStreamers(page: Int?): Single<List<Streamer>> {
-        TODO("Not implemented")
+        val dataStore = factory.getDataStore()
+
+        return dataStore.getStreamers(page)
+                .map { list ->
+                    list.map { listItem ->
+                        mapper.mapFromEntity(listItem)
+                    }
+                }
     }
 }

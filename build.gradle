@@ -28,6 +28,7 @@ buildscript {
                 'rxkotlin'        : '2.3.0',
                 'dagger'          : '2.16',
                 'threetenabp'     : '1.1.0',
+                'okhttp'          : '3.8.1',
                 'jsoup'           : '1.11.3',
                 'exoplayer'       : '2.8.4',
                 'javax_annotation': '1.0',
@@ -72,6 +73,8 @@ buildscript {
                 dagger         : "com.google.dagger:dagger:${versions.dagger}",
                 rxKotlin       : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
                 kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${versions.kotlin}",
+                okHttp         : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+                okHttpLogger   : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
                 javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
                 javaxInject    : "javax.inject:javax.inject:${versions.javax_inject}",
                 jsoup          : "org.jsoup:jsoup:${versions.jsoup}"
