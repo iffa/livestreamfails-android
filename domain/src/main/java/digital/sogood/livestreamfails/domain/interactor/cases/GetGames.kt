@@ -11,11 +11,13 @@ import javax.inject.Inject
 /**
  * Use case used for retrieving a [List] of [Game] instances from the [GameRepository].
  */
-open class GetGames @Inject constructor(val repository: GameRepository,
+open class GetGames @Inject constructor(private val repository: GameRepository,
                                         threadExecutor: ThreadExecutor,
                                         postExecutionThread: PostExecutionThread)
-    : SingleUseCase<List<Game>, Int>(threadExecutor, postExecutionThread) {
-    public override fun buildUseCaseObservable(params: Int?): Single<List<Game>> {
-        return repository.getGames(params)
+    : SingleUseCase<List<Game>, GameParams>(threadExecutor, postExecutionThread) {
+    public override fun buildUseCaseObservable(params: GameParams?): Single<List<Game>> {
+        return repository.getGames(params?.page)
     }
 }
+
+data class GameParams(val page: Int? = 0)

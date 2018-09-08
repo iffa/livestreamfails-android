@@ -11,11 +11,13 @@ import javax.inject.Inject
 /**
  * Use case used for retrieving a [List] of [Streamer] instances from the [StreamerRepository].
  */
-open class GetStreamers @Inject constructor(val repository: StreamerRepository,
+open class GetStreamers @Inject constructor(private val repository: StreamerRepository,
                                             threadExecutor: ThreadExecutor,
                                             postExecutionThread: PostExecutionThread)
-    : SingleUseCase<List<Streamer>, Int>(threadExecutor, postExecutionThread) {
-    public override fun buildUseCaseObservable(params: Int?): Single<List<Streamer>> {
-        return repository.getStreamers(params)
+    : SingleUseCase<List<Streamer>, StreamerParams>(threadExecutor, postExecutionThread) {
+    public override fun buildUseCaseObservable(params: StreamerParams?): Single<List<Streamer>> {
+        return repository.getStreamers(params?.page)
     }
 }
+
+data class StreamerParams(val page: Int? = 0)

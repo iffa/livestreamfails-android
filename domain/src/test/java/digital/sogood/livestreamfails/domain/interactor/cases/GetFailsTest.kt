@@ -40,7 +40,9 @@ class GetFailsTest {
     }
 
     private fun stubGetFails(single: Single<List<Fail>>) {
-        whenever(mockRepository.getFails(ArgumentMatchers.any()))
+        whenever(mockRepository.getFails(ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(single)
     }
 }

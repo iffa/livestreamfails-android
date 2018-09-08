@@ -34,7 +34,7 @@ class FailRemoteImplTest {
                 FailFactory.makeFailModelList(2)
         ))
 
-        val testObserver = remoteImpl.getFails(0).test()
+        val testObserver = remoteImpl.getFails(0, null, null, null, null, null).test()
 
         testObserver.assertComplete()
     }
@@ -49,13 +49,14 @@ class FailRemoteImplTest {
             entities.add(entityMapper.mapFromRemote(it))
         }
 
-        val testObserver = remoteImpl.getFails(0).test()
+        val testObserver = remoteImpl.getFails(0, null, null, null, null, null).test()
 
         testObserver.assertValue(entities)
     }
 
     private fun stubGetFails(single: Single<List<FailModel>>) {
-        whenever(failService.getFails(ArgumentMatchers.anyInt()))
+        whenever(failService.getFails(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(single)
     }
 }
