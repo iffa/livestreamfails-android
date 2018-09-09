@@ -41,4 +41,15 @@ class FailServiceImplTest {
 
         assertTrue(models.isNotEmpty(), "Model list is empty")
     }
+
+    @Test
+    fun getFailsReturnsEmpty() {
+        val observer = service.getFails(Int.MAX_VALUE, TimeFrame.ALL_TIME, Order.TOP, false, null, null)
+                .test()
+                .assertComplete()
+
+        val models = observer.values()[0]
+
+        assertTrue(models.isEmpty(), "Model list is not empty")
+    }
 }
