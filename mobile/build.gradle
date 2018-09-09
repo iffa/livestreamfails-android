@@ -15,6 +15,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.getkeepsafe.dexcount'
 
+apply plugin: 'jacoco-android'
+
 versionberg {
     major 0
     minor 1
@@ -42,8 +44,12 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        debug {
+            testCoverageEnabled true
         }
     }
 
@@ -59,14 +65,11 @@ android {
 
     // Exclude all files that may cause a conflict when building
     packagingOptions {
+        exclude 'LICENSE.txt'
         exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/notice.txt'
         exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
     }
 }
 

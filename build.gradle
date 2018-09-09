@@ -44,7 +44,7 @@ buildscript {
                 javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
                 javaxInject    : "javax.inject:javax.inject:${versions.javax_inject}",
                 rxKotlin       : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
-                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${versions.kotlin}"
+                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
         ]
 
         domainTestDependencies = [
@@ -57,7 +57,7 @@ buildscript {
                 daggerCompiler : "com.google.dagger:dagger-compiler:${versions.dagger}",
                 dagger         : "com.google.dagger:dagger:${versions.dagger}",
                 rxKotlin       : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
-                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${versions.kotlin}",
+                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
                 javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
                 javaxInject    : "javax.inject:javax.inject:${versions.javax_inject}",
         ]
@@ -73,7 +73,7 @@ buildscript {
                 daggerCompiler : "com.google.dagger:dagger-compiler:${versions.dagger}",
                 dagger         : "com.google.dagger:dagger:${versions.dagger}",
                 rxKotlin       : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
-                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jre8:${versions.kotlin}",
+                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
                 okHttp         : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
                 okHttpLogger   : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
                 javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
@@ -95,6 +95,9 @@ buildscript {
 
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:${versions.kotlin}"
+
+        classpath 'org.codehaus.groovy:groovy-all:2.4.15'
+        classpath "com.dicedmelon.gradle:jacoco-android:0.1.3"
 
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
 
