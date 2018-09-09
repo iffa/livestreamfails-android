@@ -1,5 +1,7 @@
-# Livestream Fails (Android)
-Android client for http://livestreamfails.com
+[![Build Status](https://travis-ci.com/iffa/livestreamfails-android.svg?token=5eCHeHxhxbwKHPBgpJ8M&branch=master)](https://travis-ci.com/iffa/livestreamfails-android)
+
+# Livestream Fails for Android
+Unofficial Android client for http://livestreamfails.com.
 
 ## Contributing
 Contributions are always welcome. If you want to contribute, fork the project and submit a pull request.
@@ -20,4 +22,4 @@ Contributions are always welcome. If you want to contribute, fork the project an
     See the License for the specific language governing permissions and
     limitations under the License.
 
-[contributors]: https://github.com/iffa/citybike-turku-android/graphs/contributors
+[contributors]: https://github.com/iffa/livestreamfails-android/graphs/contributors
