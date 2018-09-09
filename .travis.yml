@@ -38,7 +38,7 @@ android:
 #  - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew build
+  - ./gradlew build jacocoTestReport
 #  - ./gradlew build connectedAndroidTest --stacktrace
 
 after_success:
