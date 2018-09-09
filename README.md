@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/iffa/livestreamfails-android.svg?token=5eCHeHxhxbwKHPBgpJ8M&branch=master)](https://travis-ci.com/iffa/livestreamfails-android)
+[![Build Status](https://travis-ci.com/iffa/livestreamfails-android.svg?token=5eCHeHxhxbwKHPBgpJ8M&branch=master)](https://travis-ci.com/iffa/livestreamfails-android)[![codecov](https://codecov.io/gh/iffa/livestreamfails-android/branch/master/graph/badge.svg?token=l4yaK37Xsj)](https://codecov.io/gh/iffa/livestreamfails-android)
 
 # Livestream Fails for Android
 Unofficial Android client for http://livestreamfails.com.
