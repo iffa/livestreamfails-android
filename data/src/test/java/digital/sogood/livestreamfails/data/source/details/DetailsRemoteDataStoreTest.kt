@@ -26,7 +26,7 @@ class DetailsRemoteDataStoreTest {
     }
 
     @Test
-    fun getFailsTest() {
+    fun getDetailsTest() {
         stubGetFails(Single.just(DetailsFactory.makeDetailsEntity()))
 
         val testObserver = remote.getDetails(0).test()

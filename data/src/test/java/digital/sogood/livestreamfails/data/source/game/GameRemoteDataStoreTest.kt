@@ -26,14 +26,14 @@ class GameRemoteDataStoreTest {
     }
 
     @Test
-    fun getFailsTest() {
-        stubGetFails(Single.just(GameFactory.makeGameEntityList(2)))
+    fun getGamesTest() {
+        stubGetGames(Single.just(GameFactory.makeGameEntityList(2)))
 
         val testObserver = remote.getGames(0).test()
         testObserver.assertComplete()
     }
 
-    private fun stubGetFails(single: Single<List<GameEntity>>) {
+    private fun stubGetGames(single: Single<List<GameEntity>>) {
         whenever(remote.getGames(ArgumentMatchers.any()))
                 .thenReturn(single)
     }

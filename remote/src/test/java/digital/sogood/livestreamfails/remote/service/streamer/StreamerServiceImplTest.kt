@@ -16,14 +16,14 @@ class StreamerServiceImplTest {
     }
 
     @Test
-    fun getFailsCompletes() {
+    fun getStreamersCompletes() {
         service.getStreamers(0)
                 .test()
                 .assertComplete()
     }
 
     @Test
-    fun getFailsReturnsData() {
+    fun getStreamersReturnsData() {
         val observer = service.getStreamers(0)
                 .test()
                 .assertComplete()

@@ -22,7 +22,7 @@ class DetailsServiceImplTest {
     }
 
     @Test
-    fun getFailsCompletes() {
+    fun getDetailsCompletes() {
         service.getDetails(VALID_ID)
                 .test()
                 .assertComplete()
@@ -36,7 +36,7 @@ class DetailsServiceImplTest {
     }
 
     @Test
-    fun getFailsReturnsData() {
+    fun getDetailsReturnsData() {
         val observer = service.getDetails(VALID_ID)
                 .test()
                 .assertComplete()

@@ -26,14 +26,14 @@ class StreamerRemoteDataStoreTest {
     }
 
     @Test
-    fun getFailsTest() {
-        stubGetFails(Single.just(StreamerFactory.makeStreamerEntityList(2)))
+    fun getStreamersTest() {
+        stubGetStreamers(Single.just(StreamerFactory.makeStreamerEntityList(2)))
 
         val testObserver = remote.getStreamers(0).test()
         testObserver.assertComplete()
     }
 
-    private fun stubGetFails(single: Single<List<StreamerEntity>>) {
+    private fun stubGetStreamers(single: Single<List<StreamerEntity>>) {
         whenever(remote.getStreamers(ArgumentMatchers.any()))
                 .thenReturn(single)
     }
