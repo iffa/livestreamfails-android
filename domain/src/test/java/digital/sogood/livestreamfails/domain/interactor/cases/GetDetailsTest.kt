@@ -34,13 +34,13 @@ class GetDetailsTest {
     @Test
     fun buildUseCaseObservableReturnsData() {
         val details = DetailsFactory.makeDetails()
-        stubGetFails(Single.just(details))
-        val testObserver = useCase.buildUseCaseObservable(DetailsParams(0)).test()
+        stubGetDetails(Single.just(details))
+        val testObserver = useCase.buildUseCaseObservable(null).test()
         testObserver.assertValue(details)
     }
 
-    private fun stubGetFails(single: Single<Details>) {
-        whenever(mockRepository.getDetails(ArgumentMatchers.anyLong()))
+    private fun stubGetDetails(single: Single<Details>) {
+        whenever(mockRepository.getDetails(ArgumentMatchers.any()))
                 .thenReturn(single)
     }
 

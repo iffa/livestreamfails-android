@@ -7,5 +7,5 @@ import io.reactivex.Single
  * @author Santeri Elo <me@santeri.xyz>
  */
 interface DetailsRepository {
-    fun getDetails(postId: Long): Single<Details>
+    fun getDetails(postId: Long? = 0): Single<Details>
 }

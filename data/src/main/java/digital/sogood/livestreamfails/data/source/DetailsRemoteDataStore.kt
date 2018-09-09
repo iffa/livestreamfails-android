@@ -10,7 +10,7 @@ import javax.inject.Inject
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class DetailsRemoteDataStore @Inject constructor(private val remote: DetailsRemote) : DetailsDataStore {
-    override fun getDetails(postId: Long): Single<DetailsEntity> {
+    override fun getDetails(postId: Long?): Single<DetailsEntity> {
         return remote.getDetails(postId)
     }
 }

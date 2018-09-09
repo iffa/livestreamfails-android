@@ -12,7 +12,7 @@ import javax.inject.Inject
 class DetailsRemoteImpl @Inject constructor(private val service: DetailsService,
                                             private val entityMapper: DetailsEntityMapper)
     : DetailsRemote {
-    override fun getDetails(postId: Long): Single<DetailsEntity> {
+    override fun getDetails(postId: Long?): Single<DetailsEntity> {
         return service.getDetails(postId)
                 .map {
                     entityMapper.mapFromRemote(it)

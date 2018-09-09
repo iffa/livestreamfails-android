@@ -14,13 +14,13 @@ class DetailsServiceImpl(private val httpClient: OkHttpClient) : DetailsService 
         private const val ENDPOINT = "https://livestreamfails.com/post/%d"
     }
 
-    override fun getDetails(postId: Long): Single<DetailsModel> {
+    override fun getDetails(postId: Long?): Single<DetailsModel> {
         return Single.fromCallable {
             val request = Request.Builder().url(String.format(ENDPOINT, postId)).get().build()
             val response = httpClient.newCall(request).execute()
             val responseUrl = response.networkResponse()?.request()?.url().toString()
 
-            if (responseUrl.contains("post_not_found")) {
+            if (postId == null || responseUrl.contains("post_not_found")) {
                 throw InvalidPostIdException(postId)
             }
 
@@ -49,5 +49,5 @@ class DetailsServiceImpl(private val httpClient: OkHttpClient) : DetailsService 
         }
     }
 
-    class InvalidPostIdException(postId: Long) : Throwable("$postId is not a valid post id")
+    class InvalidPostIdException(postId: Long?) : Throwable("$postId is not a valid post id")
 }

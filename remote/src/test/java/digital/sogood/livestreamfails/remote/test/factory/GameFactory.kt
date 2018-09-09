@@ -9,7 +9,6 @@ import digital.sogood.livestreamfails.remote.test.factory.DataFactory.Factory.ra
  */
 class GameFactory {
     companion object Factory {
-
         fun makeGameModel(): GameModel {
             return GameModel(randomUuid(), randomInt(), randomUuid())
         }

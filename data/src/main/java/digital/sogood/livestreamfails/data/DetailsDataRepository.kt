@@ -16,7 +16,7 @@ import javax.inject.Inject
 class DetailsDataRepository @Inject constructor(private val factory: DetailsDataStoreFactory,
                                                 private val mapper: DetailsMapper)
     : DetailsRepository {
-    override fun getDetails(postId: Long): Single<Details> {
+    override fun getDetails(postId: Long?): Single<Details> {
         val dataStore = factory.getDataStore()
 
         return dataStore.getDetails(postId)
