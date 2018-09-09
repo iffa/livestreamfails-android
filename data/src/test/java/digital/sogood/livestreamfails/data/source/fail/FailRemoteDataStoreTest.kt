@@ -29,12 +29,13 @@ class FailRemoteDataStoreTest {
     fun getFailsTest() {
         stubGetFails(Single.just(FailFactory.makeFailEntityList(2)))
 
-        val testObserver = remote.getFails(0).test()
+        val testObserver = remote.getFails(0, null, null, null, null, null).test()
         testObserver.assertComplete()
     }
 
     private fun stubGetFails(single: Single<List<FailEntity>>) {
-        whenever(remote.getFails(ArgumentMatchers.any()))
+        whenever(remote.getFails(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(single)
     }
 }

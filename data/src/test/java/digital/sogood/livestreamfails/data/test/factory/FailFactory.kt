@@ -13,11 +13,11 @@ class FailFactory {
     companion object Factory {
 
         fun makeFailEntity(): FailEntity {
-            return FailEntity(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid())
+            return FailEntity(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
         }
 
         fun makeFail(): Fail {
-            return Fail(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid())
+            return Fail(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
         }
 
         fun makeFailEntityList(count: Int): List<FailEntity> {

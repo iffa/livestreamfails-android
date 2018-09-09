@@ -1,8 +1,10 @@
 package digital.sogood.livestreamfails.remote.mapper
 
+import digital.sogood.livestreamfails.data.model.DetailsEntity
 import digital.sogood.livestreamfails.data.model.FailEntity
 import digital.sogood.livestreamfails.data.model.GameEntity
 import digital.sogood.livestreamfails.data.model.StreamerEntity
+import digital.sogood.livestreamfails.remote.model.DetailsModel
 import digital.sogood.livestreamfails.remote.model.FailModel
 import digital.sogood.livestreamfails.remote.model.GameModel
 import digital.sogood.livestreamfails.remote.model.StreamerModel
@@ -31,6 +33,15 @@ open class StreamerEntityMapper @Inject constructor() : EntityMapper<StreamerMod
  */
 open class FailEntityMapper @Inject constructor() : EntityMapper<FailModel, FailEntity> {
     override fun mapFromRemote(type: FailModel): FailEntity {
-        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl)
+        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.detailsUrl)
+    }
+}
+
+/**
+ * Map a [DetailsModel] to a [DetailsEntity] instance.
+ */
+open class DetailsEntityMapper @Inject constructor() : EntityMapper<DetailsModel, DetailsEntity> {
+    override fun mapFromRemote(type: DetailsModel): DetailsEntity {
+        return DetailsEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.videoUrl, type.sourceUrl)
     }
 }

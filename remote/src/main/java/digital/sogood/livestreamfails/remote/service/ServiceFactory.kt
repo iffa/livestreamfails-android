@@ -1,5 +1,7 @@
 package digital.sogood.livestreamfails.remote.service
 
+import digital.sogood.livestreamfails.remote.service.details.DetailsService
+import digital.sogood.livestreamfails.remote.service.details.DetailsServiceImpl
 import digital.sogood.livestreamfails.remote.service.fail.FailService
 import digital.sogood.livestreamfails.remote.service.fail.FailServiceImpl
 import digital.sogood.livestreamfails.remote.service.game.GameService
@@ -18,27 +20,27 @@ import java.util.concurrent.TimeUnit
  */
 object ServiceFactory {
     fun makeFailService(isDebug: Boolean): FailService {
-        val httpClient = makeOkHttpClient(
-                makeLoggingInterceptor(isDebug)
-        )
+        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
 
         return makeFailService(httpClient)
     }
 
     fun makeGameService(isDebug: Boolean): GameService {
-        val httpClient = makeOkHttpClient(
-                makeLoggingInterceptor(isDebug)
-        )
+        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
 
         return makeGameService(httpClient)
     }
 
     fun makeStreamerService(isDebug: Boolean): StreamerService {
-        val httpClient = makeOkHttpClient(
-                makeLoggingInterceptor(isDebug)
-        )
+        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
 
         return makeStreamerService(httpClient)
+    }
+
+    fun makeDetailsService(isDebug: Boolean): DetailsService {
+        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
+
+        return makeDetailsService(httpClient)
     }
 
     private fun makeFailService(okHttpClient: OkHttpClient): FailService {
@@ -51,6 +53,10 @@ object ServiceFactory {
 
     private fun makeStreamerService(okHttpClient: OkHttpClient): StreamerService {
         return StreamerServiceImpl(okHttpClient)
+    }
+
+    private fun makeDetailsService(okHttpClient: OkHttpClient): DetailsService {
+        return DetailsServiceImpl(okHttpClient)
     }
 
     private fun makeOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {

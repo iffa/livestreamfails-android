@@ -47,6 +47,8 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
                 it.forEach { card ->
                     val title = card.selectFirst("p.title").text()
 
+                    val detailsUrl = card.selectFirst("a[href]").attr("href")
+
                     val thumbnailUrl = card.selectFirst("img.card-img-top").attr("src")
 
                     val streamerName = card.selectFirst("div.stream-info > small.text-muted")
@@ -61,7 +63,7 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
                     val points = pointsElement
                             .ownText().replace(Regex("[^\\d.]"), "").toInt()
 
-                    models.add(FailModel(title, streamerName, gameName, points, isNsfw, thumbnailUrl))
+                    models.add(FailModel(title, streamerName, gameName, points, isNsfw, thumbnailUrl, detailsUrl))
                 }
             }
 

@@ -21,5 +21,6 @@ class FailEntityMapperTest {
         assertEquals(model.points, entity.points)
         assertEquals(model.nsfw, entity.nsfw)
         assertEquals(model.thumbnailUrl, entity.thumbnailUrl)
+        assertEquals(model.detailsUrl, entity.detailsUrl)
     }
 }

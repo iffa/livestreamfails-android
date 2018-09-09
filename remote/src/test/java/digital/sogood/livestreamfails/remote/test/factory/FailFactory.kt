@@ -12,7 +12,7 @@ class FailFactory {
     companion object Factory {
 
         fun makeFailModel(): FailModel {
-            return FailModel(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid())
+            return FailModel(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
         }
 
         fun makeFailModelList(count: Int): List<FailModel> {

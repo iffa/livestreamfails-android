@@ -5,4 +5,5 @@ data class FailEntity(val title: String,
                       val game: String?,
                       val points: Int,
                       val nsfw: Boolean,
-                      val thumbnailUrl: String)
+                      val thumbnailUrl: String,
+                      val detailsUrl: String)

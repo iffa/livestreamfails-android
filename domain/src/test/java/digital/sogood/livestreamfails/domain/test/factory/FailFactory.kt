@@ -21,7 +21,7 @@ class FailFactory {
         }
 
         fun makeFail(): Fail {
-            return Fail(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid())
+            return Fail(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
         }
     }
 }

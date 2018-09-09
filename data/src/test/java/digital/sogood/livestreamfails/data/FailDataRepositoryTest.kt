@@ -64,7 +64,8 @@ class FailDataRepositoryTest {
     }
 
     private fun stubGetFails(single: Single<List<FailEntity>>) {
-        whenever(remoteDataStore.getFails(ArgumentMatchers.any()))
+        whenever(remoteDataStore.getFails(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
+                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
                 .thenReturn(single)
     }
 
