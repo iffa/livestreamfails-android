@@ -35,8 +35,6 @@ android {
         minSdkVersion androidBuildConfig.minSdk
         targetSdkVersion androidBuildConfig.targetSdk
 
-        resConfigs "en"
-
         versionCode 1
         versionName "1.0"
 

@@ -107,6 +107,15 @@ buildscript {
 
 plugins {
     id 'com.github.ben-manes.versions' version "0.20.0"
+    id("com.gradle.build-scan") version "1.16"
+}
+
+buildScan {
+    setTermsOfServiceUrl("https://gradle.com/terms-of-service")
+    setTermsOfServiceAgree("yes")
+
+    // Comment this line when not optimizing build time
+    //publishAlways()
 }
 
 allprojects {
