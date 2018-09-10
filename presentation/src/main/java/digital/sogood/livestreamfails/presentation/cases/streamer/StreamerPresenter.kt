@@ -10,13 +10,15 @@ import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
 
 /**
- * TODO: Pagination support
+ * TODO: Contract implementation shouldn't care about pages, it should only ask for more results when needed.
  *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class StreamerPresenter @Inject constructor(private val useCase: SingleUseCase<List<Streamer>, StreamerParams>,
                                                  private val mapper: StreamerViewMapper)
     : TiPresenter<StreamerContract>() {
+    internal var currentPage = 0
+
     override fun onDestroy() {
         super.onDestroy()
 
@@ -24,6 +26,10 @@ open class StreamerPresenter @Inject constructor(private val useCase: SingleUseC
     }
 
     fun retrieveStreamers(params: StreamerParams?) {
+        params?.let { p ->
+            p.page?.let { currentPage = it }
+        }
+
         deliverToView {
             showProgress()
         }
@@ -40,8 +46,12 @@ open class StreamerPresenter @Inject constructor(private val useCase: SingleUseC
                 hideEmptyState()
                 showStreamers(streamers.map { mapper.mapToView(it) })
             } else {
-                hideStreamers()
-                showEmptyState()
+                if (currentPage > 0) {
+                    showNoMoreResultsState()
+                } else {
+                    hideStreamers()
+                    showEmptyState()
+                }
             }
         }
     }

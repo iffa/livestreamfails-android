@@ -2,6 +2,7 @@ package digital.sogood.livestreamfails.presentation.cases.streamer
 
 import com.nhaarman.mockito_kotlin.*
 import digital.sogood.livestreamfails.domain.interactor.cases.GetStreamers
+import digital.sogood.livestreamfails.domain.interactor.cases.StreamerParams
 import digital.sogood.livestreamfails.domain.model.Streamer
 import digital.sogood.livestreamfails.domain.repository.StreamerRepository
 import digital.sogood.livestreamfails.presentation.mapper.StreamerViewMapper
@@ -10,6 +11,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
 import org.junit.Before
 import org.junit.Test
+import kotlin.test.assertEquals
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
@@ -92,7 +94,7 @@ class StreamerPresenterTest {
 
     /**
      * Retrieving triggers [StreamerContract.showEmptyState] if the resulting list
-     * is empty.
+     * is empty, and the current page is 0.
      */
     @Test
     fun retrieveShowsEmptyState() {
@@ -135,5 +137,57 @@ class StreamerPresenterTest {
         captor.firstValue.onError(RuntimeException())
 
         verify(mockContract).showErrorState()
+    }
+
+    /**
+     * Retrieving changes [StreamerPresenter.currentPage] according to the given [StreamerParams].
+     */
+    @Test
+    fun retrieveChangesCurrentPage() {
+        val items = StreamerFactory.makeStreamerList(2)
+
+        presenter.retrieveStreamers(StreamerParams(0))
+
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(0)))
+
+        captor.firstValue.onSuccess(items)
+
+        assertEquals(0, presenter.currentPage)
+
+        presenter.retrieveStreamers(StreamerParams(5))
+
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(5)))
+
+        captor.firstValue.onSuccess(items)
+
+        assertEquals(5, presenter.currentPage)
+    }
+
+    /**
+     * Retrieving a page greater than 0 triggers [StreamerContract.showNoMoreResultsState].
+     */
+    @Test
+    fun retrieveShowsNoMoreResults() {
+        val items = StreamerFactory.makeStreamerList(2)
+
+        // Page 0, should have results
+        presenter.retrieveStreamers(StreamerParams(0))
+
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(0)))
+
+        captor.firstValue.onSuccess(items)
+
+        assertEquals(0, presenter.currentPage)
+        verify(mockContract).showStreamers(items.map { mockViewMapper.mapToView(it) })
+
+        // Page 1, should have no results (show no more results state)
+        presenter.retrieveStreamers(StreamerParams(1))
+
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(1)))
+
+        captor.firstValue.onSuccess(emptyList())
+
+        assertEquals(1, presenter.currentPage)
+        verify(mockContract).showNoMoreResultsState()
     }
 }

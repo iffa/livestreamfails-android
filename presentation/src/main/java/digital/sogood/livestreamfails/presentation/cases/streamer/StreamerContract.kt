@@ -22,4 +22,10 @@ interface StreamerContract : TiView {
     fun showEmptyState()
 
     fun hideEmptyState()
+
+    /**
+     * Called when a page is empty, indicating the end of results.
+     * If the first page is empty, [showEmptyState] is called instead.
+     */
+    fun showNoMoreResultsState()
 }
