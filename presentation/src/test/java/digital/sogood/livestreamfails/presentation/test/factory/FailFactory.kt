@@ -20,6 +20,14 @@ class FailFactory {
             return Fail(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
         }
 
+        fun makeFailList(count: Int): List<Fail> {
+            val entities = mutableListOf<Fail>()
+            repeat(count) {
+                entities.add(makeFail())
+            }
+            return entities
+        }
+
         fun makeFailViewList(count: Int): List<FailView> {
             val entities = mutableListOf<FailView>()
             repeat(count) {

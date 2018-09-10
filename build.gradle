@@ -108,6 +108,7 @@ buildscript {
                 kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
                 assertj    : "org.assertj:assertj-core:${versions.assertj}",
                 mockito    : "com.nhaarman:mockito-kotlin:${versions.mockito}",
+                thirtyInchTest : "net.grandcentrix.thirtyinch:thirtyinch-test:${versions.thirtyinch}"
         ]
 
         mobileUiDependencies = [

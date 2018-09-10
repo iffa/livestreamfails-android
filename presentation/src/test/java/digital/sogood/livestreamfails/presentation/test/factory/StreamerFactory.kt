@@ -26,5 +26,13 @@ class StreamerFactory {
             }
             return entities
         }
+
+        fun makeStreamerList(count: Int): List<Streamer> {
+            val entities = mutableListOf<Streamer>()
+            repeat(count) {
+                entities.add(makeStreamer())
+            }
+            return entities
+        }
     }
 }

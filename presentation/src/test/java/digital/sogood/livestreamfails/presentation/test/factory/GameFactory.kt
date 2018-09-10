@@ -18,6 +18,14 @@ class GameFactory {
             return Game(randomUuid(), randomInt(), randomUuid())
         }
 
+        fun makeGameList(count: Int): List<Game> {
+            val entities = mutableListOf<Game>()
+            repeat(count) {
+                entities.add(makeGame())
+            }
+            return entities
+        }
+
         fun makeGameViewList(count: Int): List<GameView> {
             val entities = mutableListOf<GameView>()
             repeat(count) {
