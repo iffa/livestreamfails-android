@@ -9,8 +9,6 @@ import digital.sogood.livestreamfails.remote.service.game.GameServiceImpl
 import digital.sogood.livestreamfails.remote.service.streamer.StreamerService
 import digital.sogood.livestreamfails.remote.service.streamer.StreamerServiceImpl
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
-import java.util.concurrent.TimeUnit
 
 /**
  * Provide "make" methods to create instances of [FailService], [GameService]
@@ -19,60 +17,19 @@ import java.util.concurrent.TimeUnit
  * @author Santeri Elo <me@santeri.xyz>
  */
 object ServiceFactory {
-    fun makeFailService(isDebug: Boolean): FailService {
-        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
-
-        return makeFailService(httpClient)
-    }
-
-    fun makeGameService(isDebug: Boolean): GameService {
-        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
-
-        return makeGameService(httpClient)
-    }
-
-    fun makeStreamerService(isDebug: Boolean): StreamerService {
-        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
-
-        return makeStreamerService(httpClient)
-    }
-
-    fun makeDetailsService(isDebug: Boolean): DetailsService {
-        val httpClient = makeOkHttpClient(makeLoggingInterceptor(isDebug))
-
-        return makeDetailsService(httpClient)
-    }
-
-    private fun makeFailService(okHttpClient: OkHttpClient): FailService {
+    fun makeFailService(okHttpClient: OkHttpClient): FailService {
         return FailServiceImpl(okHttpClient)
     }
 
-    private fun makeGameService(okHttpClient: OkHttpClient): GameService {
+    fun makeGameService(okHttpClient: OkHttpClient): GameService {
         return GameServiceImpl(okHttpClient)
     }
 
-    private fun makeStreamerService(okHttpClient: OkHttpClient): StreamerService {
+    fun makeStreamerService(okHttpClient: OkHttpClient): StreamerService {
         return StreamerServiceImpl(okHttpClient)
     }
 
-    private fun makeDetailsService(okHttpClient: OkHttpClient): DetailsService {
+    fun makeDetailsService(okHttpClient: OkHttpClient): DetailsService {
         return DetailsServiceImpl(okHttpClient)
-    }
-
-    private fun makeOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
-        return OkHttpClient.Builder()
-                .addInterceptor(httpLoggingInterceptor)
-                .connectTimeout(120, TimeUnit.SECONDS)
-                .readTimeout(120, TimeUnit.SECONDS)
-                .build()
-    }
-
-    private fun makeLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
-        val logging = HttpLoggingInterceptor()
-        logging.level = if (isDebug)
-            HttpLoggingInterceptor.Level.BODY
-        else
-            HttpLoggingInterceptor.Level.NONE
-        return logging
     }
 }
