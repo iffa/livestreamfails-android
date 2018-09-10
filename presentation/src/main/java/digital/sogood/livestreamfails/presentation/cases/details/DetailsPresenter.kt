@@ -29,7 +29,7 @@ open class DetailsPresenter @Inject constructor(private val useCase: SingleUseCa
         useCase.execute(Subscriber(), params)
     }
 
-    internal fun handleGetGamesSuccess(details: Details) {
+    internal fun handleSuccess(details: Details) {
         deliverToView {
             hideProgress()
             hideErrorState()
@@ -39,7 +39,7 @@ open class DetailsPresenter @Inject constructor(private val useCase: SingleUseCa
     }
 
     inner class Subscriber : DisposableSingleObserver<Details>() {
-        override fun onSuccess(t: Details) = handleGetGamesSuccess(t)
+        override fun onSuccess(t: Details) = handleSuccess(t)
 
         override fun onError(e: Throwable) {
             deliverToView {

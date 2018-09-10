@@ -10,8 +10,6 @@ import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
 
 /**
- * TODO: Pagination support
- *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class GamePresenter @Inject constructor(private val useCase: SingleUseCase<List<Game>, GameParams>,
