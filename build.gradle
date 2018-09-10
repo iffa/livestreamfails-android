@@ -94,11 +94,20 @@ buildscript {
         ]
 
         presentationDependencies = [
-
+                javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
+                javaxInject    : "javax.inject:javax.inject:${versions.javax_inject}",
+                rxKotlin       : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
+                kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
+                thirtyInch     : "net.grandcentrix.thirtyinch:thirtyinch:${versions.thirtyinch}",
+                thirtyInchRx   : "net.grandcentrix.thirtyinch:thirtyinch-rx2:${versions.thirtyinch}",
+                thirtyInchKt   : "net.grandcentrix.thirtyinch:thirtyinch-kotlin:${versions.thirtyinch}",
         ]
 
         presentationTestDependencies = [
-
+                junit      : "junit:junit:${versions.junit}",
+                kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+                assertj    : "org.assertj:assertj-core:${versions.assertj}",
+                mockito    : "com.nhaarman:mockito-kotlin:${versions.mockito}",
         ]
 
         mobileUiDependencies = [
@@ -115,7 +124,7 @@ buildscript {
                 kotlin          : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
                 javaxAnnotation : "javax.annotation:jsr250-api:${versions.javax_annotation}",
                 javaxInject     : "javax.inject:javax.inject:${versions.javax_inject}",
-                timberKt          : "com.github.ajalt:timberkt:${versions.timberkt}",
+                timberKt        : "com.github.ajalt:timberkt:${versions.timberkt}",
                 exoPlayer       : "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"
         ]
 

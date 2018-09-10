@@ -2,6 +2,11 @@ apply plugin: 'com.android.library'
 
 apply plugin: 'kotlin-android'
 
+/**
+ * We use ThirtyInch for this project, so this module has to depend on the Android SDK.
+ * If we used our own implementation of some MVP architecture, this could be a simple
+ * Java library module instead.
+ */
 android {
     compileSdkVersion androidBuildConfig.compileSdk
 
@@ -15,4 +20,18 @@ android {
 
 dependencies {
     implementation project(':domain')
+
+    implementation presentationDependencies.kotlin
+
+    implementation presentationDependencies.javaxInject
+    implementation presentationDependencies.rxKotlin
+
+    implementation presentationDependencies.thirtyInch
+    implementation presentationDependencies.thirtyInchRx
+    implementation presentationDependencies.thirtyInchKt
+
+    testImplementation presentationTestDependencies.junit
+    testImplementation presentationTestDependencies.kotlinJUnit
+    testImplementation presentationTestDependencies.mockito
+    testImplementation presentationTestDependencies.assertj
 }
