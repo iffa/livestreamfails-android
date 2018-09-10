@@ -17,19 +17,13 @@ import javax.inject.Inject
 open class StreamerPresenter @Inject constructor(private val useCase: SingleUseCase<List<Streamer>, StreamerParams>,
                                                  private val mapper: StreamerViewMapper)
     : TiPresenter<StreamerContract>() {
-    override fun onCreate() {
-        super.onCreate()
-
-        retrieveStreamers(StreamerParams())
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
         useCase.dispose()
     }
 
-    fun retrieveStreamers(params: StreamerParams) {
+    fun retrieveStreamers(params: StreamerParams?) {
         deliverToView {
             showProgress()
         }
