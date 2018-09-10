@@ -11,6 +11,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import kotlin.test.assertEquals
 
 /**
@@ -47,11 +48,11 @@ class StreamerPresenterTest {
     fun retrieveShowsAndHidesProgress() {
         val items = StreamerFactory.makeStreamerList(2)
 
-        presenter.retrieveStreamers(null)
+        presenter.retrieveStreamers()
 
         verify(mockContract).showProgress()
 
-        verify(mockUseCase).execute(captor.capture(), eq(null))
+        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
 
         captor.firstValue.onSuccess(items)
 
@@ -66,9 +67,9 @@ class StreamerPresenterTest {
     fun retrieveHidesEmptyAndErrorState() {
         val items = StreamerFactory.makeStreamerList(2)
 
-        presenter.retrieveStreamers(null)
+        presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(null))
+        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
 
         captor.firstValue.onSuccess(items)
 
@@ -83,9 +84,9 @@ class StreamerPresenterTest {
     fun retrieveShowsResults() {
         val items = StreamerFactory.makeStreamerList(2)
 
-        presenter.retrieveStreamers(null)
+        presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(null))
+        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
 
         captor.firstValue.onSuccess(items)
 
@@ -100,9 +101,9 @@ class StreamerPresenterTest {
     fun retrieveShowsEmptyState() {
         val items = StreamerFactory.makeStreamerList(0)
 
-        presenter.retrieveStreamers(null)
+        presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(null))
+        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
 
         captor.firstValue.onSuccess(items)
 
@@ -115,9 +116,9 @@ class StreamerPresenterTest {
      */
     @Test
     fun retrieveHidesResultsOnError() {
-        presenter.retrieveStreamers(null)
+        presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(null))
+        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
 
         captor.firstValue.onError(RuntimeException())
 
@@ -130,9 +131,9 @@ class StreamerPresenterTest {
      */
     @Test
     fun retrieveShowsErrorState() {
-        presenter.retrieveStreamers(null)
+        presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(null))
+        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
 
         captor.firstValue.onError(RuntimeException())
 
@@ -140,13 +141,13 @@ class StreamerPresenterTest {
     }
 
     /**
-     * Retrieving changes [StreamerPresenter.currentPage] according to the given [StreamerParams].
+     * Retrieving increments [StreamerPresenter.currentPage].
      */
     @Test
     fun retrieveChangesCurrentPage() {
         val items = StreamerFactory.makeStreamerList(2)
 
-        presenter.retrieveStreamers(StreamerParams(0))
+        presenter.retrieveStreamers()
 
         verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(0)))
 
@@ -154,13 +155,13 @@ class StreamerPresenterTest {
 
         assertEquals(0, presenter.currentPage)
 
-        presenter.retrieveStreamers(StreamerParams(5))
+        presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(5)))
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(1)))
 
         captor.firstValue.onSuccess(items)
 
-        assertEquals(5, presenter.currentPage)
+        assertEquals(1, presenter.currentPage)
     }
 
     /**
@@ -171,7 +172,7 @@ class StreamerPresenterTest {
         val items = StreamerFactory.makeStreamerList(2)
 
         // Page 0, should have results
-        presenter.retrieveStreamers(StreamerParams(0))
+        presenter.retrieveStreamers()
 
         verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(0)))
 
@@ -181,7 +182,7 @@ class StreamerPresenterTest {
         verify(mockContract).showStreamers(items.map { mockViewMapper.mapToView(it) })
 
         // Page 1, should have no results (show no more results state)
-        presenter.retrieveStreamers(StreamerParams(1))
+        presenter.retrieveStreamers()
 
         verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(1)))
 
