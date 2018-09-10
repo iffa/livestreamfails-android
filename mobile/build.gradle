@@ -30,7 +30,7 @@ android {
     compileSdkVersion androidBuildConfig.compileSdk
 
     defaultConfig {
-        applicationId "xyz.santeri.citybike"
+        applicationId "digital.sogood.livestreamfails"
 
         minSdkVersion androidBuildConfig.minSdk
         targetSdkVersion androidBuildConfig.targetSdk
@@ -87,43 +87,41 @@ dependencies {
     implementation project(':data')
     implementation project(':remote')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation mobileUiDependencies.kotlin
 
-    implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
-    implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraint_layout}"
-    implementation "com.google.android.material:material:${versions.androidx.design}"
-    implementation "androidx.core:core-ktx:${versions.androidx.core_ktx}"
+    implementation mobileUiDependencies.appCompat
+    implementation mobileUiDependencies.constraintLayout
+    implementation mobileUiDependencies.design
+    implementation mobileUiDependencies.androidKtx
 
-    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:${versions.androidx.lifecycle}"
-    kapt "androidx.lifecycle:lifecycle-compiler:${versions.androidx.lifecycle}"
+    implementation mobileUiDependencies.rxKotlin
+    implementation mobileUiDependencies.rxAndroid
 
-    implementation "com.google.dagger:dagger-android:${versions.dagger}"
-    implementation "com.google.dagger:dagger-android-support:${versions.dagger}"
-    kapt "com.google.dagger:dagger-compiler:${versions.dagger}"
-    kapt "com.google.dagger:dagger-android-processor:${versions.dagger}"
+    implementation mobileUiDependencies.dagger
+    implementation mobileUiDependencies.daggerSupport
+    kapt mobileUiDependencies.daggerCompiler
+    kapt mobileUiDependencies.daggerProcessor
 
-    implementation "javax.inject:javax.inject:1"
+    implementation mobileUiDependencies.javaxAnnotation
+    implementation mobileUiDependencies.javaxInject
 
-    implementation "io.reactivex.rxjava2:rxjava:${versions.rx}"
-    implementation "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}"
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+    implementation mobileUiDependencies.timberKt
 
-    implementation "com.jakewharton.threetenabp:threetenabp:${versions.threetenabp}"
+    implementation mobileUiDependencies.exoPlayer
 
-    implementation "org.jsoup:jsoup:${versions.jsoup}"
+    // Test dependencies
+    androidTestImplementation mobileUiTestDependencies.junit
+    androidTestImplementation mobileUiTestDependencies.kotlinJUnit
+    androidTestImplementation mobileUiTestDependencies.mockito
+    androidTestImplementation mobileUiTestDependencies.mockitoAndroid
 
-    implementation "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"
+    androidTestImplementation mobileUiTestDependencies.espressoCore
+    androidTestImplementation mobileUiTestDependencies.espressoIntents
+    androidTestImplementation mobileUiTestDependencies.espressoContrib
 
-    implementation 'com.github.ajalt:timberkt:1.5.1'
+    androidTestImplementation mobileUiTestDependencies.supportRunner
+    androidTestImplementation mobileUiTestDependencies.supportRules
 
-    testImplementation 'junit:junit:4.12'
-    testImplementation "org.jetbrains.kotlin:kotlin-test:${versions.kotlin}"
-    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}"
-
-    androidTestImplementation "androidx.arch.core:core-testing:${versions.androidx.lifecycle}"
-    androidTestImplementation "androidx.room:room-testing:${versions.androidx.room}"
-    androidTestImplementation "androidx.test:runner:${versions.androidx.test_runner}"
-    androidTestImplementation "androidx.test:rules:${versions.androidx.test_rules}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso}"
+    kaptTest mobileUiDependencies.daggerCompiler
+    kaptAndroidTest mobileUiDependencies.daggerCompiler
 }

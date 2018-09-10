@@ -1,0 +1,17 @@
+apply plugin: 'com.android.library'
+
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion androidBuildConfig.compileSdk
+
+    defaultConfig {
+        minSdkVersion androidBuildConfig.minSdk
+        targetSdkVersion androidBuildConfig.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
+dependencies {
+}

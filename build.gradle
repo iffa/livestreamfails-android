@@ -26,18 +26,22 @@ buildscript {
                         'test_rules'       : '1.1.0-alpha4'
                 ],
                 'rxkotlin'        : '2.3.0',
+                'rxandroid'       : '2.1.0',
                 'dagger'          : '2.16',
                 'threetenabp'     : '1.1.0',
+                'thirtyinch'      : '0.9.0',
                 'okhttp'          : '3.8.1',
                 'jsoup'           : '1.11.3',
                 'exoplayer'       : '2.8.4',
                 'javax_annotation': '1.0',
                 'javax_inject'    : '1',
                 'apache_http'     : '4.5.6',
+                'timberkt'        : '1.5.1',
                 'espresso'        : '3.1.0-alpha4',
                 'junit'           : '4.12',
                 'assertj'         : '3.8.0',
-                'mockito'         : '1.6.0'
+                'mockito'         : '1.6.0',
+                'mockito_android' : '2.21.0'
         ]
 
         domainDependencies = [
@@ -87,6 +91,45 @@ buildscript {
                 kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
                 assertj    : "org.assertj:assertj-core:${versions.assertj}",
                 mockito    : "com.nhaarman:mockito-kotlin:${versions.mockito}",
+        ]
+
+        presentationDependencies = [
+
+        ]
+
+        presentationTestDependencies = [
+
+        ]
+
+        mobileUiDependencies = [
+                appCompat       : "androidx.appcompat:appcompat:${versions.androidx.appcompat}",
+                constraintLayout: "androidx.constraintlayout:constraintlayout:${versions.androidx.constraint_layout}",
+                design          : "com.google.android.material:material:${versions.androidx.design}",
+                androidKtx      : "androidx.core:core-ktx:${versions.androidx.core_ktx}",
+                daggerCompiler  : "com.google.dagger:dagger-compiler:${versions.dagger}",
+                dagger          : "com.google.dagger:dagger:${versions.dagger}",
+                daggerSupport   : "com.google.dagger:dagger-android-support:${versions.dagger}",
+                daggerProcessor : "com.google.dagger:dagger-android-processor:${versions.dagger}",
+                rxKotlin        : "io.reactivex.rxjava2:rxkotlin:${versions.rxkotlin}",
+                rxAndroid       : "io.reactivex.rxjava2:rxandroid:${versions.rxandroid}",
+                kotlin          : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
+                javaxAnnotation : "javax.annotation:jsr250-api:${versions.javax_annotation}",
+                javaxInject     : "javax.inject:javax.inject:${versions.javax_inject}",
+                timberKt          : "com.github.ajalt:timberkt:${versions.timberkt}",
+                exoPlayer       : "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"
+        ]
+
+        mobileUiTestDependencies = [
+                junit          : "junit:junit:${versions.junit}",
+                kotlinJUnit    : "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+                assertj        : "org.assertj:assertj-core:${versions.assertj}",
+                mockito        : "com.nhaarman:mockito-kotlin:${versions.mockito}",
+                mockitoAndroid : "org.mockito:mockito-android:${versions.mockito_android}",
+                supportRunner  : "com.android.support.test:runner:${versions.androidx.test_runner}",
+                supportRules   : "com.android.support.test:rules:${versions.androidx.test_rules}",
+                espressoCore   : "com.android.support.test.espresso:espresso-core:${versions.espresso}",
+                espressoIntents: "com.android.support.test.espresso:espresso-intents:${versions.espresso}",
+                espressoContrib: "com.android.support.test.espresso:espresso-contrib:${versions.espresso}",
         ]
     }
 
