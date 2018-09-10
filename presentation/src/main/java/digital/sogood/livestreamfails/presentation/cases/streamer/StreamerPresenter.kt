@@ -20,7 +20,7 @@ open class StreamerPresenter @Inject constructor(private val useCase: SingleUseC
     override fun onCreate() {
         super.onCreate()
 
-        retrieveStreamers()
+        retrieveStreamers(StreamerParams())
     }
 
     override fun onDestroy() {
@@ -29,12 +29,12 @@ open class StreamerPresenter @Inject constructor(private val useCase: SingleUseC
         useCase.dispose()
     }
 
-    fun retrieveStreamers() {
+    fun retrieveStreamers(params: StreamerParams) {
         deliverToView {
             showProgress()
         }
 
-        useCase.execute(Subscriber())
+        useCase.execute(Subscriber(), params)
     }
 
     internal fun handleGetStreamersSuccess(streamers: List<Streamer>) {

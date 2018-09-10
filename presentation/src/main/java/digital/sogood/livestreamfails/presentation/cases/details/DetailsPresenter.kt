@@ -15,24 +15,18 @@ import javax.inject.Inject
 open class DetailsPresenter @Inject constructor(private val useCase: SingleUseCase<Details, DetailsParams>,
                                                 private val mapper: DetailsViewMapper)
     : TiPresenter<DetailsContract>() {
-    override fun onCreate() {
-        super.onCreate()
-
-        retrieveDetails()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
 
         useCase.dispose()
     }
 
-    fun retrieveDetails() {
+    fun retrieveDetails(params: DetailsParams) {
         deliverToView {
             showProgress()
         }
 
-        useCase.execute(Subscriber())
+        useCase.execute(Subscriber(), params)
     }
 
     internal fun handleGetGamesSuccess(details: Details) {

@@ -20,7 +20,7 @@ open class GamePresenter @Inject constructor(private val useCase: SingleUseCase<
     override fun onCreate() {
         super.onCreate()
 
-        retrieveGames()
+        retrieveGames(GameParams())
     }
 
     override fun onDestroy() {
@@ -29,12 +29,12 @@ open class GamePresenter @Inject constructor(private val useCase: SingleUseCase<
         useCase.dispose()
     }
 
-    fun retrieveGames() {
+    fun retrieveGames(params: GameParams) {
         deliverToView {
             showProgress()
         }
 
-        useCase.execute(Subscriber())
+        useCase.execute(Subscriber(), params)
     }
 
     internal fun handleGetGamesSuccess(games: List<Game>) {

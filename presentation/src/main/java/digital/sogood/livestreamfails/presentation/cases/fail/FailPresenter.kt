@@ -20,7 +20,7 @@ open class FailPresenter @Inject constructor(private val useCase: SingleUseCase<
     override fun onCreate() {
         super.onCreate()
 
-        retrieveFails()
+        retrieveFails(FailParams())
     }
 
     override fun onDestroy() {
@@ -29,12 +29,12 @@ open class FailPresenter @Inject constructor(private val useCase: SingleUseCase<
         useCase.dispose()
     }
 
-    fun retrieveFails() {
+    fun retrieveFails(params: FailParams) {
         deliverToView {
             showProgress()
         }
 
-        useCase.execute(Subscriber())
+        useCase.execute(Subscriber(), params)
     }
 
     internal fun handleGetFailsSuccess(fails: List<Fail>) {
