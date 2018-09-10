@@ -37,14 +37,17 @@ android {
 
         resConfigs "en"
 
-        versionCode versionberg.code
-        versionName versionberg.name
+        versionCode 1
+        versionName "1.0"
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
             minifyEnabled false // TODO: ProGuard rules for release builds
+            shrinkResources false
+
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -70,6 +73,15 @@ android {
         exclude 'META-INF/ASL2.0'
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/LICENSE'
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.outputs.each { output ->
+                output.versionCodeOverride = versionberg.code
+                output.versionNameOverride = versionberg.name
+            }
+        }
     }
 }
 
