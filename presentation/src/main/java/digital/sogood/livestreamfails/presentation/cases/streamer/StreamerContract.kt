@@ -11,6 +11,10 @@ interface StreamerContract : TiView {
 
     fun hideProgress()
 
+    /**
+     * Called when the presenter has new results. Note that [streamers] includes only the new
+     * result set.
+     */
     fun showStreamers(streamers: List<StreamerView>)
 
     fun hideStreamers()

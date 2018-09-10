@@ -147,6 +147,7 @@ class StreamerPresenterTest {
     fun retrieveChangesCurrentPage() {
         val items = StreamerFactory.makeStreamerList(2)
 
+        // Page 1
         presenter.retrieveStreamers()
 
         verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(0)))
@@ -155,6 +156,7 @@ class StreamerPresenterTest {
 
         assertEquals(0, presenter.currentPage)
 
+        // Page 2
         presenter.retrieveStreamers()
 
         verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(1)))

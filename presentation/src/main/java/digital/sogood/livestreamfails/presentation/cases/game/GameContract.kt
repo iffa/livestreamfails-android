@@ -11,6 +11,10 @@ interface GameContract : TiView {
 
     fun hideProgress()
 
+    /**
+     * Called when the presenter has new results. Note that [games] includes only the new
+     * result set.
+     */
     fun showGames(games: List<GameView>)
 
     fun hideGames()
@@ -22,4 +26,11 @@ interface GameContract : TiView {
     fun showEmptyState()
 
     fun hideEmptyState()
+
+    /**
+     * Called when a page is empty, indicating the end of results.
+     * If the first page is empty, [showEmptyState] is called instead.
+     */
+    fun showNoMoreResultsState()
+
 }

@@ -17,11 +17,7 @@ import javax.inject.Inject
 open class GamePresenter @Inject constructor(private val useCase: SingleUseCase<List<Game>, GameParams>,
                                              private val mapper: GameViewMapper)
     : TiPresenter<GameContract>() {
-    override fun onCreate() {
-        super.onCreate()
-
-        retrieveGames(GameParams())
-    }
+    internal var currentPage = -1
 
     override fun onDestroy() {
         super.onDestroy()
@@ -29,15 +25,17 @@ open class GamePresenter @Inject constructor(private val useCase: SingleUseCase<
         useCase.dispose()
     }
 
-    fun retrieveGames(params: GameParams) {
+    fun retrieveGames() {
+        currentPage++
+
         deliverToView {
             showProgress()
         }
 
-        useCase.execute(Subscriber(), params)
+        useCase.execute(Subscriber(), GameParams(currentPage))
     }
 
-    internal fun handleGetGamesSuccess(games: List<Game>) {
+    internal fun handleSuccess(games: List<Game>) {
         deliverToView {
             hideProgress()
             hideErrorState()
@@ -46,15 +44,22 @@ open class GamePresenter @Inject constructor(private val useCase: SingleUseCase<
                 hideEmptyState()
                 showGames(games.map { mapper.mapToView(it) })
             } else {
-                hideGames()
-                showEmptyState()
+                if (currentPage > 0) {
+                    showNoMoreResultsState()
+                } else {
+                    hideGames()
+                    showEmptyState()
+                }
             }
         }
     }
 
     inner class Subscriber : DisposableSingleObserver<List<Game>>() {
-        override fun onSuccess(t: List<Game>) = handleGetGamesSuccess(t)
+        override fun onSuccess(t: List<Game>) = handleSuccess(t)
 
+        /**
+         * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
+         */
         override fun onError(e: Throwable) {
             deliverToView {
                 hideProgress()

@@ -33,7 +33,7 @@ open class StreamerPresenter @Inject constructor(private val useCase: SingleUseC
         useCase.execute(Subscriber(), StreamerParams(currentPage))
     }
 
-    internal fun handleGetStreamersSuccess(streamers: List<Streamer>) {
+    internal fun handleSuccess(streamers: List<Streamer>) {
         deliverToView {
             hideProgress()
             hideErrorState()
@@ -53,8 +53,11 @@ open class StreamerPresenter @Inject constructor(private val useCase: SingleUseC
     }
 
     inner class Subscriber : DisposableSingleObserver<List<Streamer>>() {
-        override fun onSuccess(t: List<Streamer>) = handleGetStreamersSuccess(t)
+        override fun onSuccess(t: List<Streamer>) = handleSuccess(t)
 
+        /**
+         * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
+         */
         override fun onError(e: Throwable) {
             deliverToView {
                 hideProgress()
