@@ -8,13 +8,14 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.apache.http.client.utils.URIBuilder
 import org.jsoup.Jsoup
+import java.net.URL
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService {
     companion object {
-        private const val ENDPOINT = "https://livestreamfails.com/load/loadPosts.php"
+        internal const val ENDPOINT = "https://livestreamfails.com/load/loadPosts.php"
     }
 
     override fun getFails(page: Int?, timeFrame: TimeFrame?, order: Order?,
@@ -23,23 +24,7 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
         return Single.fromCallable {
             val models = mutableListOf<FailModel>()
 
-            var postMode = "standard"
-            if (!streamer.isNullOrEmpty()) postMode = "streamer"
-            if (!game.isNullOrEmpty()) postMode = "game"
-
-            val nsfwParam = if (nsfw == true) 1 else 0
-
-            val uri = URIBuilder(ENDPOINT)
-                    .addParameter("loadPostMode", postMode)
-                    .addParameter("loadPostNSFW", nsfwParam.toString())
-                    .addParameter("loadPostOrder", order?.value ?: Order.HOT.value)
-                    .addParameter("loadPostPage", page.toString())
-                    .addParameter("loadPostTimeFrame", timeFrame?.value ?: TimeFrame.DAY.value)
-
-            if (postMode == "streamer") uri.addParameter("loadPostModeStreamer", streamer)
-            if (postMode == "game") uri.addParameter("loadPostModeGame", game)
-
-            val request = Request.Builder().url(uri.build().toURL()).get().build()
+            val request = Request.Builder().url(getRequestUrl(page, timeFrame, order, nsfw, game, streamer)).get().build()
             val html = okHttpClient.newCall(request).execute().body()?.string()
             val doc = Jsoup.parse(html)
 
@@ -69,5 +54,28 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
 
             models.toList()
         }
+    }
+
+    internal fun getRequestUrl(page: Int?, timeFrame: TimeFrame?, order: Order?,
+                               nsfw: Boolean?, game: String?, streamer: String?): URL {
+        val postMode = getPostMode(streamer, game)
+
+        val builder = URIBuilder(ENDPOINT)
+                .addParameter("loadPostMode", postMode)
+                .addParameter("loadPostNSFW", (if (nsfw == true) 1 else 0).toString())
+                .addParameter("loadPostOrder", order?.value ?: Order.HOT.value)
+                .addParameter("loadPostPage", page.toString())
+                .addParameter("loadPostTimeFrame", timeFrame?.value ?: TimeFrame.DAY.value)
+
+        if (postMode == "streamer") builder.addParameter("loadPostModeStreamer", streamer)
+        if (postMode == "game") builder.addParameter("loadPostModeGame", game)
+
+        return builder.build().toURL()
+    }
+
+    internal fun getPostMode(streamer: String?, game: String?): String {
+        if (!streamer.isNullOrEmpty()) return "streamer"
+        if (!game.isNullOrEmpty()) return "game"
+        return "standard"
     }
 }
