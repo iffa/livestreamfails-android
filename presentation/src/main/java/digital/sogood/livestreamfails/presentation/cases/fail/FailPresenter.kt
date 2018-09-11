@@ -36,14 +36,14 @@ open class FailPresenter @Inject constructor(private val useCase: SingleUseCase<
     /**
      * Retrieve all fails for [streamer] with the specified [TimeFrame] and [Order] parameters.
      */
-    fun retrieveFailsForStreamer(streamer: String, timeFrame: TimeFrame = TimeFrame.DAY, order: Order = Order.HOT) {
+    fun retrieveFailsForStreamer(streamer: String, timeFrame: TimeFrame, order: Order) {
         retrieveFails(timeFrame, order, streamer, "")
     }
 
     /**
      * Retrieve all fails for [game] with the specified [TimeFrame] and [Order] parameters.
      */
-    fun retrieveFailsForGame(game: String, timeFrame: TimeFrame = TimeFrame.DAY, order: Order = Order.HOT) {
+    fun retrieveFailsForGame(game: String, timeFrame: TimeFrame, order: Order) {
         retrieveFails(timeFrame, order, "", game)
     }
 
@@ -56,14 +56,15 @@ open class FailPresenter @Inject constructor(private val useCase: SingleUseCase<
             showProgress()
         }
 
+        // This should never be null, because handleChangedParams gives it a value
         currentParams?.let {
             useCase.execute(Subscriber(), FailParams(currentPage, it.timeFrame,
-                    it.order, it.nsfw, it.streamer, it.game))
+                    it.order, it.nsfw, it.game, it.streamer))
         }
     }
 
     /**
-     * If parameters have changed (other than page), reset state
+     * If parameters have changed (other than page), reset state.
      */
     private fun handleChangedParams(newParams: FailParams) {
         currentParams?.let {

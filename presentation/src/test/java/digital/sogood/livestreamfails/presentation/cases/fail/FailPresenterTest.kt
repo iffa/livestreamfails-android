@@ -169,7 +169,7 @@ class FailPresenterTest {
     }
 
     /**
-     * Retrieving a page greater than 0 triggers [FailContract.showNoMoreResultsState].
+     * Retrieving an empty page greater than 0 triggers [FailContract.showNoMoreResultsState].
      */
     @Test
     fun retrieveShowsNoMoreResults() {
@@ -196,14 +196,18 @@ class FailPresenterTest {
         verify(mockContract).showNoMoreResultsState()
     }
 
+    /**
+     * [FailContract.clearFails] should be triggered and [FailPresenter.currentPage] reset to 0
+     * when parameters change.
+     */
     @Test
     fun retrieveChangedParameters() {
         val items = FailFactory.makeFailList(2)
 
         // Page 0, should have results
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFailsForStreamer("Streamer", TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "Streamer")))
 
         captor.firstValue.onSuccess(items)
 
@@ -211,9 +215,9 @@ class FailPresenterTest {
         verify(mockContract).showFails(items.map { mockViewMapper.mapToView(it) })
 
         // Attempt at page 1, but with different parameters
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.RANDOM)
+        presenter.retrieveFailsForGame("Game", TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.RANDOM, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.TOP, false, "Game", "")))
 
         captor.firstValue.onSuccess(items)
 
