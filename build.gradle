@@ -52,9 +52,10 @@ buildscript {
         ]
 
         domainTestDependencies = [
-                junit  : "junit:junit:${versions.junit}",
-                mockito: "com.nhaarman:mockito-kotlin:${versions.mockito}",
-                assertj: "org.assertj:assertj-core:${versions.assertj}"
+                junit      : "junit:junit:${versions.junit}",
+                kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+                mockito    : "com.nhaarman:mockito-kotlin:${versions.mockito}",
+                assertj    : "org.assertj:assertj-core:${versions.assertj}"
         ]
 
         dataDependencies = [
@@ -104,11 +105,11 @@ buildscript {
         ]
 
         presentationTestDependencies = [
-                junit      : "junit:junit:${versions.junit}",
-                kotlinJUnit: "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
-                assertj    : "org.assertj:assertj-core:${versions.assertj}",
-                mockito    : "com.nhaarman:mockito-kotlin:${versions.mockito}",
-                thirtyInchTest : "net.grandcentrix.thirtyinch:thirtyinch-test:${versions.thirtyinch}"
+                junit         : "junit:junit:${versions.junit}",
+                kotlinJUnit   : "org.jetbrains.kotlin:kotlin-test-junit:${versions.kotlin}",
+                assertj       : "org.assertj:assertj-core:${versions.assertj}",
+                mockito       : "com.nhaarman:mockito-kotlin:${versions.mockito}",
+                thirtyInchTest: "net.grandcentrix.thirtyinch:thirtyinch-test:${versions.thirtyinch}"
         ]
 
         mobileUiDependencies = [
