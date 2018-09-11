@@ -15,8 +15,6 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'com.getkeepsafe.dexcount'
 
-apply plugin: 'jacoco-android'
-
 versionberg {
     major 0
     minor 1
