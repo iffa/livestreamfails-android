@@ -152,7 +152,7 @@ buildscript {
 
         classpath 'org.codehaus.groovy:groovy-all:2.4.15'
 
-        classpath "com.vanniktech:gradle-android-junit-jacoco-plugin:0.12.0"
+        classpath files("libs/gradle-android-junit-jacoco-plugin-0.13.0-SNAPSHOT.jar")
 
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.8.3'
 
@@ -162,15 +162,6 @@ buildscript {
 
 plugins {
     id 'com.github.ben-manes.versions' version "0.20.0"
-    id 'com.gradle.build-scan' version "1.16"
-}
-
-buildScan {
-    setTermsOfServiceUrl("https://gradle.com/terms-of-service")
-    setTermsOfServiceAgree("yes")
-
-    // Comment this line when not optimizing build time
-    //publishAlways()
 }
 
 allprojects {
