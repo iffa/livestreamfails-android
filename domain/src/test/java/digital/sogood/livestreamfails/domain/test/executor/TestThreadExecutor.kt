@@ -1,4 +1,4 @@
-package digital.sogood.livestreamfails.presentation.test.executor
+package digital.sogood.livestreamfails.domain.test.executor
 
 import digital.sogood.livestreamfails.domain.executor.ThreadExecutor
 

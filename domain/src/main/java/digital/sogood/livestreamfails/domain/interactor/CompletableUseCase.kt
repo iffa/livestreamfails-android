@@ -14,7 +14,7 @@ abstract class CompletableUseCase<in Params> protected constructor(
         private val threadExecutor: ThreadExecutor,
         private val postExecutionThread: PostExecutionThread) {
 
-    private val subscription = Disposables.empty()
+    internal val disposable = Disposables.empty()
 
     /**
      * Builds a [Completable] which will be used when the current [CompletableUseCase] is executed.
@@ -24,18 +24,16 @@ abstract class CompletableUseCase<in Params> protected constructor(
     /**
      * Executes the current use case.
      */
-    fun execute(params: Params): Completable {
+    open fun execute(params: Params): Completable {
         return this.buildUseCaseObservable(params)
                 .subscribeOn(Schedulers.from(threadExecutor))
                 .observeOn(postExecutionThread.scheduler)
     }
 
     /**
-     * Unsubscribes from current [Disposable].
+     * Dispose from current [Disposable].
      */
-    fun unsubscribe() {
-        if (!subscription.isDisposed) {
-            subscription.dispose()
-        }
+    open fun dispose() {
+        disposable.dispose()
     }
 }
