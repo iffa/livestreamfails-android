@@ -1,9 +1,6 @@
 package digital.sogood.livestreamfails.presentation.cases.details
 
-import com.nhaarman.mockito_kotlin.KArgumentCaptor
-import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.*
 import digital.sogood.livestreamfails.domain.interactor.cases.DetailsParams
 import digital.sogood.livestreamfails.domain.interactor.cases.GetDetails
 import digital.sogood.livestreamfails.domain.model.Details
@@ -14,7 +11,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
@@ -54,7 +50,7 @@ class DetailsPresenterTest {
 
         verify(mockContract).showProgress()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
 
         captor.firstValue.onSuccess(item)
 
@@ -71,7 +67,7 @@ class DetailsPresenterTest {
 
         presenter.retrieveDetails(DetailsParams(0))
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
 
         captor.firstValue.onSuccess(item)
 
@@ -87,7 +83,7 @@ class DetailsPresenterTest {
 
         presenter.retrieveDetails(DetailsParams(0))
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
 
         captor.firstValue.onSuccess(item)
 
@@ -101,10 +97,17 @@ class DetailsPresenterTest {
     fun retrieveShowsErrorState() {
         presenter.retrieveDetails(DetailsParams(0))
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
 
         captor.firstValue.onError(RuntimeException())
 
         verify(mockContract).showErrorState()
+    }
+
+    @Test
+    fun onDestroyDisposesUseCase() {
+        testPresenter.destroy()
+
+        verify(mockUseCase).dispose()
     }
 }

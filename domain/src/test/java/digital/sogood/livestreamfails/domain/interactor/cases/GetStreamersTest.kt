@@ -35,7 +35,7 @@ class GetStreamersTest {
     fun buildUseCaseObservableReturnsData() {
         val fails = StreamerFactory.makeStreamerList(2)
         stubGetStreamers(Single.just(fails))
-        val testObserver = useCase.buildUseCaseObservable(null).test()
+        val testObserver = useCase.buildUseCaseObservable(StreamerParams(0)).test()
         testObserver.assertValue(fails)
     }
 

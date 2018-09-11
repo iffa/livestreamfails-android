@@ -14,7 +14,7 @@ import javax.inject.Inject
 class FailRemoteImpl @Inject constructor(private val service: FailService,
                                          private val entityMapper: FailEntityMapper)
     : FailRemote {
-    override fun getFails(page: Int?, timeFrame: TimeFrame?, order: Order?, nsfw: Boolean?, game: String?, streamer: String?): Single<List<FailEntity>> {
+    override fun getFails(page: Int, timeFrame: TimeFrame, order: Order, nsfw: Boolean, game: String, streamer: String): Single<List<FailEntity>> {
         return service.getFails(page, timeFrame, order, nsfw, game, streamer)
                 .map {
                     it.map { listItem ->

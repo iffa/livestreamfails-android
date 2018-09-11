@@ -10,7 +10,6 @@ import digital.sogood.livestreamfails.domain.test.factory.DetailsFactory
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
@@ -35,12 +34,12 @@ class GetDetailsTest {
     fun buildUseCaseObservableReturnsData() {
         val details = DetailsFactory.makeDetails()
         stubGetDetails(Single.just(details))
-        val testObserver = useCase.buildUseCaseObservable(null).test()
+        val testObserver = useCase.buildUseCaseObservable(DetailsParams(0)).test()
         testObserver.assertValue(details)
     }
 
     private fun stubGetDetails(single: Single<Details>) {
-        whenever(mockRepository.getDetails(ArgumentMatchers.any()))
+        whenever(mockRepository.getDetails(0))
                 .thenReturn(single)
     }
 

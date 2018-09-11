@@ -18,8 +18,8 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
         internal const val ENDPOINT = "https://livestreamfails.com/load/loadPosts.php"
     }
 
-    override fun getFails(page: Int?, timeFrame: TimeFrame?, order: Order?,
-                          nsfw: Boolean?, game: String?, streamer: String?)
+    override fun getFails(page: Int, timeFrame: TimeFrame, order: Order,
+                          nsfw: Boolean, game: String, streamer: String)
             : Single<List<FailModel>> {
         return Single.fromCallable {
             val models = mutableListOf<FailModel>()
@@ -56,16 +56,16 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
         }
     }
 
-    internal fun getRequestUrl(page: Int?, timeFrame: TimeFrame?, order: Order?,
-                               nsfw: Boolean?, game: String?, streamer: String?): URL {
+    internal fun getRequestUrl(page: Int, timeFrame: TimeFrame, order: Order,
+                               nsfw: Boolean, game: String, streamer: String): URL {
         val postMode = getPostMode(streamer, game)
 
         val builder = URIBuilder(ENDPOINT)
                 .addParameter("loadPostMode", postMode)
-                .addParameter("loadPostNSFW", (if (nsfw == true) 1 else 0).toString())
-                .addParameter("loadPostOrder", order?.value ?: Order.HOT.value)
+                .addParameter("loadPostNSFW", (if (nsfw) 1 else 0).toString())
+                .addParameter("loadPostOrder", order.value)
                 .addParameter("loadPostPage", page.toString())
-                .addParameter("loadPostTimeFrame", timeFrame?.value ?: TimeFrame.DAY.value)
+                .addParameter("loadPostTimeFrame", timeFrame.value)
 
         if (postMode == "streamer") builder.addParameter("loadPostModeStreamer", streamer)
         if (postMode == "game") builder.addParameter("loadPostModeGame", game)
@@ -73,9 +73,9 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
         return builder.build().toURL()
     }
 
-    internal fun getPostMode(streamer: String?, game: String?): String {
-        if (!streamer.isNullOrEmpty()) return "streamer"
-        if (!game.isNullOrEmpty()) return "game"
+    internal fun getPostMode(streamer: String, game: String): String {
+        if (!streamer.isEmpty()) return "streamer"
+        if (!game.isEmpty()) return "game"
         return "standard"
     }
 }

@@ -8,10 +8,11 @@ import digital.sogood.livestreamfails.data.source.FailDataStoreFactory
 import digital.sogood.livestreamfails.data.source.FailRemoteDataStore
 import digital.sogood.livestreamfails.data.test.factory.FailFactory
 import digital.sogood.livestreamfails.domain.model.Fail
+import digital.sogood.livestreamfails.domain.model.Order
+import digital.sogood.livestreamfails.domain.model.TimeFrame
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
@@ -39,7 +40,7 @@ class FailDataRepositoryTest {
         stubGetFails(Single.just(
                 FailFactory.makeFailEntityList(2)
         ))
-        val testObserver = dataRepository.getFails(0).test()
+        val testObserver = dataRepository.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "").test()
         testObserver.assertComplete()
     }
 
@@ -54,7 +55,7 @@ class FailDataRepositoryTest {
 
         stubGetFails(Single.just(entities))
 
-        val testObserver = dataRepository.getFails(0).test()
+        val testObserver = dataRepository.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "").test()
         testObserver.assertValue(items)
     }
 
@@ -64,8 +65,7 @@ class FailDataRepositoryTest {
     }
 
     private fun stubGetFails(single: Single<List<FailEntity>>) {
-        whenever(remoteDataStore.getFails(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+        whenever(remoteDataStore.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", ""))
                 .thenReturn(single)
     }
 

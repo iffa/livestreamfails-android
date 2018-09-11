@@ -12,11 +12,11 @@ import io.reactivex.Single
  */
 interface FailRepository {
     fun getFails(
-            page: Int? = 0,
-            timeFrame: TimeFrame? = TimeFrame.DAY,
-            order: Order? = Order.HOT,
-            nsfw: Boolean? = false,
-            game: String? = "",
-            streamer: String? = ""
+            page: Int,
+            timeFrame: TimeFrame,
+            order: Order,
+            nsfw: Boolean,
+            game: String,
+            streamer: String
     ): Single<List<Fail>>
 }

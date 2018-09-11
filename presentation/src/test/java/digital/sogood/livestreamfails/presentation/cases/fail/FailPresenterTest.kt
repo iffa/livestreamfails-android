@@ -13,7 +13,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 import kotlin.test.assertEquals
 
 /**
@@ -54,7 +53,7 @@ class FailPresenterTest {
 
         verify(mockContract).showProgress()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
         captor.firstValue.onSuccess(items)
 
@@ -71,7 +70,7 @@ class FailPresenterTest {
 
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
         captor.firstValue.onSuccess(items)
 
@@ -88,7 +87,7 @@ class FailPresenterTest {
 
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
         captor.firstValue.onSuccess(items)
 
@@ -105,7 +104,7 @@ class FailPresenterTest {
 
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
         captor.firstValue.onSuccess(items)
 
@@ -120,7 +119,7 @@ class FailPresenterTest {
     fun retrieveHidesResultsOnError() {
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -135,7 +134,7 @@ class FailPresenterTest {
     fun retrieveShowsErrorState() {
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -152,7 +151,7 @@ class FailPresenterTest {
         // Page 1
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
         captor.firstValue.onSuccess(items)
 
@@ -161,7 +160,7 @@ class FailPresenterTest {
         // Page 2
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(1, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
         captor.firstValue.onSuccess(items)
 
@@ -178,7 +177,7 @@ class FailPresenterTest {
         // Page 0, should have results
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
         captor.firstValue.onSuccess(items)
 
@@ -188,7 +187,7 @@ class FailPresenterTest {
         // Page 1, should have no results (show no more results state)
         presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(1, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
         captor.firstValue.onSuccess(emptyList())
 
@@ -207,7 +206,7 @@ class FailPresenterTest {
         // Page 0, should have results
         presenter.retrieveFailsForStreamer("Streamer", TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "Streamer")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "Streamer")))
 
         captor.firstValue.onSuccess(items)
 
@@ -217,7 +216,7 @@ class FailPresenterTest {
         // Attempt at page 1, but with different parameters
         presenter.retrieveFailsForGame("Game", TimeFrame.ALL_TIME, Order.TOP)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(0, TimeFrame.ALL_TIME, Order.TOP, false, "Game", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "Game", "")))
 
         captor.firstValue.onSuccess(items)
 
@@ -225,5 +224,23 @@ class FailPresenterTest {
         assertEquals(0, presenter.currentPage)
 
         verify(mockContract).clearFails()
+    }
+
+    @Test
+    fun onDestroyDisposesUseCase() {
+        testPresenter.destroy()
+
+        verify(mockUseCase).dispose()
+    }
+
+    @Test
+    fun setCurrentPageTest() {
+        presenter.currentPage = 10
+
+        assertEquals(10, presenter.currentPage)
+
+        presenter.currentPage = -1
+
+        assertEquals(-1, presenter.currentPage)
     }
 }

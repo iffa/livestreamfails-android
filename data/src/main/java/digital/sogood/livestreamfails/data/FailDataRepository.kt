@@ -18,7 +18,7 @@ import javax.inject.Inject
 class FailDataRepository @Inject constructor(private val factory: FailDataStoreFactory,
                                              private val mapper: FailMapper)
     : FailRepository {
-    override fun getFails(page: Int?, timeFrame: TimeFrame?, order: Order?, nsfw: Boolean?, game: String?, streamer: String?): Single<List<Fail>> {
+    override fun getFails(page: Int, timeFrame: TimeFrame, order: Order, nsfw: Boolean, game: String, streamer: String): Single<List<Fail>> {
         val dataStore = factory.getDataStore()
 
         return dataStore.getFails(page, timeFrame, order, nsfw, game, streamer)

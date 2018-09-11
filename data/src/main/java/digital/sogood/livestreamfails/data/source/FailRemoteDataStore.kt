@@ -13,7 +13,7 @@ import javax.inject.Inject
  */
 open class FailRemoteDataStore @Inject constructor(private val remote: FailRemote)
     : FailDataStore {
-    override fun getFails(page: Int?, timeFrame: TimeFrame?, order: Order?, nsfw: Boolean?, game: String?, streamer: String?): Single<List<FailEntity>> {
+    override fun getFails(page: Int, timeFrame: TimeFrame, order: Order, nsfw: Boolean, game: String, streamer: String): Single<List<FailEntity>> {
         return remote.getFails(page, timeFrame, order, nsfw, game, streamer)
     }
 

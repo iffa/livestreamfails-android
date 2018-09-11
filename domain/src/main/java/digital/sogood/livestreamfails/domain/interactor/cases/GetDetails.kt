@@ -17,8 +17,8 @@ open class GetDetails @Inject constructor(private val repository: DetailsReposit
                                           threadExecutor: ThreadExecutor,
                                           postExecutionThread: PostExecutionThread)
     : SingleUseCase<Details, DetailsParams>(threadExecutor, postExecutionThread) {
-    public override fun buildUseCaseObservable(params: DetailsParams?): Single<Details> {
-        return repository.getDetails(params?.postId)
+    public override fun buildUseCaseObservable(params: DetailsParams): Single<Details> {
+        return repository.getDetails(params.postId)
     }
 }
 

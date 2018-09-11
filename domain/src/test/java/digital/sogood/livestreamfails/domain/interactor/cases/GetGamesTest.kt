@@ -35,7 +35,7 @@ class GetGamesTest {
     fun buildUseCaseObservableReturnsData() {
         val fails = GameFactory.makeGameList(2)
         stubGetGames(Single.just(fails))
-        val testObserver = useCase.buildUseCaseObservable(null).test()
+        val testObserver = useCase.buildUseCaseObservable(GameParams(0)).test()
         testObserver.assertValue(fails)
     }
 

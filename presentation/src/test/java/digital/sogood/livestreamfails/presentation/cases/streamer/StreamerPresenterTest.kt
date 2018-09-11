@@ -11,7 +11,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 import kotlin.test.assertEquals
 
 /**
@@ -52,7 +51,7 @@ class StreamerPresenterTest {
 
         verify(mockContract).showProgress()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -69,7 +68,7 @@ class StreamerPresenterTest {
 
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -86,7 +85,7 @@ class StreamerPresenterTest {
 
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -103,7 +102,7 @@ class StreamerPresenterTest {
 
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -118,7 +117,7 @@ class StreamerPresenterTest {
     fun retrieveHidesResultsOnError() {
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -133,7 +132,7 @@ class StreamerPresenterTest {
     fun retrieveShowsErrorState() {
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -150,7 +149,7 @@ class StreamerPresenterTest {
         // Page 1
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -159,7 +158,7 @@ class StreamerPresenterTest {
         // Page 2
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(1)))
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -176,7 +175,7 @@ class StreamerPresenterTest {
         // Page 0, should have results
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -186,11 +185,29 @@ class StreamerPresenterTest {
         // Page 1, should have no results (show no more results state)
         presenter.retrieveStreamers()
 
-        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(1)))
+        verify(mockUseCase).execute(captor.capture(), eq(StreamerParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(emptyList())
 
         assertEquals(1, presenter.currentPage)
         verify(mockContract).showNoMoreResultsState()
+    }
+
+    @Test
+    fun onDestroyDisposesUseCase() {
+        testPresenter.destroy()
+
+        verify(mockUseCase).dispose()
+    }
+
+    @Test
+    fun setCurrentPageTest() {
+        presenter.currentPage = 10
+
+        assertEquals(10, presenter.currentPage)
+
+        presenter.currentPage = -1
+
+        assertEquals(-1, presenter.currentPage)
     }
 }

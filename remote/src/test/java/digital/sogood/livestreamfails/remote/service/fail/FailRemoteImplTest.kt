@@ -3,13 +3,14 @@ package digital.sogood.livestreamfails.remote.service.fail
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import digital.sogood.livestreamfails.data.model.FailEntity
+import digital.sogood.livestreamfails.domain.model.Order
+import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.remote.mapper.FailEntityMapper
 import digital.sogood.livestreamfails.remote.model.FailModel
 import digital.sogood.livestreamfails.remote.test.factory.FailFactory
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
@@ -34,7 +35,7 @@ class FailRemoteImplTest {
                 FailFactory.makeFailModelList(2)
         ))
 
-        val testObserver = remoteImpl.getFails(0, null, null, null, null, null).test()
+        val testObserver = remoteImpl.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "").test()
 
         testObserver.assertComplete()
     }
@@ -49,14 +50,13 @@ class FailRemoteImplTest {
             entities.add(entityMapper.mapFromRemote(it))
         }
 
-        val testObserver = remoteImpl.getFails(0, null, null, null, null, null).test()
+        val testObserver = remoteImpl.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "").test()
 
         testObserver.assertValue(entities)
     }
 
     private fun stubGetFails(single: Single<List<FailModel>>) {
-        whenever(failService.getFails(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any(),
-                ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+        whenever(failService.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", ""))
                 .thenReturn(single)
     }
 }

@@ -9,5 +9,5 @@ import io.reactivex.Single
  * @author Santeri Elo <me@santeri.xyz>
  */
 interface FailService {
-    fun getFails(page: Int?, timeFrame: TimeFrame?, order: Order?, nsfw: Boolean?, game: String?, streamer: String?): Single<List<FailModel>>
+    fun getFails(page: Int, timeFrame: TimeFrame, order: Order, nsfw: Boolean, game: String, streamer: String): Single<List<FailModel>>
 }

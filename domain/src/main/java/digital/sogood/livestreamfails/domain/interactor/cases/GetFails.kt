@@ -17,9 +17,9 @@ open class GetFails @Inject constructor(private val repository: FailRepository,
                                         threadExecutor: ThreadExecutor,
                                         postExecutionThread: PostExecutionThread)
     : SingleUseCase<List<Fail>, FailParams>(threadExecutor, postExecutionThread) {
-    public override fun buildUseCaseObservable(params: FailParams?): Single<List<Fail>> {
-        return repository.getFails(params?.page, params?.timeFrame, params?.order,
-                params?.nsfw, params?.game, params?.streamer)
+    public override fun buildUseCaseObservable(params: FailParams): Single<List<Fail>> {
+        return repository.getFails(params.page, params.timeFrame, params.order,
+                params.nsfw, params.game, params.streamer)
     }
 }
 

@@ -15,8 +15,8 @@ open class GetStreamers @Inject constructor(private val repository: StreamerRepo
                                             threadExecutor: ThreadExecutor,
                                             postExecutionThread: PostExecutionThread)
     : SingleUseCase<List<Streamer>, StreamerParams>(threadExecutor, postExecutionThread) {
-    public override fun buildUseCaseObservable(params: StreamerParams?): Single<List<Streamer>> {
-        return repository.getStreamers(params?.page)
+    public override fun buildUseCaseObservable(params: StreamerParams): Single<List<Streamer>> {
+        return repository.getStreamers(params.page)
     }
 }
 

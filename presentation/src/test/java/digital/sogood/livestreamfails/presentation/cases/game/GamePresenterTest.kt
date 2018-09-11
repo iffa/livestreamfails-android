@@ -11,7 +11,6 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 import kotlin.test.assertEquals
 
 /**
@@ -52,7 +51,7 @@ class GamePresenterTest {
 
         verify(mockContract).showProgress()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -69,7 +68,7 @@ class GamePresenterTest {
 
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -86,7 +85,7 @@ class GamePresenterTest {
 
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -103,7 +102,7 @@ class GamePresenterTest {
 
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -118,7 +117,7 @@ class GamePresenterTest {
     fun retrieveHidesResultsOnError() {
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -133,7 +132,7 @@ class GamePresenterTest {
     fun retrieveShowsErrorState() {
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), ArgumentMatchers.any())
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -150,7 +149,7 @@ class GamePresenterTest {
         // Page 1
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), eq(GameParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -159,7 +158,7 @@ class GamePresenterTest {
         // Page 2
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), eq(GameParams(1)))
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -176,7 +175,7 @@ class GamePresenterTest {
         // Page 0, should have results
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), eq(GameParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(items)
 
@@ -186,11 +185,29 @@ class GamePresenterTest {
         // Page 1, should have no results (show no more results state)
         presenter.retrieveGames()
 
-        verify(mockUseCase).execute(captor.capture(), eq(GameParams(1)))
+        verify(mockUseCase).execute(captor.capture(), eq(GameParams(presenter.currentPage)))
 
         captor.firstValue.onSuccess(emptyList())
 
         assertEquals(1, presenter.currentPage)
         verify(mockContract).showNoMoreResultsState()
+    }
+
+    @Test
+    fun onDestroyDisposesUseCase() {
+        testPresenter.destroy()
+
+        verify(mockUseCase).dispose()
+    }
+
+    @Test
+    fun setCurrentPageTest() {
+        presenter.currentPage = 10
+
+        assertEquals(10, presenter.currentPage)
+
+        presenter.currentPage = -1
+
+        assertEquals(-1, presenter.currentPage)
     }
 }

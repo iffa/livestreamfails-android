@@ -29,14 +29,14 @@ class FailServiceImplTest {
 
     @Test
     fun getFailsCompletes() {
-        service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, null, null)
+        service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "")
                 .test()
                 .assertComplete()
     }
 
     @Test
     fun getFailsReturnsData() {
-        val observer = service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, null, null)
+        val observer = service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "")
                 .test()
                 .assertComplete()
 
@@ -47,7 +47,7 @@ class FailServiceImplTest {
 
     @Test
     fun getFailsPostModeStreamer() {
-        val observer = service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, null, "sodapoppin")
+        val observer = service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "sodapoppin")
                 .test()
                 .assertComplete()
 
@@ -58,7 +58,7 @@ class FailServiceImplTest {
 
     @Test
     fun getFailsPostModeGame() {
-        val observer = service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "IRL", null)
+        val observer = service.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "IRL", "")
                 .test()
                 .assertComplete()
 
@@ -69,7 +69,7 @@ class FailServiceImplTest {
 
     @Test
     fun getFailsReturnsEmpty() {
-        val observer = service.getFails(Int.MAX_VALUE, TimeFrame.ALL_TIME, Order.TOP, false, null, null)
+        val observer = service.getFails(Int.MAX_VALUE, TimeFrame.ALL_TIME, Order.TOP, false, "", "")
                 .test()
                 .assertComplete()
 
@@ -80,21 +80,21 @@ class FailServiceImplTest {
 
     @Test
     fun getPostModeReturnsStreamer() {
-        val actual = service.getPostMode("a", null)
+        val actual = service.getPostMode("a", "")
 
         assertEquals("streamer", actual)
     }
 
     @Test
     fun getPostModeReturnsGame() {
-        val actual = service.getPostMode(null, "b")
+        val actual = service.getPostMode("", "b")
 
         assertEquals("game", actual)
     }
 
     @Test
     fun getPostModeReturnsStandard() {
-        val actual = service.getPostMode(null, null)
+        val actual = service.getPostMode("", "")
 
         assertEquals("standard", actual)
     }

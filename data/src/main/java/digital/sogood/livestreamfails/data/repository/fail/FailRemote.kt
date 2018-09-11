@@ -9,6 +9,6 @@ import io.reactivex.Single
  * @author Santeri Elo <me@santeri.xyz>
  */
 interface FailRemote {
-    fun getFails(page: Int?, timeFrame: TimeFrame?, order: Order?,
-                 nsfw: Boolean?, game: String?, streamer: String?): Single<List<FailEntity>>
+    fun getFails(page: Int, timeFrame: TimeFrame, order: Order,
+                 nsfw: Boolean, game: String, streamer: String): Single<List<FailEntity>>
 }

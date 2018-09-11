@@ -15,8 +15,8 @@ open class GetGames @Inject constructor(private val repository: GameRepository,
                                         threadExecutor: ThreadExecutor,
                                         postExecutionThread: PostExecutionThread)
     : SingleUseCase<List<Game>, GameParams>(threadExecutor, postExecutionThread) {
-    public override fun buildUseCaseObservable(params: GameParams?): Single<List<Game>> {
-        return repository.getGames(params?.page)
+    public override fun buildUseCaseObservable(params: GameParams): Single<List<Game>> {
+        return repository.getGames(params.page)
     }
 }
 
