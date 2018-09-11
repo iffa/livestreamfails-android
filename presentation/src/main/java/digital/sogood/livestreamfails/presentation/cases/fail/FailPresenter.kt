@@ -12,13 +12,12 @@ import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
 
 /**
- * TODO: Proper handling when [FailParams] are changed.
- *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class FailPresenter @Inject constructor(private val useCase: SingleUseCase<List<Fail>, FailParams>,
                                              private val mapper: FailViewMapper)
     : TiPresenter<FailContract>() {
+    private var currentParams: FailParams? = null
     internal var currentPage = -1
 
     override fun onDestroy() {
@@ -51,11 +50,31 @@ open class FailPresenter @Inject constructor(private val useCase: SingleUseCase<
     private fun retrieveFails(timeFrame: TimeFrame, order: Order, streamer: String, game: String) {
         currentPage++
 
+        handleChangedParams(FailParams(currentPage, timeFrame, order, false, game, streamer))
+
         deliverToView {
             showProgress()
         }
 
-        useCase.execute(Subscriber(), FailParams(currentPage, timeFrame, order, streamer = streamer, game = game))
+        currentParams?.let {
+            useCase.execute(Subscriber(), FailParams(currentPage, it.timeFrame,
+                    it.order, it.nsfw, it.streamer, it.game))
+        }
+    }
+
+    /**
+     * If parameters have changed (other than page), reset state
+     */
+    private fun handleChangedParams(newParams: FailParams) {
+        currentParams?.let {
+            if (!it.equalsIgnorePage(newParams)) {
+                currentPage = 0
+                deliverToView {
+                    clearFails()
+                }
+            }
+        }
+        currentParams = newParams
     }
 
     internal fun handleSuccess(fails: List<Fail>) {

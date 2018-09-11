@@ -32,4 +32,12 @@ data class FailParams(val page: Int = 0,
                       val order: Order = Order.HOT,
                       val nsfw: Boolean = false,
                       val game: String = "",
-                      val streamer: String = "")
+                      val streamer: String = "") {
+    fun equalsIgnorePage(params: FailParams): Boolean {
+        return params.timeFrame == timeFrame
+                && params.order == order
+                && params.nsfw == nsfw
+                && params.game == game
+                && params.streamer == streamer
+    }
+}
