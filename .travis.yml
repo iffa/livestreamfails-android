@@ -38,8 +38,20 @@ android:
 #  - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew build jacocoTestReport
-#  - ./gradlew build connectedAndroidTest --stacktrace
+  - ./gradlew clean assembleDebug testDebug jacocoReport --stacktrace --parallel
+
+branches:
+  except:
+    - gh-pages
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
