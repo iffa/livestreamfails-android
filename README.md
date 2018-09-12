@@ -1,6 +1,7 @@
-[![Build Status](https://travis-ci.com/iffa/livestreamfails-android.svg?token=5eCHeHxhxbwKHPBgpJ8M&branch=master)](https://travis-ci.com/iffa/livestreamfails-android)[![codecov](https://codecov.io/gh/iffa/livestreamfails-android/branch/master/graph/badge.svg?token=l4yaK37Xsj)](https://codecov.io/gh/iffa/livestreamfails-android)
-
 # Livestream Fails for Android
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://tldrlegal.com/license/apache-license-2.0-(apache-2.0)) [![API](https://img.shields.io/badge/API-21%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=21) [![Build Status](https://travis-ci.com/iffa/livestreamfails-android.svg?token=5eCHeHxhxbwKHPBgpJ8M&branch=master)](https://travis-ci.com/iffa/livestreamfails-android) [![Code Coverage](https://codecov.io/gh/iffa/livestreamfails-android/branch/master/graph/badge.svg?token=l4yaK37Xsj)](https://codecov.io/gh/iffa/livestreamfails-android)
+
 Unofficial Android client for http://livestreamfails.com.
 
 ## Contributing
