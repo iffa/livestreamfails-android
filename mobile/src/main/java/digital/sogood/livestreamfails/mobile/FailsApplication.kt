@@ -1,22 +1,15 @@
 package digital.sogood.livestreamfails.mobile
 
-import android.app.Activity
-import android.app.Application
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
+import dagger.android.DaggerApplication
 import digital.sogood.livestreamfails.BuildConfig
-import digital.sogood.livestreamfails.mobile.inject.DaggerApplicationComponent
+import digital.sogood.livestreamfails.mobile.inject.component.DaggerApplicationComponent
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-class App : Application(), HasActivityInjector {
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Activity>
-
+class FailsApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
 
@@ -33,7 +26,7 @@ class App : Application(), HasActivityInjector {
         if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return androidInjector
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        return DaggerApplicationComponent.builder().application(this).build()
     }
 }

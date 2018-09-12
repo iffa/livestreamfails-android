@@ -107,15 +107,23 @@ dependencies {
     implementation mobileUiDependencies.javaxAnnotation
     implementation mobileUiDependencies.javaxInject
 
+    implementation mobileUiDependencies.okHttp
+    implementation mobileUiDependencies.okHttpLogger
+
+    implementation mobileUiDependencies.thirtyInch
+    implementation mobileUiDependencies.thirtyInchRx
+    implementation mobileUiDependencies.thirtyInchKt
+
     implementation mobileUiDependencies.timberKt
 
     implementation mobileUiDependencies.exoPlayer
 
     // Test dependencies
-    testImplementation mobileUiTestDependencies.junit
     testImplementation mobileUiTestDependencies.kotlinJUnit
-    testImplementation mobileUiTestDependencies.mockito
 
+    androidTestImplementation mobileUiTestDependencies.junit
+    androidTestImplementation mobileUiTestDependencies.kotlinJUnit
+    androidTestImplementation mobileUiTestDependencies.mockito
     androidTestImplementation mobileUiTestDependencies.mockitoAndroid
 
     androidTestImplementation mobileUiTestDependencies.espressoCore

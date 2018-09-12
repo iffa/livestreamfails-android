@@ -101,7 +101,7 @@ buildscript {
                 kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
                 thirtyInch     : "net.grandcentrix.thirtyinch:thirtyinch:${versions.thirtyinch}",
                 thirtyInchRx   : "net.grandcentrix.thirtyinch:thirtyinch-rx2:${versions.thirtyinch}",
-                thirtyInchKt   : "net.grandcentrix.thirtyinch:thirtyinch-kotlin:${versions.thirtyinch}",
+                thirtyInchKt   : "net.grandcentrix.thirtyinch:thirtyinch-kotlin:${versions.thirtyinch}"
         ]
 
         presentationTestDependencies = [
@@ -127,7 +127,12 @@ buildscript {
                 javaxAnnotation : "javax.annotation:jsr250-api:${versions.javax_annotation}",
                 javaxInject     : "javax.inject:javax.inject:${versions.javax_inject}",
                 timberKt        : "com.github.ajalt:timberkt:${versions.timberkt}",
-                exoPlayer       : "com.google.android.exoplayer:exoplayer:${versions.exoplayer}"
+                exoPlayer       : "com.google.android.exoplayer:exoplayer:${versions.exoplayer}",
+                okHttp          : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
+                okHttpLogger    : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
+                thirtyInch      : "net.grandcentrix.thirtyinch:thirtyinch:${versions.thirtyinch}",
+                thirtyInchRx    : "net.grandcentrix.thirtyinch:thirtyinch-rx2:${versions.thirtyinch}",
+                thirtyInchKt    : "net.grandcentrix.thirtyinch:thirtyinch-kotlin:${versions.thirtyinch}"
         ]
 
         mobileUiTestDependencies = [

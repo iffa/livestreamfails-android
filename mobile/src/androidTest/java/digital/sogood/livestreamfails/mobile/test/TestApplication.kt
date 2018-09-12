@@ -1,34 +1,16 @@
 package digital.sogood.livestreamfails.mobile.test
 
-import android.app.Activity
-import android.app.Application
 import androidx.test.InstrumentationRegistry
 import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasActivityInjector
-import digital.sogood.livestreamfails.mobile.inject.DaggerTestApplicationComponent
-import digital.sogood.livestreamfails.mobile.inject.TestApplicationComponent
-import javax.inject.Inject
+import dagger.android.DaggerApplication
+import digital.sogood.livestreamfails.mobile.inject.component.DaggerTestApplicationComponent
+import digital.sogood.livestreamfails.mobile.inject.component.TestApplicationComponent
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-class TestApplication : Application(), HasActivityInjector {
-    @Inject
-    lateinit var injector: DispatchingAndroidInjector<Activity>
-
+class TestApplication : DaggerApplication() {
     private lateinit var appComponent: TestApplicationComponent
-
-    override fun onCreate() {
-        super.onCreate()
-
-        appComponent = DaggerTestApplicationComponent
-                .builder()
-                .application(this)
-                .build()
-
-        appComponent.inject(this)
-    }
 
     companion object {
         fun appComponent(): TestApplicationComponent {
@@ -36,7 +18,9 @@ class TestApplication : Application(), HasActivityInjector {
         }
     }
 
-    override fun activityInjector(): AndroidInjector<Activity> {
-        return injector
+    override fun applicationInjector(): AndroidInjector<out DaggerApplication> {
+        appComponent = DaggerTestApplicationComponent.builder().application(this).build()
+
+        return appComponent
     }
 }

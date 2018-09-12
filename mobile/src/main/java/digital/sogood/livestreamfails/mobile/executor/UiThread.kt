@@ -1,4 +1,4 @@
-package digital.sogood.livestreamfails.mobile
+package digital.sogood.livestreamfails.mobile.executor
 
 import digital.sogood.livestreamfails.domain.executor.PostExecutionThread
 import io.reactivex.Scheduler
