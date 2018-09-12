@@ -38,7 +38,7 @@ android {
 
         multiDexEnabled true
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "digital.sogood.livestreamfails.mobile.test.TestRunner"
     }
 
     buildTypes {
@@ -84,6 +84,7 @@ android {
 }
 
 dependencies {
+    implementation project(':domain')
     implementation project(':presentation')
     implementation project(':data')
     implementation project(':remote')
@@ -111,9 +112,10 @@ dependencies {
     implementation mobileUiDependencies.exoPlayer
 
     // Test dependencies
-    androidTestImplementation mobileUiTestDependencies.junit
-    androidTestImplementation mobileUiTestDependencies.kotlinJUnit
-    androidTestImplementation mobileUiTestDependencies.mockito
+    testImplementation mobileUiTestDependencies.junit
+    testImplementation mobileUiTestDependencies.kotlinJUnit
+    testImplementation mobileUiTestDependencies.mockito
+
     androidTestImplementation mobileUiTestDependencies.mockitoAndroid
 
     androidTestImplementation mobileUiTestDependencies.espressoCore

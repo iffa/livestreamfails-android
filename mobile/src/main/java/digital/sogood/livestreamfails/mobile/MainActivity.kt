@@ -1,7 +1,8 @@
-package digital.sogood.livestreamfails
+package digital.sogood.livestreamfails.mobile
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import digital.sogood.livestreamfails.R
 
 class MainActivity : AppCompatActivity() {
 
