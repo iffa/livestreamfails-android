@@ -30,7 +30,7 @@ class FailRemoteDataStoreTest {
     fun getFailsTest() {
         stubGetFails(Single.just(FailFactory.makeFailEntityList(2)))
 
-        val testObserver = remote.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "").test()
+        val testObserver = remoteDataStore.getFails(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "").test()
         testObserver.assertComplete()
     }
 

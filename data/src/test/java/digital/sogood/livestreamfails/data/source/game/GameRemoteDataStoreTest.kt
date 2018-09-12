@@ -29,7 +29,7 @@ class GameRemoteDataStoreTest {
     fun getGamesTest() {
         stubGetGames(Single.just(GameFactory.makeGameEntityList(2)))
 
-        val testObserver = remote.getGames(0).test()
+        val testObserver = remoteDataStore.getGames(0).test()
         testObserver.assertComplete()
     }
 

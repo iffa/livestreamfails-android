@@ -29,7 +29,7 @@ class StreamerRemoteDataStoreTest {
     fun getStreamersTest() {
         stubGetStreamers(Single.just(StreamerFactory.makeStreamerEntityList(2)))
 
-        val testObserver = remote.getStreamers(0).test()
+        val testObserver = remoteDataStore.getStreamers(0).test()
         testObserver.assertComplete()
     }
 

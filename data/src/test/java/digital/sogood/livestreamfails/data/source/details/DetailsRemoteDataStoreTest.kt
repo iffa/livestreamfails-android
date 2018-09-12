@@ -29,7 +29,7 @@ class DetailsRemoteDataStoreTest {
     fun getDetailsTest() {
         stubGetFails(Single.just(DetailsFactory.makeDetailsEntity()))
 
-        val testObserver = remote.getDetails(0).test()
+        val testObserver = remoteDataStore.getDetails(0).test()
         testObserver.assertComplete()
     }
 
