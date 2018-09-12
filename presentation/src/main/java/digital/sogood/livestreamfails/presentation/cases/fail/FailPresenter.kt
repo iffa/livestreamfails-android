@@ -1,7 +1,7 @@
 package digital.sogood.livestreamfails.presentation.cases.fail
 
-import digital.sogood.livestreamfails.domain.interactor.SingleUseCase
 import digital.sogood.livestreamfails.domain.interactor.cases.FailParams
+import digital.sogood.livestreamfails.domain.interactor.cases.GetFails
 import digital.sogood.livestreamfails.domain.model.Fail
 import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
@@ -14,7 +14,7 @@ import javax.inject.Inject
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-open class FailPresenter @Inject constructor(private val useCase: SingleUseCase<List<Fail>, FailParams>,
+open class FailPresenter @Inject constructor(private val useCase: GetFails,
                                              private val mapper: FailViewMapper)
     : TiPresenter<FailContract>() {
     private var currentParams: FailParams? = null

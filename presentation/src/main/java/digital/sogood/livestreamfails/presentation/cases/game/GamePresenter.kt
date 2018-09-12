@@ -1,7 +1,7 @@
 package digital.sogood.livestreamfails.presentation.cases.game
 
-import digital.sogood.livestreamfails.domain.interactor.SingleUseCase
 import digital.sogood.livestreamfails.domain.interactor.cases.GameParams
+import digital.sogood.livestreamfails.domain.interactor.cases.GetGames
 import digital.sogood.livestreamfails.domain.model.Game
 import digital.sogood.livestreamfails.presentation.mapper.GameViewMapper
 import io.reactivex.observers.DisposableSingleObserver
@@ -12,7 +12,7 @@ import javax.inject.Inject
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-open class GamePresenter @Inject constructor(private val useCase: SingleUseCase<List<Game>, GameParams>,
+open class GamePresenter @Inject constructor(private val useCase: GetGames,
                                              private val mapper: GameViewMapper)
     : TiPresenter<GameContract>() {
     internal var currentPage = -1
