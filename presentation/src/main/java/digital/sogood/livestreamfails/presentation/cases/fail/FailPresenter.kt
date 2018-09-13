@@ -29,28 +29,28 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     /**
      * Retrieve all fails with the specified [TimeFrame] and [Order] parameters.
      */
-    fun retrieveFails(timeFrame: TimeFrame, order: Order) {
-        retrieveFails(timeFrame, order, "", "")
+    fun retrieveFails(timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
+        retrieveFails(timeFrame, order, "", "", nsfw)
     }
 
     /**
      * Retrieve all fails for [streamer] with the specified [TimeFrame] and [Order] parameters.
      */
-    fun retrieveFailsForStreamer(streamer: String, timeFrame: TimeFrame, order: Order) {
-        retrieveFails(timeFrame, order, streamer, "")
+    fun retrieveFailsForStreamer(streamer: String, timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
+        retrieveFails(timeFrame, order, streamer, "", nsfw)
     }
 
     /**
      * Retrieve all fails for [game] with the specified [TimeFrame] and [Order] parameters.
      */
-    fun retrieveFailsForGame(game: String, timeFrame: TimeFrame, order: Order) {
-        retrieveFails(timeFrame, order, "", game)
+    fun retrieveFailsForGame(game: String, timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
+        retrieveFails(timeFrame, order, "", game, nsfw)
     }
 
-    private fun retrieveFails(timeFrame: TimeFrame, order: Order, streamer: String, game: String) {
+    private fun retrieveFails(timeFrame: TimeFrame, order: Order, streamer: String, game: String, nsfw: Boolean) {
         currentPage++
 
-        handleChangedParams(FailParams(currentPage, timeFrame, order, false, game, streamer))
+        handleChangedParams(FailParams(currentPage, timeFrame, order, nsfw, game, streamer))
 
         deliverToView {
             showProgress()

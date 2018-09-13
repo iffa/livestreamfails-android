@@ -6,6 +6,7 @@ import dagger.android.ContributesAndroidInjector
 import digital.sogood.livestreamfails.domain.executor.PostExecutionThread
 import digital.sogood.livestreamfails.mobile.executor.UiThread
 import digital.sogood.livestreamfails.mobile.ui.fail.FailFragment
+import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
 import digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity
 
 /**
@@ -17,6 +18,9 @@ import digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity
 abstract class UiModule {
     @Binds
     abstract fun bindPostExecutionThread(uiThread: UiThread): PostExecutionThread
+
+    @ContributesAndroidInjector
+    abstract fun contributeMainActivity(): MainActivity
 
     @ContributesAndroidInjector
     abstract fun contributeStreamerActivity(): StreamerActivity

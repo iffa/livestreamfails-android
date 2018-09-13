@@ -49,7 +49,7 @@ class FailPresenterTest {
     fun retrieveShowsAndHidesProgress() {
         val items = FailFactory.makeFailList(2)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockContract).showProgress()
 
@@ -68,7 +68,7 @@ class FailPresenterTest {
     fun retrieveHidesEmptyAndErrorState() {
         val items = FailFactory.makeFailList(2)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
@@ -85,7 +85,7 @@ class FailPresenterTest {
     fun retrieveShowsResults() {
         val items = FailFactory.makeFailList(2)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
@@ -102,7 +102,7 @@ class FailPresenterTest {
     fun retrieveShowsEmptyState() {
         val items = FailFactory.makeFailList(0)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
@@ -117,7 +117,7 @@ class FailPresenterTest {
      */
     @Test
     fun retrieveHidesResultsOnError() {
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
@@ -132,7 +132,7 @@ class FailPresenterTest {
      */
     @Test
     fun retrieveShowsErrorState() {
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
 
@@ -149,7 +149,7 @@ class FailPresenterTest {
         val items = FailFactory.makeFailList(2)
 
         // Page 1
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
@@ -158,7 +158,7 @@ class FailPresenterTest {
         assertEquals(0, presenter.currentPage)
 
         // Page 2
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
@@ -175,7 +175,7 @@ class FailPresenterTest {
         val items = FailFactory.makeFailList(2)
 
         // Page 0, should have results
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
@@ -185,7 +185,7 @@ class FailPresenterTest {
         verify(mockContract).showFails(items.map { mockViewMapper.mapToView(it) })
 
         // Page 1, should have no results (show no more results state)
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
 
@@ -204,7 +204,7 @@ class FailPresenterTest {
         val items = FailFactory.makeFailList(2)
 
         // Page 0, should have results
-        presenter.retrieveFailsForStreamer("Streamer", TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFailsForStreamer("Streamer", TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "Streamer")))
 
@@ -214,7 +214,7 @@ class FailPresenterTest {
         verify(mockContract).showFails(items.map { mockViewMapper.mapToView(it) })
 
         // Attempt at page 1, but with different parameters
-        presenter.retrieveFailsForGame("Game", TimeFrame.ALL_TIME, Order.TOP)
+        presenter.retrieveFailsForGame("Game", TimeFrame.ALL_TIME, Order.TOP, false)
 
         verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "Game", "")))
 

@@ -1,9 +1,19 @@
 package digital.sogood.livestreamfails.mobile.ui.fail
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import digital.sogood.livestreamfails.R
+import digital.sogood.livestreamfails.domain.model.Order
+import digital.sogood.livestreamfails.domain.model.TimeFrame
+import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
 import digital.sogood.livestreamfails.presentation.cases.fail.FailPresenter
 import digital.sogood.livestreamfails.presentation.model.FailView
+import kotlinx.android.synthetic.main.fragment_fail.*
 import javax.inject.Inject
 
 /**
@@ -13,45 +23,74 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     @Inject
     lateinit var failPresenter: FailPresenter
 
+    @Inject
+    lateinit var mapper: FailViewModelMapper
+
+    @Inject
+    lateinit var adapter: FailAdapter
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        super.onCreateView(inflater, container, savedInstanceState)
+
+        return inflater.inflate(R.layout.fragment_fail, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupRecyclerView()
+
+        failPresenter.retrieveFails(TimeFrame.WEEK, Order.TOP, true)
+    }
+
     override fun providePresenter(): FailPresenter = failPresenter
 
     override fun showProgress() {
-        TODO("Not implemented")
+        progressBar.show()
     }
 
     override fun hideProgress() {
-        TODO("Not implemented")
+        progressBar.hide()
     }
 
     override fun showFails(fails: List<FailView>) {
-        TODO("Not implemented")
+        adapter.fails = fails.map { mapper.mapToViewModel(it) }
+        adapter.notifyDataSetChanged()
+
+        recyclerView.visibility = View.VISIBLE
     }
 
     override fun clearFails() {
-        TODO("Not implemented")
+        adapter.fails = emptyList()
+        adapter.notifyDataSetChanged()
     }
 
     override fun hideFails() {
-        TODO("Not implemented")
+        recyclerView.visibility = View.GONE
     }
 
     override fun showErrorState() {
-        TODO("Not implemented")
+        // TODO
     }
 
     override fun hideErrorState() {
-        TODO("Not implemented")
+        // TODO
     }
 
     override fun showEmptyState() {
-        TODO("Not implemented")
+        emptyListText.visibility = View.VISIBLE
     }
 
     override fun hideEmptyState() {
-        TODO("Not implemented")
+        emptyListText.visibility = View.GONE
     }
 
     override fun showNoMoreResultsState() {
-        TODO("Not implemented")
+        // TODO
+    }
+
+    private fun setupRecyclerView() {
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
     }
 }
