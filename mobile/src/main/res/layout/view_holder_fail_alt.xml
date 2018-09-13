@@ -46,7 +46,7 @@
 
         <TextView
             android:id="@+id/pointsText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:drawableStart="@drawable/ic_upvote_secondary_24dp"
             android:drawablePadding="@dimen/content_padding_mini"
@@ -54,22 +54,60 @@
             android:paddingStart="@dimen/content_padding"
             android:paddingTop="@dimen/content_padding_mini"
             android:paddingEnd="@dimen/content_padding"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/nsfwText"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titleText"
             tools:text="@sample/fail_points" />
 
         <TextView
+            android:id="@+id/nsfwText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_alert_colored_24dp"
+            android:drawablePadding="@dimen/content_padding_mini"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingTop="@dimen/content_padding_mini"
+            tools:visibility="@sample/fail_nsfw"
+            android:paddingEnd="@dimen/content_padding"
+            android:text="@string/tv_fail_nsfw"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            android:textColor="@color/alert"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/pointsText"
+            app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+        <TextView
             android:id="@+id/subtitleText"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:lines="1"
-            android:padding="@dimen/content_padding"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingTop="@dimen/content_padding"
+            android:paddingEnd="@dimen/content_padding"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
             android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/actionMenuButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/pointsText"
             tools:text="@sample/fail_subtitles" />
+
+        <ImageButton
+            android:id="@+id/actionMenuButton"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:contentDescription="@string/cd_fail_source_link"
+            android:src="@drawable/ic_more_24dp"
+            android:tint="?android:textColorSecondary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pointsText" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>
