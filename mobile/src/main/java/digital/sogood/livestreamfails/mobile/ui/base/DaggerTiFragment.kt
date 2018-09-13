@@ -1,14 +1,17 @@
 package digital.sogood.livestreamfails.mobile.ui.base
 
-import android.content.res.Configuration
+import android.content.Context
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.BackstackReader
 import androidx.fragment.app.Fragment
-import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasFragmentInjector
-import dagger.android.support.DaggerAppCompatActivity
+import dagger.android.support.AndroidSupportInjection
+import dagger.android.support.DaggerFragment
 import dagger.android.support.HasSupportFragmentInjector
 import net.grandcentrix.thirtyinch.*
 import net.grandcentrix.thirtyinch.internal.*
@@ -17,37 +20,42 @@ import java.util.concurrent.Executor
 import javax.inject.Inject
 
 /**
- * [AppCompatActivity] implementation with the functionality of [TiActivity] and [DaggerAppCompatActivity],
+ * [Fragment] implementation with the functionality of [TiFragment] and [DaggerFragment],
  * allowing usage of both at the same time.
  *
  * @author Santeri Elo <me@santeri.xyz>
  */
-abstract class DaggerTiActivity<P : TiPresenter<V>, V : TiView> : AppCompatActivity(),
-        TiPresenterProvider<P>, TiViewProvider<V>, DelegatedTiActivity,
-        TiLoggingTagProvider, InterceptableViewBinder<V>, PresenterAccessor<P, V>,
-        HasFragmentInjector, HasSupportFragmentInjector {
-    private val delegate = TiActivityDelegate(this, this, this, this, PresenterSavior.getInstance())
+abstract class DaggerTiFragment<P : TiPresenter<V>, V : TiView> : Fragment(),
+        DelegatedTiFragment, TiPresenterProvider<P>, TiLoggingTagProvider,
+        TiViewProvider<V>, InterceptableViewBinder<V>, PresenterAccessor<P, V>,
+        HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var childFragmentInjector: DispatchingAndroidInjector<Fragment>
+
+    private val delegate = TiFragmentDelegate(this, this, this, this, PresenterSavior.getInstance())
 
     private val uiThreadExecutor = UiThreadExecutor()
 
-    @Inject
-    lateinit var supportFragmentInjector: DispatchingAndroidInjector<Fragment>
-
-    @Suppress("DEPRECATION")
-    @Inject
-    lateinit var frameworkFragmentInjector: DispatchingAndroidInjector<android.app.Fragment>
-
-    override fun supportFragmentInjector() = supportFragmentInjector
-
-    override fun fragmentInjector() = frameworkFragmentInjector
-
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
-
         super.onCreate(savedInstanceState)
 
         delegate.onCreate_afterSuper(savedInstanceState)
+    }
+
+    @CallSuper
+    override fun onAttach(context: Context?) {
+        AndroidSupportInjection.inject(this)
+
+        super.onAttach(context)
+    }
+
+    @CallSuper
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        delegate.onCreateView_beforeSuper(inflater, container, savedInstanceState)
+
+        return super.onCreateView(inflater, container, savedInstanceState)
     }
 
     @CallSuper
@@ -62,15 +70,20 @@ abstract class DaggerTiActivity<P : TiPresenter<V>, V : TiView> : AppCompatActiv
         delegate.onStop_beforeSuper()
 
         super.onStop()
-
-        delegate.onStop_afterSuper()
     }
 
     @CallSuper
-    override fun onSaveInstanceState(outState: Bundle?) {
+    override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
 
         delegate.onSaveInstanceState_afterSuper(outState)
+    }
+
+    @CallSuper
+    override fun onDestroyView() {
+        delegate.onDestroyView_beforeSuper()
+
+        super.onDestroyView()
     }
 
     @CallSuper
@@ -84,7 +97,7 @@ abstract class DaggerTiActivity<P : TiPresenter<V>, V : TiView> : AppCompatActiv
         return delegate.addBindViewInterceptor(interceptor)
     }
 
-    override fun getHostingContainer(): Any = this
+    override fun getHostingContainer(): Any = requireHost()
 
     override fun getInterceptedViewOf(interceptor: BindViewInterceptor): V? {
         return delegate.getInterceptedViewOf(interceptor)
@@ -102,21 +115,31 @@ abstract class DaggerTiActivity<P : TiPresenter<V>, V : TiView> : AppCompatActiv
 
     override fun getPresenter(): P = delegate.presenter
 
-    override fun getUiThreadExecutor(): Executor = uiThreadExecutor
+    override fun getUiThreadExecutor(): Executor {
+        return uiThreadExecutor
+    }
 
     override fun invalidateView() {
         delegate.invalidateView()
     }
 
-    override fun isActivityFinishing(): Boolean {
-        return isFinishing
+    override fun isFragmentAdded(): Boolean {
+        return isAdded
     }
 
-    override fun onConfigurationChanged(newConfig: Configuration?) {
-        super.onConfigurationChanged(newConfig)
-
-        delegate.onConfigurationChanged_afterSuper(newConfig)
+    override fun isFragmentDetached(): Boolean {
+        return isDetached
     }
+
+    override fun isFragmentInBackstack(): Boolean {
+        return BackstackReader.isInBackStack(this)
+    }
+
+    override fun isFragmentRemoving(): Boolean {
+        return isRemoving
+    }
+
+    override fun supportFragmentInjector(): AndroidInjector<Fragment> = childFragmentInjector
 
     @Suppress("UNCHECKED_CAST")
     override fun provideView(): V {
@@ -125,7 +148,7 @@ abstract class DaggerTiActivity<P : TiPresenter<V>, V : TiView> : AppCompatActiv
 
         return if (foundViewInterface == null) {
             throw IllegalArgumentException(
-                    "This Activity doesn't implement a TiView interface. " + "This is the default behaviour. Override provideView() to explicitly change this.")
+                    "This Fragment doesn't implement a TiView interface. " + "This is the default behaviour. Override provideView() to explicitly change this.")
         } else {
             if (foundViewInterface.simpleName == "TiView") {
                 throw IllegalArgumentException(
@@ -135,5 +158,14 @@ abstract class DaggerTiActivity<P : TiPresenter<V>, V : TiView> : AppCompatActiv
                 this as V
             }
         }
+    }
+
+    override fun setRetainInstance(retain: Boolean) {
+        if (retain) {
+            throw IllegalStateException("Retaining TiFragment is not allowed. "
+                    + "setRetainInstance(true) should only be used for headless Fragments. "
+                    + "Move your state into the TiPresenter which survives recreation of TiFragment")
+        }
+        super.setRetainInstance(retain)
     }
 }
