@@ -1,3 +1,17 @@
 <resources>
     <string name="app_name">Livestream Fails</string>
+    <string name="tv_filter_timeframe">Show clips from</string>
+    <string name="filter_time_today">Today</string>
+    <string name="filter_time_this_week">This week</string>
+    <string name="filter_time_this_month">This month</string>
+    <string name="filter_time_this_year">This year</string>
+    <string name="filter_time_all_time">All time</string>
+    <string name="filter_order_hot">Hot</string>
+    <string name="filter_order_new">New</string>
+    <string name="filter_order_top">Top</string>
+    <string name="filter_order_random">Random</string>
+    <string name="cd_fail_thumbnail">Fail thumbnail image</string>
+
+    <string name="tv_fail_title_placeholder">Tyler\'s had enough</string>
+    <string name="tv_fail_subtitle_placeholder">loltyler1 playing League of Legends</string>
 </resources>

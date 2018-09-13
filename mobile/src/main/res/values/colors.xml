@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <!-- 87% opacity -->
+    <color name="colorPrimary_87">#DE008577</color>
+
+    <!-- 38% of 87% opacity. -->
+    <color name="colorPrimary_38">#54008577</color>
+
+    <color name="divider">#2600001e</color>
 </resources>

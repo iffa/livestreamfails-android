@@ -1,8 +1,13 @@
 <resources>
 
-    <style name="Theme.LivestreamFails" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.LivestreamFails" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="Widget.LiveStreamFails.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/mtrl_chip_background</item>
+        <item name="android:textColor">@color/mtrl_chip_text</item>
     </style>
 </resources>

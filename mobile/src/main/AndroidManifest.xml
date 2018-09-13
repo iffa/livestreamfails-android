@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.LivestreamFails"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name="digital.sogood.livestreamfails.mobile.ui.main.MainActivity">
+        <activity
+            android:name="digital.sogood.livestreamfails.mobile.ui.main.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,5 +26,4 @@
 
         <activity android:name="digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity" />
     </application>
-
 </manifest>

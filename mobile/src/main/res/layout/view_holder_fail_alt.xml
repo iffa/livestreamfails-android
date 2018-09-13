@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    style="@style/Widget.MaterialComponents.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/content_padding_small"
+    android:layout_marginTop="@dimen/content_padding_small"
+    android:layout_marginEnd="@dimen/content_padding_small"
+    android:layout_marginBottom="@dimen/content_padding_small"
+    app:cardCornerRadius="4dp"
+    app:cardUseCompatPadding="true"
+    tools:showIn="@layout/fragment_fail">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/thumbnailImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/cd_fail_thumbnail"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/thumbnail_placeholder" />
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingTop="@dimen/content_padding"
+            android:paddingEnd="@dimen/content_padding"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/thumbnailImage"
+            tools:text="@sample/fail_titles" />
+
+        <TextView
+            android:id="@+id/pointsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/ic_upvote_secondary_24dp"
+            android:drawablePadding="@dimen/content_padding_mini"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/content_padding"
+            android:paddingTop="@dimen/content_padding_mini"
+            android:paddingEnd="@dimen/content_padding"
+            app:layout_constraintTop_toBottomOf="@+id/titleText"
+            tools:text="@sample/fail_points" />
+
+        <TextView
+            android:id="@+id/subtitleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:padding="@dimen/content_padding"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/pointsText"
+            tools:text="@sample/fail_subtitles" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
