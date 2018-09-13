@@ -21,7 +21,6 @@ buildscript {
                         'design'           : '1.0.0-rc02',
                         'core_ktx'         : '1.0.0-rc02',
                         'lifecycle'        : '2.0.0-rc01',
-                        'room'             : '2.0.0-rc01',
                         'test_runner'      : '1.1.0-alpha4',
                         'test_rules'       : '1.1.0-alpha4'
                 ],

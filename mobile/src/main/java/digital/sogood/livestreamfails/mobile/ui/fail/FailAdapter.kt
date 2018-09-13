@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -16,9 +18,8 @@ import javax.inject.Inject
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-class FailAdapter @Inject constructor() : RecyclerView.Adapter<FailAdapter.ViewHolder>() {
-    var fails: List<FailViewModel> = emptyList()
-
+class FailAdapter @Inject constructor(itemDiffCallback: ItemDiffCallback)
+    : ListAdapter<FailViewModel, FailAdapter.ViewHolder>(itemDiffCallback) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater
                 .from(parent.context)
@@ -27,9 +28,11 @@ class FailAdapter @Inject constructor() : RecyclerView.Adapter<FailAdapter.ViewH
         return ViewHolder(view)
     }
 
-    override fun getItemCount(): Int = fails.size
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) = holder.bind(fails[position])
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        getItem(position)?.let {
+            holder.bind(it)
+        }
+    }
 
     class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
@@ -60,5 +63,16 @@ class FailAdapter @Inject constructor() : RecyclerView.Adapter<FailAdapter.ViewH
                     .apply(RequestOptions().centerCrop())
                     .into(thumbnailImage)
         }
+    }
+
+    class ItemDiffCallback @Inject constructor() : DiffUtil.ItemCallback<FailViewModel>() {
+        override fun areItemsTheSame(oldItem: FailViewModel, newItem: FailViewModel): Boolean {
+            return oldItem == newItem
+        }
+
+        override fun areContentsTheSame(oldItem: FailViewModel, newItem: FailViewModel): Boolean {
+            return oldItem == newItem
+        }
+
     }
 }
