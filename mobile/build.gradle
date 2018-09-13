@@ -116,6 +116,9 @@ dependencies {
 
     implementation mobileUiDependencies.timberKt
 
+    implementation mobileUiDependencies.glide
+    kapt mobileUiDependencies.glideCompiler
+
     implementation mobileUiDependencies.exoPlayer
 
     // Test dependencies
