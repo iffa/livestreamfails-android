@@ -19,6 +19,14 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     : TiPresenter<FailContract>() {
     private var currentParams: FailParams? = null
     internal var currentPage = -1
+    internal var loading = false
+    internal var noMoreResults = false
+
+    public override fun onCreate() {
+        super.onCreate()
+
+        firstLoad()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
@@ -47,16 +55,30 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         retrieveFails(timeFrame, order, "", game, nsfw)
     }
 
+    /**
+     * TODO: Get default parameters from outside source
+     */
+    internal open fun firstLoad() {
+        retrieveFails(TimeFrame.DAY, Order.HOT, false)
+    }
+
     private fun retrieveFails(timeFrame: TimeFrame, order: Order, streamer: String, game: String, nsfw: Boolean) {
+        // Already loading, do nothing
+        if (loading) return
+
         currentPage++
 
         handleChangedParams(FailParams(currentPage, timeFrame, order, nsfw, game, streamer))
+
+        // No more results (even after param check), do nothing
+        if (noMoreResults) return
 
         deliverToView {
             showProgress()
         }
 
         // This should never be null, because handleChangedParams gives it a value
+        loading = true
         currentParams?.let {
             useCase.execute(Subscriber(), FailParams(currentPage, it.timeFrame,
                     it.order, it.nsfw, it.game, it.streamer))
@@ -69,6 +91,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     private fun handleChangedParams(newParams: FailParams) {
         currentParams?.let {
             if (!it.equalsIgnorePage(newParams)) {
+                noMoreResults = false
                 currentPage = 0
                 deliverToView {
                     clearFails()
@@ -79,6 +102,8 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     }
 
     internal fun handleSuccess(fails: List<Fail>) {
+        loading = false
+
         deliverToView {
             hideProgress()
             hideErrorState()
@@ -88,6 +113,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
                 showFails(fails.map { mapper.mapToView(it) })
             } else {
                 if (currentPage > 0) {
+                    noMoreResults = true
                     showNoMoreResultsState()
                 } else {
                     hideFails()
@@ -104,6 +130,8 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
          * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
          */
         override fun onError(e: Throwable) {
+            loading = false
+
             deliverToView {
                 hideProgress()
                 hideFails()

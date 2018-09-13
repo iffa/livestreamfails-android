@@ -7,34 +7,66 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
+import digital.sogood.livestreamfails.mobile.ui.base.list.ListAdapterWithHeader
 import javax.inject.Inject
 
 /**
+ * TODO: Split into multiple classes and clean up
+ *
  * @author Santeri Elo <me@santeri.xyz>
  */
-class FailAdapter @Inject constructor(itemDiffCallback: ItemDiffCallback)
-    : ListAdapter<FailViewModel, FailAdapter.ViewHolder>(itemDiffCallback) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater
-                .from(parent.context)
-                .inflate(R.layout.view_holder_fail_alt, parent, false)
+class FailAdapter @Inject constructor()
+    : ListAdapterWithHeader<FailViewModel, RecyclerView.ViewHolder>(ItemDiffCallback()) {
+    private val items: MutableList<FailViewModel> = mutableListOf()
 
-        return ViewHolder(view)
+    /**
+     * Adds items to the adapter instead of replacing the current data set. Calls [submitList].
+     */
+    fun addItems(list: List<FailViewModel>) {
+        items.addAll(list)
+        submitList(items.toList())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        getItem(position)?.let {
-            holder.bind(it)
+    /**
+     * Clears the current data set. Calls [submitList].
+     */
+    fun clear() {
+        items.clear()
+        submitList(items.toList())
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == 0) {
+            R.layout.view_holder_fail_header
+        } else {
+            R.layout.view_holder_fail_alt
         }
     }
 
-    class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val view = LayoutInflater
+                .from(parent.context)
+                .inflate(viewType, parent, false)
+
+        return when (viewType) {
+            R.layout.view_holder_fail_header -> HeaderViewHolder(view)
+            else -> ItemViewHolder(view)
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        return when (getItemViewType(position)) {
+            R.layout.view_holder_fail_header -> (holder as HeaderViewHolder).bind()
+            else -> (holder as ItemViewHolder).bind(getItem(position))
+        }
+    }
+
+    class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
         val titleText: TextView = view.findViewById(R.id.titleText)
         val subtitleText: TextView = view.findViewById(R.id.subtitleText)
@@ -48,8 +80,11 @@ class FailAdapter @Inject constructor(itemDiffCallback: ItemDiffCallback)
         fun bind(item: FailViewModel) {
             titleText.text = item.title
 
-            subtitleText.visibility = if (item.streamer.isNullOrEmpty() || item.game.isNullOrEmpty()) View.GONE else View.VISIBLE
-            subtitleText.text = view.resources.getString(R.string.tv_fail_subtitle, item.streamer, item.game)
+            val hasSubtitleData = !item.streamer.isNullOrEmpty() || !item.game.isNullOrEmpty()
+            when (hasSubtitleData) {
+                true -> subtitleText.text = view.resources.getString(R.string.tv_fail_subtitle, item.streamer, item.game)
+                false -> subtitleText.text = view.resources.getString(R.string.tv_fail_subtitle_none)
+            }
 
             pointsText.text = view.resources.getString(R.string.tv_fail_points, item.points)
 
@@ -65,9 +100,14 @@ class FailAdapter @Inject constructor(itemDiffCallback: ItemDiffCallback)
         }
     }
 
-    class ItemDiffCallback @Inject constructor() : DiffUtil.ItemCallback<FailViewModel>() {
+    class HeaderViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        fun bind() {
+        }
+    }
+
+    class ItemDiffCallback : DiffUtil.ItemCallback<FailViewModel>() {
         override fun areItemsTheSame(oldItem: FailViewModel, newItem: FailViewModel): Boolean {
-            return oldItem == newItem
+            return oldItem.detailsUrl == newItem.detailsUrl
         }
 
         override fun areContentsTheSame(oldItem: FailViewModel, newItem: FailViewModel): Boolean {

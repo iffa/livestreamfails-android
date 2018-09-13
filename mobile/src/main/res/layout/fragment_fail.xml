@@ -1,193 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <TextView
+        android:id="@+id/emptyListText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/content_padding_big"
+        android:text="@string/tv_fail_list_empty"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/content_padding"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layoutAnimation="@anim/layout_animation_fall_down"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:itemCount="3"
+        tools:listitem="@layout/view_holder_fail_alt" />
 
-        <TextView
-            android:id="@+id/timeFrameTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/content_padding"
-            android:paddingTop="@dimen/content_padding"
-            android:paddingEnd="@dimen/content_padding"
-            android:text="@string/tv_filter_timeframe"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <HorizontalScrollView
-            android:id="@+id/timeFrameContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/content_padding"
-            android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@+id/timeFrameTitle">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/timeFrameGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleLine="true"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/todayFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:checked="true"
-                    android:text="@string/filter_time_today" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/thisWeekFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filter_time_this_week" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/thisMonthFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filter_time_this_month" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/thisYearFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filter_time_this_year" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/allTimeFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/content_padding"
-                    android:text="@string/filter_time_all_time" />
-
-            </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
-
-        <TextView
-            android:id="@+id/orderTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="@dimen/content_padding"
-            android:paddingTop="@dimen/content_padding_small"
-            android:paddingEnd="@dimen/content_padding"
-            android:text="@string/tv_filter_order"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/timeFrameContainer" />
-
-        <HorizontalScrollView
-            android:id="@+id/orderContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/content_padding"
-            android:paddingBottom="@dimen/content_padding"
-            android:scrollbars="none"
-            app:layout_constraintTop_toBottomOf="@+id/orderTitle">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/orderGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleLine="true"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/hotFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/content_padding"
-                    android:text="@string/filter_order_hot" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/newFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:text="@string/filter_order_new" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/topFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/filter_order_top" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/randomFilterChip"
-                    style="@style/Widget.LiveStreamFails.Chip.Choice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/content_padding"
-                    android:text="@string/filter_order_random" />
-
-            </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
-
-        <View
-            android:id="@+id/divider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="@dimen/content_padding"
-            android:layout_marginEnd="@dimen/content_padding"
-            android:background="@color/divider"
-            app:layout_constraintTop_toBottomOf="@+id/orderContainer" />
-
-        <TextView
-            android:id="@+id/emptyListText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/content_padding_big"
-            android:text="@string/tv_fail_list_empty"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderContainer" />
-
-        <androidx.core.widget.ContentLoadingProgressBar
-            android:id="@+id/progressBar"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="@dimen/content_padding"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderContainer" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layoutAnimation="@anim/layout_animation_fall_down"
-            android:nestedScrollingEnabled="false"
-            android:paddingBottom="36dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/orderContainer"
-            tools:itemCount="3"
-            tools:listitem="@layout/view_holder_fail_alt" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

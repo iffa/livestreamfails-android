@@ -8,6 +8,7 @@ import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.domain.repository.FailRepository
 import digital.sogood.livestreamfails.presentation.mapper.FailViewMapper
+import digital.sogood.livestreamfails.presentation.test.TestFailPresenter
 import digital.sogood.livestreamfails.presentation.test.factory.FailFactory
 import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
@@ -37,7 +38,8 @@ class FailPresenterTest {
         mockViewMapper = mock()
 
         // Create presenter and attach  the view to it
-        presenter = FailPresenter(mockUseCase, mockViewMapper)
+        presenter = TestFailPresenter(mockUseCase, mockViewMapper)
+
         testPresenter = TiTestPresenter(presenter)
         testPresenter.attachView(mockContract)
     }
