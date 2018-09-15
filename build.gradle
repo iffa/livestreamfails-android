@@ -34,7 +34,6 @@ buildscript {
                 'exoplayer'       : '2.8.4',
                 'javax_annotation': '1.0',
                 'javax_inject'    : '1',
-                'apache_http'     : '4.5.6',
                 'glide'           : '4.8.0',
                 'customFab'       : '0.0.4',
                 'timberkt'        : '1.5.1',
@@ -84,8 +83,7 @@ buildscript {
                 okHttpLogger   : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
                 javaxAnnotation: "javax.annotation:jsr250-api:${versions.javax_annotation}",
                 javaxInject    : "javax.inject:javax.inject:${versions.javax_inject}",
-                jsoup          : "org.jsoup:jsoup:${versions.jsoup}",
-                apacheHttp     : "org.apache.httpcomponents:httpclient:${versions.apache_http}"
+                jsoup          : "org.jsoup:jsoup:${versions.jsoup}"
         ]
 
         remoteTestDependencies = [

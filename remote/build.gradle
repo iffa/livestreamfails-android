@@ -15,7 +15,6 @@ dependencies {
     implementation remoteDependencies.jsoup
     implementation remoteDependencies.okHttp
     implementation remoteDependencies.okHttpLogger
-    implementation remoteDependencies.apacheHttp
 
     testImplementation remoteTestDependencies.junit
     testImplementation remoteTestDependencies.kotlinJUnit

@@ -3,12 +3,12 @@ package digital.sogood.livestreamfails.remote.service.fail
 import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.remote.model.FailModel
+import digital.sogood.livestreamfails.remote.service.InvalidEndpointException
 import io.reactivex.Single
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.apache.http.client.utils.URIBuilder
 import org.jsoup.Jsoup
-import java.net.URL
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
@@ -24,7 +24,10 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
         return Single.fromCallable {
             val models = mutableListOf<FailModel>()
 
-            val request = Request.Builder().url(getRequestUrl(page, timeFrame, order, nsfw, game, streamer)).get().build()
+            val url = getRequestUrl(page, timeFrame, order, nsfw, game, streamer)
+                    ?: throw InvalidEndpointException()
+
+            val request = Request.Builder().url(url).get().build()
             val html = okHttpClient.newCall(request).execute().body()?.string()
             val doc = Jsoup.parse(html)
 
@@ -57,20 +60,25 @@ open class FailServiceImpl(private val okHttpClient: OkHttpClient) : FailService
     }
 
     internal fun getRequestUrl(page: Int, timeFrame: TimeFrame, order: Order,
-                               nsfw: Boolean, game: String, streamer: String): URL {
+                               nsfw: Boolean, game: String, streamer: String): HttpUrl? {
         val postMode = getPostMode(streamer, game)
+        val baseUrl = HttpUrl.parse(ENDPOINT)
 
-        val builder = URIBuilder(ENDPOINT)
-                .addParameter("loadPostMode", postMode)
-                .addParameter("loadPostNSFW", (if (nsfw) 1 else 0).toString())
-                .addParameter("loadPostOrder", order.value)
-                .addParameter("loadPostPage", page.toString())
-                .addParameter("loadPostTimeFrame", timeFrame.value)
+        var urlBuilder = baseUrl?.newBuilder()
+                ?.addQueryParameter("loadPostMode", postMode)
+                ?.addQueryParameter("loadPostNSFW", (if (nsfw) 1 else 0).toString())
+                ?.addQueryParameter("loadPostOrder", order.value)
+                ?.addQueryParameter("loadPostPage", page.toString())
+                ?.addQueryParameter("loadPostTimeFrame", timeFrame.value)
 
-        if (postMode == "streamer") builder.addParameter("loadPostModeStreamer", streamer)
-        if (postMode == "game") builder.addParameter("loadPostModeGame", game)
+        if (postMode == "streamer") {
+            urlBuilder = urlBuilder?.addQueryParameter("loadPostModeStreamer", streamer)
+        }
+        if (postMode == "game") {
+            urlBuilder = urlBuilder?.addQueryParameter("loadPostModeGame", game)
+        }
 
-        return builder.build().toURL()
+        return urlBuilder?.build()
     }
 
     internal fun getPostMode(streamer: String, game: String): String {

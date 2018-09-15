@@ -1,10 +1,11 @@
 package digital.sogood.livestreamfails.remote.service.game
 
 import digital.sogood.livestreamfails.remote.model.GameModel
+import digital.sogood.livestreamfails.remote.service.InvalidEndpointException
 import io.reactivex.Single
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.apache.http.client.utils.URIBuilder
 import org.jsoup.Jsoup
 
 /**
@@ -18,10 +19,10 @@ open class GameServiceImpl(private val okHttpClient: OkHttpClient) : GameService
     override fun getGames(page: Int?): Single<List<GameModel>> {
         return Single.fromCallable {
             val models = mutableListOf<GameModel>()
-            val uri = URIBuilder(ENDPOINT)
-                    .addParameter("loadGameOrder", "amount")
-                    .addParameter("loadGamePage", page.toString())
-                    .build().toURL()
+            val uri = HttpUrl.parse(ENDPOINT)?.newBuilder()
+                    ?.addQueryParameter("loadGameOrder", "amount")
+                    ?.addQueryParameter("loadGamePage", page.toString())
+                    ?.build() ?: throw InvalidEndpointException()
 
             val request = Request.Builder().url(uri).get().build()
             val html = okHttpClient.newCall(request).execute().body()?.string()

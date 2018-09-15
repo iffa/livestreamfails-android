@@ -1,10 +1,11 @@
 package digital.sogood.livestreamfails.remote.service.streamer
 
 import digital.sogood.livestreamfails.remote.model.StreamerModel
+import digital.sogood.livestreamfails.remote.service.InvalidEndpointException
 import io.reactivex.Single
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import org.apache.http.client.utils.URIBuilder
 import org.jsoup.Jsoup
 
 /**
@@ -18,10 +19,10 @@ open class StreamerServiceImpl(private val okHttpClient: OkHttpClient) : Streame
     override fun getStreamers(page: Int?): Single<List<StreamerModel>> {
         return Single.fromCallable {
             val models = mutableListOf<StreamerModel>()
-            val uri = URIBuilder(ENDPOINT)
-                    .addParameter("loadStreamerOrder", "amount")
-                    .addParameter("loadStreamerPage", page.toString())
-                    .build().toURL()
+            val uri = HttpUrl.parse(ENDPOINT)?.newBuilder()
+                    ?.addQueryParameter("loadStreamerOrder", "amount")
+                    ?.addQueryParameter("loadStreamerPage", page.toString())
+                    ?.build() ?: throw InvalidEndpointException()
 
             val request = Request.Builder().url(uri).get().build()
             val html = okHttpClient.newCall(request).execute().body()?.string()
