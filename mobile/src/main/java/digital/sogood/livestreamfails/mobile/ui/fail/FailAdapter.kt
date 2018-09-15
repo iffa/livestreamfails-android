@@ -6,10 +6,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.ChipGroup
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.domain.model.Order
@@ -23,7 +25,8 @@ import digital.sogood.livestreamfails.mobile.ui.base.list.ListAdapterWithHeader
  * @author Santeri Elo <me@santeri.xyz>
  */
 class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit,
-                              val orderListener: (Order) -> Unit)
+                              private val orderListener: (Order) -> Unit,
+                              private val itemClickListener: (FailViewModel) -> Unit)
     : ListAdapterWithHeader<FailViewModel, RecyclerView.ViewHolder>(ItemDiffCallback()) {
     private val items: MutableList<FailViewModel> = mutableListOf()
 
@@ -80,13 +83,14 @@ class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit
         }
     }
 
-    class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
         private val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
         private val titleText: TextView = view.findViewById(R.id.titleText)
         private val subtitleText: TextView = view.findViewById(R.id.subtitleText)
         private val pointsText: TextView = view.findViewById(R.id.pointsText)
         private val nsfwText: TextView = view.findViewById(R.id.nsfwText)
         private val actionMenuButton: ImageButton = view.findViewById(R.id.actionMenuButton)
+        private val cardView: MaterialCardView = view.findViewById(R.id.cardView)
 
         /**
          * TODO: Handle string formatting beforehand?
@@ -111,6 +115,13 @@ class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit
                     .load(item.thumbnailUrl)
                     .apply(RequestOptions().centerCrop())
                     .into(thumbnailImage)
+
+            cardView.setOnClickListener {
+                itemClickListener(item)
+            }
+
+            // Shared element transition setup
+            ViewCompat.setTransitionName(thumbnailImage, item.detailsUrl)
         }
     }
 

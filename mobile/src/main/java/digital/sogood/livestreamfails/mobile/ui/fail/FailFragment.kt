@@ -15,6 +15,7 @@ import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
+import digital.sogood.livestreamfails.mobile.ui.details.DetailsActivity
 import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
 import digital.sogood.livestreamfails.presentation.cases.fail.FailPresenter
@@ -113,6 +114,12 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
                 },
                 orderListener = {
                     Timber.d { "${it.name} chip selected" }
+                },
+                itemClickListener = {
+                    val postId = it.detailsUrl.split('/', ignoreCase = true).last().toLong()
+                    Timber.d { "$postId fail clicked" }
+
+                    startActivity(DetailsActivity.getStartIntent(requireActivity(), postId))
                 })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

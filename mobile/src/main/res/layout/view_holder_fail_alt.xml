@@ -10,6 +10,9 @@
     android:layout_marginTop="@dimen/content_padding_small"
     android:layout_marginEnd="@dimen/content_padding_small"
     android:layout_marginBottom="@dimen/content_padding_small"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardUseCompatPadding="true"
     tools:showIn="@layout/fragment_fail">
@@ -70,7 +73,6 @@
             android:gravity="center_vertical"
             android:paddingStart="@dimen/content_padding"
             android:paddingTop="@dimen/content_padding_mini"
-            tools:visibility="@sample/fail_nsfw"
             android:paddingEnd="@dimen/content_padding"
             android:text="@string/tv_fail_nsfw"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
@@ -79,7 +81,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/pointsText"
-            app:layout_constraintTop_toBottomOf="@+id/titleText" />
+            app:layout_constraintTop_toBottomOf="@+id/titleText"
+            tools:visibility="@sample/fail_nsfw" />
 
         <TextView
             android:id="@+id/subtitleText"

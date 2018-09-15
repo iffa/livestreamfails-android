@@ -21,7 +21,11 @@ open class DetailsPresenter @Inject constructor(private val useCase: GetDetails,
         useCase.dispose()
     }
 
-    fun retrieveDetails(params: DetailsParams) {
+    fun retrieveDetails(postId: Long) {
+        retrieveDetails(DetailsParams(postId))
+    }
+
+    internal fun retrieveDetails(params: DetailsParams) {
         deliverToView {
             showProgress()
         }

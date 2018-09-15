@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import digital.sogood.livestreamfails.domain.executor.PostExecutionThread
 import digital.sogood.livestreamfails.mobile.executor.UiThread
+import digital.sogood.livestreamfails.mobile.ui.details.DetailsActivity
 import digital.sogood.livestreamfails.mobile.ui.fail.FailFragment
 import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
 import digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity
@@ -27,4 +28,7 @@ abstract class UiModule {
 
     @ContributesAndroidInjector
     abstract fun contributeFailFragment(): FailFragment
+
+    @ContributesAndroidInjector
+    abstract fun contributeDetailsActivity(): DetailsActivity
 }
