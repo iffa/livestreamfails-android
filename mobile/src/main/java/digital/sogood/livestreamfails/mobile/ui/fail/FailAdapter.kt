@@ -10,17 +10,20 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.chip.ChipGroup
 import digital.sogood.livestreamfails.R
+import digital.sogood.livestreamfails.domain.model.Order
+import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.list.ListAdapterWithHeader
-import javax.inject.Inject
 
 /**
  * TODO: Split into multiple classes and clean up
  *
  * @author Santeri Elo <me@santeri.xyz>
  */
-class FailAdapter @Inject constructor()
+class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit,
+                              val orderListener: (Order) -> Unit)
     : ListAdapterWithHeader<FailViewModel, RecyclerView.ViewHolder>(ItemDiffCallback()) {
     private val items: MutableList<FailViewModel> = mutableListOf()
 
@@ -38,6 +41,17 @@ class FailAdapter @Inject constructor()
     fun clear() {
         items.clear()
         submitList(items.toList())
+    }
+
+    fun getItems(): List<FailViewModel> {
+        return items
+    }
+
+    override fun submitList(list: List<FailViewModel>?) {
+        items.clear()
+        list?.let { items.addAll(it) }
+
+        super.submitList(list)
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -67,12 +81,12 @@ class FailAdapter @Inject constructor()
     }
 
     class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
-        val titleText: TextView = view.findViewById(R.id.titleText)
-        val subtitleText: TextView = view.findViewById(R.id.subtitleText)
-        val pointsText: TextView = view.findViewById(R.id.pointsText)
-        val nsfwText: TextView = view.findViewById(R.id.nsfwText)
-        val actionMenuButton: ImageButton = view.findViewById(R.id.actionMenuButton)
+        private val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
+        private val titleText: TextView = view.findViewById(R.id.titleText)
+        private val subtitleText: TextView = view.findViewById(R.id.subtitleText)
+        private val pointsText: TextView = view.findViewById(R.id.pointsText)
+        private val nsfwText: TextView = view.findViewById(R.id.nsfwText)
+        private val actionMenuButton: ImageButton = view.findViewById(R.id.actionMenuButton)
 
         /**
          * TODO: Handle string formatting beforehand?
@@ -100,8 +114,28 @@ class FailAdapter @Inject constructor()
         }
     }
 
-    class HeaderViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+    inner class HeaderViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
+        private val timeframeChips: ChipGroup = view.findViewById(R.id.timeFrameGroup)
+        private val orderChips: ChipGroup = view.findViewById(R.id.orderGroup)
+
         fun bind() {
+            timeframeChips.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.todayFilterChip -> timeframeListener(TimeFrame.DAY)
+                    R.id.thisWeekFilterChip -> timeframeListener(TimeFrame.WEEK)
+                    R.id.thisMonthFilterChip -> timeframeListener(TimeFrame.MONTH)
+                    R.id.thisYearFilterChip -> timeframeListener(TimeFrame.YEAR)
+                    R.id.allTimeFilterChip -> timeframeListener(TimeFrame.ALL_TIME)
+                }
+            }
+            orderChips.setOnCheckedChangeListener { _, checkedId ->
+                when (checkedId) {
+                    R.id.newFilterChip -> orderListener(Order.NEW)
+                    R.id.hotFilterChip -> orderListener(Order.HOT)
+                    R.id.topFilterChip -> orderListener(Order.TOP)
+                    R.id.randomFilterChip -> orderListener(Order.RANDOM)
+                }
+            }
         }
     }
 

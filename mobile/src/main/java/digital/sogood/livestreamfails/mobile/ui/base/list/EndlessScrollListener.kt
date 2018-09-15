@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * @author Santeri Elo <me@santeri.xyz>
  */
-class EndlessScrollListener(val listener: () -> Unit) : RecyclerView.OnScrollListener() {
-    private val scrollThreshold = 2
+class EndlessScrollListener(private val listener: () -> Unit) : RecyclerView.OnScrollListener() {
+    companion object {
+        private const val MARGIN = 4
+    }
 
     @Synchronized
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -21,10 +23,15 @@ class EndlessScrollListener(val listener: () -> Unit) : RecyclerView.OnScrollLis
         if (recyclerView.layoutManager is LinearLayoutManager) {
             val layoutManager = recyclerView.layoutManager as LinearLayoutManager
 
-            val count = layoutManager.itemCount
-            val lastVisibleItemIndex = layoutManager.findLastVisibleItemPosition()
+            val visibleItemCount = layoutManager.childCount
+            val totalItemCount = layoutManager.itemCount
+            val firstVisibleItemPos = layoutManager.findFirstVisibleItemPosition()
 
-            if (count <= (lastVisibleItemIndex + scrollThreshold)) listener()
+            if ((visibleItemCount + firstVisibleItemPos) >= totalItemCount - MARGIN
+                    && firstVisibleItemPos >= 0
+                    && totalItemCount >= 20) {
+                listener()
+            }
         }
     }
 }

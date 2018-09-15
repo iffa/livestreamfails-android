@@ -1,5 +1,6 @@
 package digital.sogood.livestreamfails.presentation.cases.fail
 
+import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.domain.interactor.cases.FailParams
 import digital.sogood.livestreamfails.domain.interactor.cases.GetFails
 import digital.sogood.livestreamfails.domain.model.Fail
@@ -25,11 +26,15 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     public override fun onCreate() {
         super.onCreate()
 
+        Timber.v { "#onCreate called" }
+
         firstLoad()
     }
 
     override fun onDestroy() {
         super.onDestroy()
+
+        Timber.v { "#onDestroy called" }
 
         useCase.dispose()
     }
@@ -38,6 +43,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
      * Retrieve all fails with the specified [TimeFrame] and [Order] parameters.
      */
     fun retrieveFails(timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
+        Timber.d { "#retrieveFails(timeFrame, order, nsfw) called" }
         retrieveFails(timeFrame, order, "", "", nsfw)
     }
 
@@ -45,6 +51,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
      * Retrieve all fails for [streamer] with the specified [TimeFrame] and [Order] parameters.
      */
     fun retrieveFailsForStreamer(streamer: String, timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
+        Timber.d { "#retrieveFailsForStreamer called" }
         retrieveFails(timeFrame, order, streamer, "", nsfw)
     }
 
@@ -52,6 +59,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
      * Retrieve all fails for [game] with the specified [TimeFrame] and [Order] parameters.
      */
     fun retrieveFailsForGame(game: String, timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
+        Timber.d { "#retrieveFailsForGame called" }
         retrieveFails(timeFrame, order, "", game, nsfw)
     }
 
@@ -59,6 +67,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
      * TODO: Get default parameters from outside source
      */
     internal open fun firstLoad() {
+        Timber.v { "#firstLoad called" }
         retrieveFails(TimeFrame.DAY, Order.HOT, false)
     }
 
@@ -79,6 +88,8 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
 
         // This should never be null, because handleChangedParams gives it a value
         loading = true
+
+        Timber.d { "Starting retrieval of fails, params: $currentParams, page: $currentPage, loading: $loading" }
         currentParams?.let {
             useCase.execute(Subscriber(), FailParams(currentPage, it.timeFrame,
                     it.order, it.nsfw, it.game, it.streamer))
@@ -91,6 +102,8 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     private fun handleChangedParams(newParams: FailParams) {
         currentParams?.let {
             if (!it.equalsIgnorePage(newParams)) {
+                Timber.d { "Query params have changed, resetting state" }
+
                 noMoreResults = false
                 currentPage = 0
                 deliverToView {
@@ -130,6 +143,8 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
          * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
          */
         override fun onError(e: Throwable) {
+            Timber.e(e) { "Failed to retrieve fails" }
+
             loading = false
 
             deliverToView {

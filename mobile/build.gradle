@@ -7,11 +7,15 @@ apply plugin: 'io.github.rockerhieu.versionberg'
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
+
 apply plugin: 'kotlin-kapt'
 kapt {
     correctErrorTypes = true
 }
 apply plugin: 'kotlin-android-extensions'
+androidExtensions {
+    experimental = true
+}
 
 apply plugin: 'com.getkeepsafe.dexcount'
 
@@ -117,6 +121,8 @@ dependencies {
     implementation mobileUiDependencies.timberKt
 
     implementation mobileUiDependencies.glide
+
+    implementation mobileUiDependencies.customFab
 
     implementation mobileUiDependencies.exoPlayer
 

@@ -1,16 +1,19 @@
 package digital.sogood.livestreamfails.mobile.ui.fail
 
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
+import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
@@ -29,8 +32,14 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     @Inject
     lateinit var mapper: FailViewModelMapper
 
-    @Inject
-    lateinit var adapter: FailAdapter
+    private lateinit var adapter: FailAdapter
+
+    private var listState: Parcelable? = null
+
+    companion object {
+        private const val LIST_STATE_KEY = "recycler_state"
+        private const val LIST_CONTENTS_KEY = "recycler_contents"
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -42,12 +51,16 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
+        setupScrollToTopButton()
+
+        (activity as AppCompatActivity).supportActionBar?.let {
+        }
     }
 
     override fun providePresenter(): FailPresenter = failPresenter
 
     override fun showProgress() {
-        Toast.makeText(context, "Loading", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.loading, Toast.LENGTH_SHORT).show()
         //progressBar.show()
     }
 
@@ -70,7 +83,7 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     }
 
     override fun showErrorState() {
-        Toast.makeText(context, "Error state", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.loading_error, Toast.LENGTH_SHORT).show()
         // TODO
     }
 
@@ -79,7 +92,7 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     }
 
     override fun showEmptyState() {
-        Toast.makeText(context, "Empty state", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, R.string.empty_list, Toast.LENGTH_SHORT).show()
         emptyListText.visibility = View.VISIBLE
     }
 
@@ -88,16 +101,70 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     }
 
     override fun showNoMoreResultsState() {
-        Toast.makeText(context, "No more results", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, R.string.no_more_results, Toast.LENGTH_LONG).show()
         // TODO
     }
 
     private fun setupRecyclerView() {
+        adapter = FailAdapter(
+                timeframeListener = {
+                    Timber.d { "${it.name} chip selected" }
+                },
+                orderListener = {
+                    Timber.d { "${it.name} chip selected" }
+                })
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(EndlessScrollListener {
             Timber.v { "Scroll listener -> end of scroll, asking presenter for more items" }
             presenter.retrieveFails(TimeFrame.DAY, Order.HOT, false)
         })
+    }
+
+    private fun setupScrollToTopButton() {
+        /*
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                TransitionManager.beginDelayedTransition(rootLayout)
+                if (dy > 0) {
+                    scrollToTopFab.visibility = View.VISIBLE
+                } else {
+                    scrollToTopFab.visibility = View.INVISIBLE
+                }
+
+                super.onScrolled(recyclerView, dx, dy)
+            }
+        })
+        */
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        outState.putParcelable(LIST_STATE_KEY, recyclerView.layoutManager?.onSaveInstanceState())
+        outState.putParcelableArrayList(LIST_CONTENTS_KEY, ArrayList(adapter.getItems()))
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            Timber.v { "Restoring view state" }
+
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY)
+            savedInstanceState.getParcelableArrayList<FailViewModel>(LIST_CONTENTS_KEY)?.let {
+                adapter.submitList(it.toList())
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        listState?.let {
+            Timber.v { "Restoring RecyclerView state" }
+            recyclerView.layoutManager?.onRestoreInstanceState(it)
+        }
     }
 }

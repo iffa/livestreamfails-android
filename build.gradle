@@ -13,7 +13,7 @@ buildscript {
 
         versions = [
                 'android_gradle'  : '3.2.0-rc03',
-                'kotlin'          : '1.2.61',
+                'kotlin'          : '1.2.70',
                 'ktlint'          : '0.19.0',
                 'androidx'        : [
                         'appcompat'        : '1.0.0-rc02',
@@ -36,6 +36,7 @@ buildscript {
                 'javax_inject'    : '1',
                 'apache_http'     : '4.5.6',
                 'glide'           : '4.8.0',
+                'customFab'       : '0.0.4',
                 'timberkt'        : '1.5.1',
                 'espresso'        : '3.1.0-alpha4',
                 'junit'           : '4.12',
@@ -101,7 +102,8 @@ buildscript {
                 kotlin         : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}",
                 thirtyInch     : "net.grandcentrix.thirtyinch:thirtyinch:${versions.thirtyinch}",
                 thirtyInchRx   : "net.grandcentrix.thirtyinch:thirtyinch-rx2:${versions.thirtyinch}",
-                thirtyInchKt   : "net.grandcentrix.thirtyinch:thirtyinch-kotlin:${versions.thirtyinch}"
+                thirtyInchKt   : "net.grandcentrix.thirtyinch:thirtyinch-kotlin:${versions.thirtyinch}",
+                timberKt       : "com.github.ajalt:timberkt:${versions.timberkt}"
         ]
 
         presentationTestDependencies = [
@@ -130,6 +132,7 @@ buildscript {
                 glide           : "com.github.bumptech.glide:glide:${versions.glide}",
                 glideCompiler   : "com.github.bumptech.glide:glide-compiler:${versions.glide}",
                 exoPlayer       : "com.google.android.exoplayer:exoplayer:${versions.exoplayer}",
+                customFab       : "com.github.dimorinny:floating-text-button:${versions.customFab}",
                 okHttp          : "com.squareup.okhttp3:okhttp:${versions.okhttp}",
                 okHttpLogger    : "com.squareup.okhttp3:logging-interceptor:${versions.okhttp}",
                 thirtyInch      : "net.grandcentrix.thirtyinch:thirtyinch:${versions.thirtyinch}",

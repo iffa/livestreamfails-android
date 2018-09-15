@@ -20,4 +20,9 @@
     <string name="tv_fail_subtitle">%1$s playing %2$s</string>
     <string name="tv_fail_points">%1$d points</string>
     <string name="tv_fail_subtitle_none">No game or streamer information</string>
+    <string name="loading">Loading clips</string>
+    <string name="loading_error">Failed to load clips</string>
+    <string name="empty_list">No clips found</string>
+    <string name="no_more_results">No more clips found</string>
+    <string name="fab_scroll_to_top">Scroll to top</string>
 </resources>

@@ -30,6 +30,8 @@ dependencies {
     implementation presentationDependencies.thirtyInchRx
     implementation presentationDependencies.thirtyInchKt
 
+    implementation presentationDependencies.timberKt
+
     testImplementation presentationTestDependencies.thirtyInchTest
     testImplementation presentationTestDependencies.junit
     testImplementation presentationTestDependencies.kotlinJUnit

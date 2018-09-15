@@ -32,7 +32,7 @@ abstract class ListAdapterWithHeader<T, VH : RecyclerView.ViewHolder>(
      *
      * @param list The new list to be displayed.
      */
-    fun submitList(list: List<T>?) {
+    open fun submitList(list: List<T>?) {
         mHelper.submitList(list)
     }
 
