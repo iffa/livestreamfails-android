@@ -3,11 +3,9 @@ package digital.sogood.livestreamfails.mobile.ui.base
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.ScaleAnimation
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
-import ru.dimorinny.floatingtextbutton.FloatingTextButton
+import digital.sogood.livestreamfails.mobile.ui.base.view.FloatingTextButton
 
 /**
  * Custom behavior for [FloatingTextButton] that hides it when scrolled to the top, and shows it
@@ -25,45 +23,9 @@ class FloatingTextButtonBehavior(context: Context, attrs: AttributeSet) : Coordi
         super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type)
 
         if (dyConsumed > 0 && child.visibility == View.INVISIBLE) {
-            animateIn(child)
+            child.animateIn()
         } else if (dyConsumed < 0 && child.visibility == View.VISIBLE) {
-            animateOut(child)
+            child.animateOut()
         }
-    }
-
-    private fun animateOut(button: FloatingTextButton) {
-        val anim = ScaleAnimation(1f, 0f, 1f, 0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        anim.duration = button.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-                button.visibility = View.INVISIBLE
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-            }
-
-        })
-        button.startAnimation(anim)
-    }
-
-    private fun animateIn(button: FloatingTextButton) {
-        val anim = ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        anim.duration = button.resources.getInteger(android.R.integer.config_shortAnimTime).toLong()
-        anim.setAnimationListener(object : Animation.AnimationListener {
-            override fun onAnimationRepeat(animation: Animation?) {
-            }
-
-            override fun onAnimationEnd(animation: Animation?) {
-            }
-
-            override fun onAnimationStart(animation: Animation?) {
-                button.visibility = View.VISIBLE
-            }
-
-        })
-        button.startAnimation(anim)
     }
 }

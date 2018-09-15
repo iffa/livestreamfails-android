@@ -3,6 +3,7 @@ package digital.sogood.livestreamfails.mobile.ui.main
 import android.os.Bundle
 import dagger.android.support.DaggerAppCompatActivity
 import digital.sogood.livestreamfails.R
+import digital.sogood.livestreamfails.mobile.ui.base.view.FloatingTextButton
 import digital.sogood.livestreamfails.mobile.ui.fail.FailFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -36,5 +37,9 @@ class MainActivity : DaggerAppCompatActivity() {
         if (outState != null) {
             supportFragmentManager.putFragment(outState, FAIL_FRAGMENT_KEY, failFragment)
         }
+    }
+
+    fun getScrollToTopButton(): FloatingTextButton? {
+        return scrollToTopFab
     }
 }

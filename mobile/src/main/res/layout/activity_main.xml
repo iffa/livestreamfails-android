@@ -25,13 +25,13 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <ru.dimorinny.floatingtextbutton.FloatingTextButton
+    <digital.sogood.livestreamfails.mobile.ui.base.view.FloatingTextButton
         android:id="@+id/scrollToTopFab"
         android:layout_width="wrap_content"
-        android:visibility="invisible"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|bottom"
         android:layout_marginBottom="@dimen/content_padding"
+        android:visibility="invisible"
         app:floating_background_color="@color/colorAccent"
         app:floating_left_icon="@drawable/ic_arrow_up_white_24dp"
         app:floating_title="@string/fab_scroll_to_top"

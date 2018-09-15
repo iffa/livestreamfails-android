@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.R
@@ -16,6 +15,7 @@ import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
+import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
 import digital.sogood.livestreamfails.presentation.cases.fail.FailPresenter
 import digital.sogood.livestreamfails.presentation.model.FailView
@@ -51,9 +51,13 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
         super.onViewCreated(view, savedInstanceState)
 
         setupRecyclerView()
-        setupScrollToTopButton()
 
-        (activity as AppCompatActivity).supportActionBar?.let {
+        (activity as MainActivity).getScrollToTopButton()?.let {
+            it.setOnClickListener { _ ->
+                Timber.d { "Scroll to top button clicked" }
+                recyclerView.smoothScrollToPosition(0)
+                it.animateOut()
+            }
         }
     }
 
@@ -61,15 +65,12 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
     override fun showProgress() {
         Toast.makeText(context, R.string.loading, Toast.LENGTH_SHORT).show()
-        //progressBar.show()
     }
 
     override fun hideProgress() {
-        //progressBar.hide()
     }
 
     override fun showFails(fails: List<FailView>) {
-        Toast.makeText(context, "Showing fails", Toast.LENGTH_SHORT).show()
         recyclerView.visibility = View.VISIBLE
         adapter.addItems(fails.map { mapper.mapToViewModel(it) })
     }
@@ -120,23 +121,6 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
             Timber.v { "Scroll listener -> end of scroll, asking presenter for more items" }
             presenter.retrieveFails(TimeFrame.DAY, Order.HOT, false)
         })
-    }
-
-    private fun setupScrollToTopButton() {
-        /*
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                TransitionManager.beginDelayedTransition(rootLayout)
-                if (dy > 0) {
-                    scrollToTopFab.visibility = View.VISIBLE
-                } else {
-                    scrollToTopFab.visibility = View.INVISIBLE
-                }
-
-                super.onScrolled(recyclerView, dx, dy)
-            }
-        })
-        */
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
