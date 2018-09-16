@@ -29,7 +29,7 @@ buildscript {
                 'dagger'          : '2.16',
                 'threetenabp'     : '1.1.0',
                 'thirtyinch'      : '0.9.0',
-                'okhttp'          : '3.8.1',
+                'okhttp'          : '3.11.0',
                 'jsoup'           : '1.11.3',
                 'exoplayer'       : '2.8.4',
                 'javax_annotation': '1.0',
@@ -39,9 +39,9 @@ buildscript {
                 'timberkt'        : '1.5.1',
                 'espresso'        : '3.1.0-alpha4',
                 'junit'           : '4.12',
-                'assertj'         : '3.8.0',
+                'assertj'         : '3.11.1',
                 'mockito'         : '1.6.0',
-                'mockito_android' : '2.21.0'
+                'mockito_android' : '2.22.0'
         ]
 
         domainDependencies = [
