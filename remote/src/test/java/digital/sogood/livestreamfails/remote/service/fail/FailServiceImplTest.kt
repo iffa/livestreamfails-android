@@ -2,8 +2,8 @@ package digital.sogood.livestreamfails.remote.service.fail
 
 import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
+import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
-import org.apache.http.client.utils.URIBuilder
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
@@ -103,13 +103,13 @@ class FailServiceImplTest {
     fun getRequestUrlReturnsCorrectStandard() {
         val actual = service.getRequestUrl(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "")
 
-        val expected = URIBuilder(FailServiceImpl.ENDPOINT)
-                .addParameter("loadPostMode", "standard")
-                .addParameter("loadPostNSFW", "0")
-                .addParameter("loadPostOrder", Order.TOP.value)
-                .addParameter("loadPostPage", "0")
-                .addParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
-                .build().toURL()
+        val expected = HttpUrl.parse(FailServiceImpl.ENDPOINT)!!.newBuilder()
+                .addQueryParameter("loadPostMode", "standard")
+                .addQueryParameter("loadPostNSFW", "0")
+                .addQueryParameter("loadPostOrder", Order.TOP.value)
+                .addQueryParameter("loadPostPage", "0")
+                .addQueryParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
+                .build()
 
         assertEquals(expected, actual)
     }
@@ -118,13 +118,13 @@ class FailServiceImplTest {
     fun getRequestUrlReturnsCorrectStandardNsfw() {
         val actual = service.getRequestUrl(0, TimeFrame.ALL_TIME, Order.TOP, true, "", "")
 
-        val expected = URIBuilder(FailServiceImpl.ENDPOINT)
-                .addParameter("loadPostMode", "standard")
-                .addParameter("loadPostNSFW", "1")
-                .addParameter("loadPostOrder", Order.TOP.value)
-                .addParameter("loadPostPage", "0")
-                .addParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
-                .build().toURL()
+        val expected = HttpUrl.parse(FailServiceImpl.ENDPOINT)!!.newBuilder()
+                .addQueryParameter("loadPostMode", "standard")
+                .addQueryParameter("loadPostNSFW", "1")
+                .addQueryParameter("loadPostOrder", Order.TOP.value)
+                .addQueryParameter("loadPostPage", "0")
+                .addQueryParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
+                .build()
 
         assertEquals(expected, actual)
     }
@@ -133,14 +133,14 @@ class FailServiceImplTest {
     fun getRequestUrlReturnsCorrectGame() {
         val actual = service.getRequestUrl(0, TimeFrame.ALL_TIME, Order.TOP, false, "game", "")
 
-        val expected = URIBuilder(FailServiceImpl.ENDPOINT)
-                .addParameter("loadPostMode", "game")
-                .addParameter("loadPostNSFW", "0")
-                .addParameter("loadPostOrder", Order.TOP.value)
-                .addParameter("loadPostPage", "0")
-                .addParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
-                .addParameter("loadPostModeGame", "game")
-                .build().toURL()
+        val expected = HttpUrl.parse(FailServiceImpl.ENDPOINT)!!.newBuilder()
+                .addQueryParameter("loadPostMode", "game")
+                .addQueryParameter("loadPostNSFW", "0")
+                .addQueryParameter("loadPostOrder", Order.TOP.value)
+                .addQueryParameter("loadPostPage", "0")
+                .addQueryParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
+                .addQueryParameter("loadPostModeGame", "game")
+                .build()
 
         assertEquals(expected, actual)
     }
@@ -149,14 +149,14 @@ class FailServiceImplTest {
     fun getRequestUrlReturnsCorrectStreamer() {
         val actual = service.getRequestUrl(0, TimeFrame.ALL_TIME, Order.TOP, false, "", "streamer")
 
-        val expected = URIBuilder(FailServiceImpl.ENDPOINT)
-                .addParameter("loadPostMode", "streamer")
-                .addParameter("loadPostNSFW", "0")
-                .addParameter("loadPostOrder", Order.TOP.value)
-                .addParameter("loadPostPage", "0")
-                .addParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
-                .addParameter("loadPostModeStreamer", "streamer")
-                .build().toURL()
+        val expected = HttpUrl.parse(FailServiceImpl.ENDPOINT)!!.newBuilder()
+                .addQueryParameter("loadPostMode", "streamer")
+                .addQueryParameter("loadPostNSFW", "0")
+                .addQueryParameter("loadPostOrder", Order.TOP.value)
+                .addQueryParameter("loadPostPage", "0")
+                .addQueryParameter("loadPostTimeFrame", TimeFrame.ALL_TIME.value)
+                .addQueryParameter("loadPostModeStreamer", "streamer")
+                .build()
 
         assertEquals(expected, actual)
     }
