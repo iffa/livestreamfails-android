@@ -26,4 +26,7 @@
     <string name="no_more_results">No more clips found</string>
     <string name="fab_scroll_to_top">Scroll to top</string>
     <string name="activity_details">Clip details</string>
+    <string name="exo_controls_mute_description">Mute</string>
+    <string name="exo_controls_unmute_description">Unmute</string>
+    <string name="exo_position_duration_split">/</string>
 </resources>
