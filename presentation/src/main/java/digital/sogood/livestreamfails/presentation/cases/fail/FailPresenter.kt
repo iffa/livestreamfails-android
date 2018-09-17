@@ -23,9 +23,12 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     internal var loading = false
     internal var noMoreResults = false
 
-    internal var timeFrame = TimeFrame.DAY
-    internal var order = Order.HOT
-    internal var nsfw = false
+    var timeFrame = TimeFrame.DAY
+        private set
+    var order = Order.HOT
+        private set
+    var nsfw = false
+        private set
 
     public override fun onCreate() {
         super.onCreate()
@@ -50,10 +53,6 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
 
         Timber.d { "Detached: $timeFrame, $order, $nsfw" }
     }
-
-    fun getCurrentTimeFrame(): TimeFrame = timeFrame
-
-    fun getCurrentOrder(): Order = order
 
     fun onTimeFrameChanged(newTimeFrame: TimeFrame) {
         if (timeFrame != newTimeFrame) {
