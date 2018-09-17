@@ -4,7 +4,6 @@ import com.nhaarman.mockito_kotlin.*
 import digital.sogood.livestreamfails.domain.interactor.cases.FailParams
 import digital.sogood.livestreamfails.domain.interactor.cases.GetFails
 import digital.sogood.livestreamfails.domain.model.Fail
-import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.domain.repository.FailRepository
 import digital.sogood.livestreamfails.presentation.mapper.FailViewMapper
@@ -51,11 +50,11 @@ class FailPresenterTest {
     fun retrieveShowsAndHidesProgress() {
         val items = FailFactory.makeFailList(2)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
         verify(mockContract).showProgress()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
@@ -70,9 +69,9 @@ class FailPresenterTest {
     fun retrieveHidesEmptyAndErrorState() {
         val items = FailFactory.makeFailList(2)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
@@ -87,9 +86,9 @@ class FailPresenterTest {
     fun retrieveShowsResults() {
         val items = FailFactory.makeFailList(2)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
@@ -104,9 +103,9 @@ class FailPresenterTest {
     fun retrieveShowsEmptyState() {
         val items = FailFactory.makeFailList(0)
 
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
@@ -119,9 +118,9 @@ class FailPresenterTest {
      */
     @Test
     fun retrieveHidesResultsOnError() {
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -134,9 +133,9 @@ class FailPresenterTest {
      */
     @Test
     fun retrieveShowsErrorState() {
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP)))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onError(RuntimeException())
 
@@ -151,18 +150,18 @@ class FailPresenterTest {
         val items = FailFactory.makeFailList(2)
 
         // Page 1
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
         assertEquals(0, presenter.currentPage)
 
         // Page 2
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
@@ -177,9 +176,9 @@ class FailPresenterTest {
         val items = FailFactory.makeFailList(2)
 
         // Page 0, should have results
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
@@ -187,9 +186,9 @@ class FailPresenterTest {
         verify(mockContract).showFails(items.map { mockViewMapper.mapToView(it) })
 
         // Page 1, should have no results (show no more results state)
-        presenter.retrieveFails(TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(emptyList())
 
@@ -206,9 +205,9 @@ class FailPresenterTest {
         val items = FailFactory.makeFailList(2)
 
         // Page 0, should have results
-        presenter.retrieveFailsForStreamer("Streamer", TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.retrieveFails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "", "Streamer")))
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
@@ -216,9 +215,11 @@ class FailPresenterTest {
         verify(mockContract).showFails(items.map { mockViewMapper.mapToView(it) })
 
         // Attempt at page 1, but with different parameters
-        presenter.retrieveFailsForGame("Game", TimeFrame.ALL_TIME, Order.TOP, false)
+        presenter.onTimeFrameChanged(TimeFrame.ALL_TIME)
 
-        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, TimeFrame.ALL_TIME, Order.TOP, false, "Game", "")))
+        assertEquals(TimeFrame.ALL_TIME, presenter.timeFrame)
+
+        verify(mockUseCase).execute(captor.capture(), eq(FailParams(presenter.currentPage, presenter.timeFrame, presenter.order, presenter.nsfw)))
 
         captor.firstValue.onSuccess(items)
 
