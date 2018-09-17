@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import com.github.ajalt.timberkt.Timber
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ExoPlayerFactory
@@ -56,9 +57,12 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
     private var startAutoPlay: Boolean? = null
     private var startWindow: Int? = null
     private var startPosition: Long? = null
+    private var startVolume: Float? = null
 
     private lateinit var dragDismissDelegate: AbstractDragDismissDelegate
     private lateinit var playerView: PlayerView
+    private lateinit var muteButton: ImageButton
+    private lateinit var unmuteButton: ImageButton
 
     companion object {
         private const val EXTRA_FAIL = "fail_item"
@@ -66,6 +70,7 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
         private const val KEY_AUTO_PLAY = "play_when_ready"
         private const val KEY_WINDOW = "current_window"
         private const val KEY_POSITION = "playback_position"
+        private const val KEY_VOLUME = "volume"
         private const val KEY_DETAILS_ITEM = "details_item"
 
         @JvmStatic
@@ -102,10 +107,26 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
 
         playerView = view.findViewById(R.id.playerView)
 
+        muteButton = playerView.findViewById(R.id.exo_mute)
+        unmuteButton = playerView.findViewById(R.id.exo_unmute)
+
+        muteButton.setOnClickListener {
+            player?.volume = 0f
+            it.visibility = View.INVISIBLE
+            unmuteButton.visibility = View.VISIBLE
+        }
+
+        unmuteButton.setOnClickListener {
+            player?.volume = 1f
+            it.visibility = View.INVISIBLE
+            muteButton.visibility = View.VISIBLE
+        }
+
         if (savedInstanceState != null) {
             startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY)
             startWindow = savedInstanceState.getInt(KEY_WINDOW)
             startPosition = savedInstanceState.getLong(KEY_POSITION)
+            startVolume = savedInstanceState.getFloat(KEY_VOLUME)
         } else {
             clearStartPosition()
         }
@@ -144,6 +165,7 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
         startAutoPlay?.let { outState?.putBoolean(KEY_AUTO_PLAY, it) }
         startWindow?.let { outState?.putInt(KEY_WINDOW, it) }
         startPosition?.let { outState?.putLong(KEY_POSITION, it) }
+        startVolume?.let { outState?.putFloat(KEY_VOLUME, it) }
 
         super.onSaveInstanceState(outState)
     }
@@ -204,7 +226,26 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
             player?.seekTo(startWindow!!, startPosition!!)
         }
 
+        startVolume?.let {
+            player?.volume = it
+            updateVolumeButtons(it)
+        }
+
         player?.prepare(mediaSource, !haveStartPosition, false)
+    }
+
+    private fun updateVolumeButtons(volume: Float) {
+        val muted = volume != 1f
+        when (muted) {
+            true -> {
+                muteButton.visibility = View.INVISIBLE
+                unmuteButton.visibility = View.VISIBLE
+            }
+            false -> {
+                muteButton.visibility = View.VISIBLE
+                unmuteButton.visibility = View.INVISIBLE
+            }
+        }
     }
 
     private fun releasePlayer() {
@@ -224,6 +265,7 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
             startAutoPlay = it.playWhenReady
             startWindow = it.currentWindowIndex
             startPosition = Math.max(0, it.contentPosition)
+            startVolume = it.volume
         }
     }
 
@@ -231,5 +273,6 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
         startAutoPlay = true
         startWindow = C.INDEX_UNSET
         startPosition = C.TIME_UNSET
+        startVolume = 1.0f
     }
 }

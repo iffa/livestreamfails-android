@@ -50,7 +50,6 @@
     </FrameLayout>
 
     <FrameLayout
-        android:visibility="gone"
         android:id="@+id/exo_mute_unmute_container"
         android:layout_width="32dp"
         android:layout_height="32dp"
@@ -74,7 +73,7 @@
             android:background="?android:selectableItemBackground"
             android:contentDescription="@string/exo_controls_unmute_description"
             android:src="@drawable/ic_volume_off_white"
-            tools:visibility="gone" />
+            android:visibility="gone" />
     </FrameLayout>
 
     <TextView
