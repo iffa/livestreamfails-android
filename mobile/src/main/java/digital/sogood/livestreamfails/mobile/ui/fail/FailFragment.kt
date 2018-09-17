@@ -57,7 +57,6 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
         (activity as MainActivity).getScrollToTopButton()?.let {
             it.setOnClickListener { _ ->
-                Timber.d { "Scroll to top button clicked" }
                 recyclerView.smoothScrollToPosition(0)
                 it.animateOut()
             }
@@ -126,8 +125,7 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(EndlessScrollListener {
-            Timber.v { "Scroll listener -> end of scroll, asking presenter for more items" }
-            presenter.retrieveFails()
+            presenter.onScrollToEnd()
         })
     }
 

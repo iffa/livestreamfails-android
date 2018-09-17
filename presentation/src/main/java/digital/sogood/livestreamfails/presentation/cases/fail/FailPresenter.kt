@@ -76,6 +76,10 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         }
     }
 
+    fun onScrollToEnd() {
+        retrieveFails()
+    }
+
     /**
      * TODO: Get default parameters from outside source
      */
@@ -83,7 +87,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         retrieveFails()
     }
 
-    fun retrieveFails() {
+    internal fun retrieveFails() {
         val paramsChanged = handleChangedParams(FailParams(currentPage, timeFrame, order, nsfw))
 
         // Already loading, and params haven't changed, do nothing
