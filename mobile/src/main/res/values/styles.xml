@@ -13,4 +13,10 @@
         <item name="chipBackgroundColor">@color/mtrl_chip_background</item>
         <item name="android:textColor">@color/mtrl_chip_text</item>
     </style>
+
+    <style name="Theme.LivestreamFails.DragDismiss" parent="DragDismissTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
 </resources>

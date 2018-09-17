@@ -130,6 +130,8 @@ dependencies {
 
     implementation mobileUiDependencies.itemAnimators
 
+    implementation mobileUiDependencies.dragDismissActivity
+
     implementation mobileUiDependencies.exoPlayer
 
     // Test dependencies

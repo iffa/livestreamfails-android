@@ -25,11 +25,17 @@
             </intent-filter>
         </activity>
 
-        <!-- TODO: Replace with fragment once navigation component is stable -->
         <activity
             android:name=".mobile.ui.details.DetailsActivity"
             android:label="@string/activity_details"
             android:parentActivityName=".mobile.ui.main.MainActivity" />
+
+        <activity
+            android:name=".mobile.ui.details.DetailsAltActivity"
+            android:label="@string/activity_details"
+            android:configChanges="orientation"
+            android:parentActivityName=".mobile.ui.main.MainActivity"
+            android:theme="@style/Theme.LivestreamFails.DragDismiss" />
 
         <activity android:name="digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity" />
     </application>

@@ -18,7 +18,7 @@ import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
-import digital.sogood.livestreamfails.mobile.ui.details.DetailsActivity
+import digital.sogood.livestreamfails.mobile.ui.details.DetailsAltActivity
 import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
 import digital.sogood.livestreamfails.presentation.cases.fail.FailPresenter
@@ -134,15 +134,15 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     private fun showDetails(item: FailViewModel, thumbnail: ImageView) {
         Timber.d { "${item.postId} fail clicked" }
 
-        val startIntent = DetailsActivity.getStartIntent(requireActivity(), item,
-                ViewCompat.getTransitionName(thumbnail))
+        val startIntent = DetailsAltActivity.getStartIntent(requireActivity(), item)
 
+        @Suppress("UNUSED_VARIABLE")
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                 requireActivity(),
                 Pair(thumbnail, ViewCompat.getTransitionName(thumbnail))
         )
 
-        startActivity(startIntent, options.toBundle())
+        startActivity(startIntent)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -13,4 +13,6 @@
     <color name="divider">#2600001e</color>
 
     <color name="alert">#E53935</color>
+
+    <color name="dragdismiss_windowBackground">@android:color/black</color>
 </resources>
