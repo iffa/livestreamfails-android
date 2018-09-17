@@ -118,6 +118,10 @@ dependencies {
     implementation mobileUiDependencies.thirtyInchRx
     implementation mobileUiDependencies.thirtyInchKt
 
+    debugImplementation mobileUiDependencies.leakCanary
+    debugImplementation mobileUiDependencies.leakCanaryFragment
+    releaseImplementation mobileUiDependencies.leakCanaryNoOp
+
     implementation mobileUiDependencies.timberKt
 
     implementation mobileUiDependencies.glide

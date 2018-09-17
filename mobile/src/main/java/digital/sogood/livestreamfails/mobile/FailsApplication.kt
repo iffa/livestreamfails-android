@@ -1,5 +1,6 @@
 package digital.sogood.livestreamfails.mobile
 
+import com.squareup.leakcanary.LeakCanary
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
 import digital.sogood.livestreamfails.BuildConfig
@@ -12,6 +13,10 @@ import timber.log.Timber
 class FailsApplication : DaggerApplication() {
     override fun onCreate() {
         super.onCreate()
+
+        if (LeakCanary.isInAnalyzerProcess(this)) return
+
+        LeakCanary.install(this)
 
         DaggerApplicationComponent
                 .builder()
