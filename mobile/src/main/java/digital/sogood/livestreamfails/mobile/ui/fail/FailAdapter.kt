@@ -78,7 +78,17 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
 
         return when (viewType) {
             R.layout.view_holder_fail_header -> HeaderViewHolder(view)
-            else -> ItemViewHolder(view)
+            else -> {
+                val holder = ItemViewHolder(view)
+                holder.cardView.setOnClickListener {
+                    val position = holder.adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        itemClickListener(getItem(holder.adapterPosition), holder.thumbnailImage)
+                    }
+                }
+
+                return holder
+            }
         }
     }
 
@@ -103,13 +113,13 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
     }
 
     inner class ItemViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        private val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
         private val titleText: TextView = view.findViewById(R.id.titleText)
         private val subtitleText: TextView = view.findViewById(R.id.subtitleText)
         private val pointsText: TextView = view.findViewById(R.id.pointsText)
         private val nsfwText: TextView = view.findViewById(R.id.nsfwText)
         private val actionMenuButton: ImageButton = view.findViewById(R.id.actionMenuButton)
-        private val cardView: MaterialCardView = view.findViewById(R.id.cardView)
+        val cardView: MaterialCardView = view.findViewById(R.id.cardView)
+        val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
 
         /**
          * TODO: Handle string formatting beforehand?
@@ -134,10 +144,6 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
                     .load(item.thumbnailUrl)
                     .apply(RequestOptions().centerCrop())
                     .into(thumbnailImage)
-
-            cardView.setOnClickListener {
-                itemClickListener(item, thumbnailImage)
-            }
 
             // Shared element transition setup
             ViewCompat.setTransitionName(thumbnailImage, item.postId.toString())
