@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -25,7 +26,7 @@ import digital.sogood.livestreamfails.mobile.ui.base.list.ListAdapterWithHeader
  */
 class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit,
                               private val orderListener: (Order) -> Unit,
-                              private val itemClickListener: (FailViewModel) -> Unit)
+                              private val itemClickListener: (item: FailViewModel, thumbnail: ImageView) -> Unit)
     : ListAdapterWithHeader<FailViewModel, RecyclerView.ViewHolder>(ItemDiffCallback()) {
     private val items: MutableList<FailViewModel> = mutableListOf()
 
@@ -116,11 +117,11 @@ class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit
                     .into(thumbnailImage)
 
             cardView.setOnClickListener {
-                itemClickListener(item)
+                itemClickListener(item, thumbnailImage)
             }
 
             // Shared element transition setup
-            //ViewCompat.setTransitionName(thumbnailImage, item.postId)
+            ViewCompat.setTransitionName(thumbnailImage, item.postId.toString())
         }
     }
 

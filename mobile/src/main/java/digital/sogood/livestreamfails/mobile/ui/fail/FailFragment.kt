@@ -6,6 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.R
@@ -115,10 +118,18 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
                 orderListener = {
                     Timber.d { "${it.name} chip selected" }
                 },
-                itemClickListener = {
-                    Timber.d { "${it.postId} fail clicked" }
+                itemClickListener = { item, thumbnail ->
+                    Timber.d { "${item.postId} fail clicked" }
 
-                    startActivity(DetailsActivity.getStartIntent(requireActivity(), it.postId))
+                    val startIntent = DetailsActivity.getStartIntent(requireActivity(), item,
+                            ViewCompat.getTransitionName(thumbnail))
+
+                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                            requireActivity(),
+                            Pair(thumbnail, ViewCompat.getTransitionName(thumbnail))
+                    )
+
+                    startActivity(startIntent, options.toBundle())
                 })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -38,7 +38,7 @@ open class DetailsPresenter @Inject constructor(private val useCase: GetDetails,
             hideProgress()
             hideErrorState()
 
-            showDetails(mapper.mapToView(details))
+            showVideo(mapper.mapToView(details))
         }
     }
 
@@ -48,7 +48,7 @@ open class DetailsPresenter @Inject constructor(private val useCase: GetDetails,
         override fun onError(e: Throwable) {
             deliverToView {
                 hideProgress()
-                hideDetails()
+                hideVideo()
                 showErrorState()
             }
         }

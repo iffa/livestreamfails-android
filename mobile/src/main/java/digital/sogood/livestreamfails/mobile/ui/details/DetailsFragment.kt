@@ -54,7 +54,7 @@ class DetailsFragment : DaggerTiFragment<DetailsPresenter, DetailsContract>(), D
     override fun hideProgress() {
     }
 
-    override fun showDetails(details: DetailsView) {
+    override fun showVideo(details: DetailsView) {
         titleText.text = details.title
 
         val hasSubtitleData = !details.streamer.isNullOrEmpty() || !details.game.isNullOrEmpty()
@@ -71,7 +71,7 @@ class DetailsFragment : DaggerTiFragment<DetailsPresenter, DetailsContract>(), D
         }
     }
 
-    override fun hideDetails() {
+    override fun hideVideo() {
     }
 
     override fun showErrorState() {

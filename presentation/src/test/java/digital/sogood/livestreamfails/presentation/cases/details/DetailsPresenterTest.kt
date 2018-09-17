@@ -75,7 +75,7 @@ class DetailsPresenterTest {
     }
 
     /**
-     * Retrieving triggers [DetailsContract.showDetails] if successful.
+     * Retrieving triggers [DetailsContract.showVideo] if successful.
      */
     @Test
     fun retrieveShowsResults() {
@@ -87,7 +87,7 @@ class DetailsPresenterTest {
 
         captor.firstValue.onSuccess(item)
 
-        verify(mockContract).showDetails(mockViewMapper.mapToView(item))
+        verify(mockContract).showVideo(mockViewMapper.mapToView(item))
     }
 
     /**

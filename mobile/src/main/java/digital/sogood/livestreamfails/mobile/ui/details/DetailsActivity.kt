@@ -2,10 +2,16 @@ package digital.sogood.livestreamfails.mobile.ui.details
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.transition.TransitionManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.github.ajalt.timberkt.Timber
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.source.ExtractorMediaSource
@@ -17,6 +23,7 @@ import com.google.android.exoplayer2.util.Util
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.mobile.mapper.DetailsViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.DetailsViewModel
+import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiActivity
 import digital.sogood.livestreamfails.presentation.cases.details.DetailsContract
 import digital.sogood.livestreamfails.presentation.cases.details.DetailsPresenter
@@ -43,22 +50,27 @@ class DetailsActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>(), D
     private var playbackPosition: Long = 0
 
     companion object {
-        private const val POST_ID_KEY = "post_id"
+        private const val EXTRA_FAIL = "fail_item"
+        private const val EXTRA_TRANSITION_THUMBNAIL = "transition_thumbnail"
+
         private const val PLAY_WHEN_READY_KEY = "play_when_ready"
         private const val CURRENT_WINDOW_KEY = "current_window"
         private const val PLAYBACK_POSITION_KEY = "playback_position"
         private const val DETAILS_ITEM = "details_item"
 
         @JvmStatic
-        fun getStartIntent(context: Context, postId: Long): Intent {
+        fun getStartIntent(context: Context, fail: FailViewModel, thumbnailTransition: String?): Intent {
             val intent = Intent(context, DetailsActivity::class.java)
-            intent.putExtra(POST_ID_KEY, postId)
+            intent.putExtra(EXTRA_FAIL, fail)
+            intent.putExtra(EXTRA_TRANSITION_THUMBNAIL, thumbnailTransition)
             return intent
         }
     }
 
     override fun providePresenter(): DetailsPresenter {
-        detailsPresenter.retrieveDetails(intent.getLongExtra(POST_ID_KEY, -1))
+        val fail = intent.getParcelableExtra<FailViewModel>(EXTRA_FAIL)
+                ?: throw NullPointerException("No fail passed as extra to DetailsActivity")
+        detailsPresenter.retrieveDetails(fail.postId)
         return detailsPresenter
     }
 
@@ -67,8 +79,50 @@ class DetailsActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>(), D
 
         setContentView(R.layout.activity_details)
 
+        supportPostponeEnterTransition()
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        thumbnailImage.transitionName = intent?.extras?.getString(EXTRA_TRANSITION_THUMBNAIL)
+
+        val fail = intent?.extras?.getParcelable<FailViewModel>(EXTRA_FAIL)
+                ?: throw NullPointerException("No fail passed as extra to DetailsActivity")
+
+        Glide.with(this)
+                .load(fail.thumbnailUrl)
+                .apply(RequestOptions()
+                        .dontTransform()
+                        .onlyRetrieveFromCache(true)
+                ).listener(object : RequestListener<Drawable> {
+                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                        supportStartPostponedEnterTransition()
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                        supportStartPostponedEnterTransition()
+                        return false
+                    }
+                })
+                .into(thumbnailImage)
+
+        titleText.text = fail.title
+
+        val hasSubtitleData = !fail.streamer.isNullOrEmpty() || !fail.game.isNullOrEmpty()
+        when (hasSubtitleData) {
+            true -> subtitleText.text = getString(R.string.tv_fail_subtitle, fail.streamer, fail.game)
+            false -> subtitleText.text = getString(R.string.tv_fail_subtitle_none)
+        }
+
+        pointsText.text = getString(R.string.tv_fail_points, fail.points)
+
+        nsfwText.visibility = when (fail.nsfw) {
+            true -> View.VISIBLE
+            false -> View.GONE
+        }
+
+        updateToolbar(fail.title)
     }
 
     override fun showProgress() {
@@ -79,41 +133,19 @@ class DetailsActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>(), D
         progressBar.hide()
     }
 
-    override fun showDetails(details: DetailsView) {
+    override fun showVideo(details: DetailsView) {
         Timber.d { "Received details item from presenter" }
 
         detailsItem = mapper.mapToViewModel(details)
 
-        showDetails(detailsItem!!)
-    }
-
-    private fun showDetails(details: DetailsViewModel) {
-        TransitionManager.beginDelayedTransition(constraintLayout)
-        titleText.text = details.title
-
-        val hasSubtitleData = !details.streamer.isNullOrEmpty() || !details.game.isNullOrEmpty()
-        when (hasSubtitleData) {
-            true -> subtitleText.text = getString(R.string.tv_fail_subtitle, details.streamer, details.game)
-            false -> subtitleText.text = getString(R.string.tv_fail_subtitle_none)
-        }
-
-        pointsText.text = getString(R.string.tv_fail_points, details.points)
-
-        nsfwText.visibility = when (details.nsfw) {
-            true -> View.VISIBLE
-            false -> View.GONE
-        }
-
-        updateToolbar(details.title)
-
-        prepareVideoPlayer(details.videoUrl)
+        prepareVideoPlayer(detailsItem!!.videoUrl)
     }
 
     private fun updateToolbar(title: String) {
         supportActionBar?.subtitle = title
     }
 
-    override fun hideDetails() {
+    override fun hideVideo() {
         // TODO
     }
 
@@ -144,9 +176,13 @@ class DetailsActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>(), D
 
             override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
                 when (playbackState) {
+                    Player.STATE_IDLE -> {
+                        thumbnailImage.visibility = View.VISIBLE
+                        playerView.visibility = View.INVISIBLE
+                    }
                     Player.STATE_READY -> {
-                        playerView.visibility = View.VISIBLE
                         thumbnailImage.visibility = View.INVISIBLE
+                        playerView.visibility = View.VISIBLE
                     }
                 }
             }
@@ -201,7 +237,7 @@ class DetailsActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>(), D
         detailsItem = savedInstanceState?.getParcelable(DETAILS_ITEM)
 
         detailsItem?.let {
-            showDetails(it)
+            prepareVideoPlayer(it.videoUrl)
         }
     }
 }

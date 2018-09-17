@@ -11,9 +11,9 @@ interface DetailsContract : TiView {
 
     fun hideProgress()
 
-    fun showDetails(details: DetailsView)
+    fun showVideo(details: DetailsView)
 
-    fun hideDetails()
+    fun hideVideo()
 
     fun showErrorState()
 
