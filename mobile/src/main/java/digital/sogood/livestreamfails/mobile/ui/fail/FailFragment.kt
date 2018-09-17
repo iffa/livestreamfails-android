@@ -5,6 +5,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityOptionsCompat
 import androidx.core.util.Pair
@@ -12,8 +13,6 @@ import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.R
-import digital.sogood.livestreamfails.domain.model.Order
-import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
@@ -112,32 +111,38 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
     private fun setupRecyclerView() {
         adapter = FailAdapter(
+                selectedTimeFrame = failPresenter.getCurrentTimeFrame(),
+                selectedOrder = failPresenter.getCurrentOrder(),
                 timeframeListener = {
                     Timber.d { "${it.name} chip selected" }
+                    failPresenter.onTimeFrameChanged(it)
                 },
                 orderListener = {
                     Timber.d { "${it.name} chip selected" }
+                    failPresenter.onOrderChanged(it)
                 },
-                itemClickListener = { item, thumbnail ->
-                    Timber.d { "${item.postId} fail clicked" }
-
-                    val startIntent = DetailsActivity.getStartIntent(requireActivity(), item,
-                            ViewCompat.getTransitionName(thumbnail))
-
-                    val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                            requireActivity(),
-                            Pair(thumbnail, ViewCompat.getTransitionName(thumbnail))
-                    )
-
-                    startActivity(startIntent, options.toBundle())
-                })
+                itemClickListener = { item, thumbnail -> showDetails(item, thumbnail) })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
         recyclerView.addOnScrollListener(EndlessScrollListener {
             Timber.v { "Scroll listener -> end of scroll, asking presenter for more items" }
-            presenter.retrieveFails(TimeFrame.DAY, Order.HOT, false)
+            presenter.retrieveFails()
         })
+    }
+
+    private fun showDetails(item: FailViewModel, thumbnail: ImageView) {
+        Timber.d { "${item.postId} fail clicked" }
+
+        val startIntent = DetailsActivity.getStartIntent(requireActivity(), item,
+                ViewCompat.getTransitionName(thumbnail))
+
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                requireActivity(),
+                Pair(thumbnail, ViewCompat.getTransitionName(thumbnail))
+        )
+
+        startActivity(startIntent, options.toBundle())
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

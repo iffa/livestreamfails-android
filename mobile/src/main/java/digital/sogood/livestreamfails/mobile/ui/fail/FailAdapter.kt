@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.github.ajalt.timberkt.Timber
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.chip.ChipGroup
 import digital.sogood.livestreamfails.R
@@ -24,7 +25,9 @@ import digital.sogood.livestreamfails.mobile.ui.base.list.ListAdapterWithHeader
  *
  * @author Santeri Elo <me@santeri.xyz>
  */
-class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit,
+class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
+                              private val selectedOrder: Order,
+                              private val timeframeListener: (TimeFrame) -> Unit,
                               private val orderListener: (Order) -> Unit,
                               private val itemClickListener: (item: FailViewModel, thumbnail: ImageView) -> Unit)
     : ListAdapterWithHeader<FailViewModel, RecyclerView.ViewHolder>(ItemDiffCallback()) {
@@ -130,6 +133,27 @@ class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit
         private val orderChips: ChipGroup = view.findViewById(R.id.orderGroup)
 
         fun bind() {
+            if (timeframeChips.checkedChipId == -1) {
+                Timber.d { "Checking correct time frame chip $selectedTimeFrame" }
+                when (selectedTimeFrame) {
+                    TimeFrame.DAY -> timeframeChips.check(R.id.todayFilterChip)
+                    TimeFrame.WEEK -> timeframeChips.check(R.id.thisWeekFilterChip)
+                    TimeFrame.MONTH -> timeframeChips.check(R.id.thisMonthFilterChip)
+                    TimeFrame.YEAR -> timeframeChips.check(R.id.thisYearFilterChip)
+                    TimeFrame.ALL_TIME -> timeframeChips.check(R.id.allTimeFilterChip)
+                }
+            }
+
+            if (orderChips.checkedChipId == -1) {
+                Timber.d { "Checking correct order chip $selectedOrder" }
+                when (selectedOrder) {
+                    Order.HOT -> orderChips.check(R.id.hotFilterChip)
+                    Order.TOP -> orderChips.check(R.id.topFilterChip)
+                    Order.NEW -> orderChips.check(R.id.newFilterChip)
+                    Order.RANDOM -> orderChips.check(R.id.randomFilterChip)
+                }
+            }
+
             timeframeChips.setOnCheckedChangeListener { _, checkedId ->
                 when (checkedId) {
                     R.id.todayFilterChip -> timeframeListener(TimeFrame.DAY)

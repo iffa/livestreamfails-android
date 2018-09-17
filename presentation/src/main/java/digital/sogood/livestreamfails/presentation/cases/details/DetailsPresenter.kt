@@ -10,6 +10,8 @@ import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
 
 /**
+ * TODO: Injection scope, as Singleton would not work in this case
+ *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class DetailsPresenter @Inject constructor(private val useCase: GetDetails,

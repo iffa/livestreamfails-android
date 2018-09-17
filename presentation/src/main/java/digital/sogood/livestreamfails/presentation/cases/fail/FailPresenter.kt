@@ -11,10 +11,12 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.TiPresenter
 import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
+@Singleton
 open class FailPresenter @Inject constructor(private val useCase: GetFails,
                                              private val mapper: FailViewMapper)
     : TiPresenter<FailContract>() {
@@ -23,10 +25,12 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     internal var loading = false
     internal var noMoreResults = false
 
+    internal var timeFrame = TimeFrame.DAY
+    internal var order = Order.HOT
+    internal var nsfw = false
+
     public override fun onCreate() {
         super.onCreate()
-
-        Timber.v { "#onCreate called" }
 
         firstLoad()
     }
@@ -34,60 +38,72 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     override fun onDestroy() {
         super.onDestroy()
 
-        Timber.v { "#onDestroy called" }
-
         useCase.dispose()
     }
 
-    /**
-     * Retrieve all fails with the specified [TimeFrame] and [Order] parameters.
-     */
-    fun retrieveFails(timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
-        Timber.d { "#retrieveFails(timeFrame, order, nsfw) called" }
-        retrieveFails(timeFrame, order, "", "", nsfw)
+    override fun onAttachView(view: FailContract) {
+        super.onAttachView(view)
+
+        Timber.d { "Attached: $timeFrame, $order, $nsfw" }
     }
 
-    /**
-     * Retrieve all fails for [streamer] with the specified [TimeFrame] and [Order] parameters.
-     */
-    fun retrieveFailsForStreamer(streamer: String, timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
-        Timber.d { "#retrieveFailsForStreamer called" }
-        retrieveFails(timeFrame, order, streamer, "", nsfw)
+    override fun onDetachView() {
+        super.onDetachView()
+
+        Timber.d { "Detached: $timeFrame, $order, $nsfw" }
     }
 
-    /**
-     * Retrieve all fails for [game] with the specified [TimeFrame] and [Order] parameters.
-     */
-    fun retrieveFailsForGame(game: String, timeFrame: TimeFrame, order: Order, nsfw: Boolean) {
-        Timber.d { "#retrieveFailsForGame called" }
-        retrieveFails(timeFrame, order, "", game, nsfw)
+    fun getCurrentTimeFrame(): TimeFrame = timeFrame
+
+    fun getCurrentOrder(): Order = order
+
+    fun onTimeFrameChanged(newTimeFrame: TimeFrame) {
+        if (timeFrame != newTimeFrame) {
+            this.timeFrame = newTimeFrame
+            retrieveFails()
+        }
+    }
+
+    fun onOrderChanged(newOrder: Order) {
+        if (order != newOrder) {
+            order = newOrder
+            retrieveFails()
+        }
+    }
+
+    fun onNsfwChanged(newNsfw: Boolean) {
+        if (nsfw != newNsfw) {
+            nsfw = newNsfw
+            retrieveFails()
+        }
     }
 
     /**
      * TODO: Get default parameters from outside source
      */
     internal open fun firstLoad() {
-        Timber.v { "#firstLoad called" }
-        retrieveFails(TimeFrame.DAY, Order.HOT, false)
+        retrieveFails()
     }
 
-    private fun retrieveFails(timeFrame: TimeFrame, order: Order, streamer: String, game: String, nsfw: Boolean) {
-        // Already loading, do nothing
-        if (loading) return
+    fun retrieveFails() {
+        val paramsChanged = handleChangedParams(FailParams(currentPage, timeFrame, order, nsfw))
 
-        currentPage++
-
-        handleChangedParams(FailParams(currentPage, timeFrame, order, nsfw, game, streamer))
+        // Already loading, and params haven't changed, do nothing
+        // If params have changed, continue anyway
+        if (loading && !paramsChanged) {
+            return
+        }
 
         // No more results (even after param check), do nothing
         if (noMoreResults) return
+
+        loading = true
 
         deliverToView {
             showProgress()
         }
 
-        // This should never be null, because handleChangedParams gives it a value
-        loading = true
+        currentPage++
 
         Timber.d { "Starting retrieval of fails, params: $currentParams, page: $currentPage, loading: $loading" }
         currentParams?.let {
@@ -98,20 +114,25 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
 
     /**
      * If parameters have changed (other than page), reset state.
+     *
+     * @return True if params have changed
      */
-    private fun handleChangedParams(newParams: FailParams) {
+    private fun handleChangedParams(newParams: FailParams): Boolean {
+        var changed = false
         currentParams?.let {
             if (!it.equalsIgnorePage(newParams)) {
                 Timber.d { "Query params have changed, resetting state" }
 
                 noMoreResults = false
-                currentPage = 0
+                currentPage = -1
                 deliverToView {
                     clearFails()
                 }
+                changed = true
             }
         }
         currentParams = newParams
+        return changed
     }
 
     internal fun handleSuccess(fails: List<Fail>) {
