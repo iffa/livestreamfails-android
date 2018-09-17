@@ -124,6 +124,8 @@ dependencies {
 
     implementation mobileUiDependencies.customFab
 
+    implementation mobileUiDependencies.itemAnimators
+
     implementation mobileUiDependencies.exoPlayer
 
     // Test dependencies

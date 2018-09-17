@@ -12,6 +12,7 @@ import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
+import com.mikepenz.itemanimators.AlphaCrossFadeAnimator
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
@@ -124,6 +125,7 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         recyclerView.adapter = adapter
+        recyclerView.itemAnimator = AlphaCrossFadeAnimator()
         recyclerView.addOnScrollListener(EndlessScrollListener {
             presenter.onScrollToEnd()
         })

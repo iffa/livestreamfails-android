@@ -3,6 +3,8 @@ package digital.sogood.livestreamfails.mobile.ui.fail
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,6 +21,7 @@ import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.list.ListAdapterWithHeader
+
 
 /**
  * TODO: Split into multiple classes and clean up
@@ -82,7 +85,20 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         return when (getItemViewType(position)) {
             R.layout.view_holder_fail_header -> (holder as HeaderViewHolder).bind()
-            else -> (holder as ItemViewHolder).bind(getItem(position))
+            else -> {
+                (holder as ItemViewHolder).bind(getItem(position))
+                showEnterAnimation(holder.view, position)
+            }
+        }
+    }
+
+    private var lastPosition = -1
+    private fun showEnterAnimation(view: View, position: Int) {
+        if (position > lastPosition) {
+            val anim = ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+            anim.duration = 100
+            view.startAnimation(anim)
+            lastPosition = position
         }
     }
 
