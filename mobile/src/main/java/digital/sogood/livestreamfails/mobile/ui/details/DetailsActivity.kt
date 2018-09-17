@@ -70,7 +70,7 @@ class DetailsActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>(), D
     override fun providePresenter(): DetailsPresenter {
         val fail = intent.getParcelableExtra<FailViewModel>(EXTRA_FAIL)
                 ?: throw NullPointerException("No fail passed as extra to DetailsActivity")
-        detailsPresenter.retrieveDetails(fail.postId)
+        detailsPresenter.postId = fail.postId
         return detailsPresenter
     }
 

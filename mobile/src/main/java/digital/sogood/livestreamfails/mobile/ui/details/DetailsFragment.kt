@@ -35,10 +35,6 @@ class DetailsFragment : DaggerTiFragment<DetailsPresenter, DetailsContract>(), D
     lateinit var mapper: DetailsViewModelMapper
 
     override fun providePresenter(): DetailsPresenter {
-        arguments?.getLong(POST_ID_KEY, -1)?.let {
-            detailsPresenter.retrieveDetails(it)
-        }
-
         return detailsPresenter
     }
 

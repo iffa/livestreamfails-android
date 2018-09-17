@@ -1,5 +1,6 @@
 package digital.sogood.livestreamfails.presentation.cases.details
 
+import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.domain.interactor.cases.DetailsParams
 import digital.sogood.livestreamfails.domain.interactor.cases.GetDetails
 import digital.sogood.livestreamfails.domain.model.Details
@@ -10,29 +11,37 @@ import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
 
 /**
- * TODO: Injection scope, as Singleton would not work in this case
- *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class DetailsPresenter @Inject constructor(private val useCase: GetDetails,
                                                 private val mapper: DetailsViewMapper)
     : TiPresenter<DetailsContract>() {
+    var postId: Long = -1
+
+    override fun onCreate() {
+        super.onCreate()
+
+        firstLoad()
+    }
+
+    private fun firstLoad() {
+        retrieveDetails()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
 
         useCase.dispose()
     }
 
-    fun retrieveDetails(postId: Long) {
-        retrieveDetails(DetailsParams(postId))
-    }
+    internal fun retrieveDetails() {
+        Timber.d { "Retrieving details for id $postId" }
 
-    internal fun retrieveDetails(params: DetailsParams) {
         deliverToView {
             showProgress()
         }
 
-        useCase.execute(Subscriber(), params)
+        useCase.execute(Subscriber(), DetailsParams(postId))
     }
 
     internal fun handleSuccess(details: Details) {
