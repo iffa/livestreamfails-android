@@ -3,6 +3,7 @@ package digital.sogood.livestreamfails.remote.test.factory
 import digital.sogood.livestreamfails.remote.model.FailModel
 import digital.sogood.livestreamfails.remote.test.factory.DataFactory.Factory.randomBoolean
 import digital.sogood.livestreamfails.remote.test.factory.DataFactory.Factory.randomInt
+import digital.sogood.livestreamfails.remote.test.factory.DataFactory.Factory.randomLong
 import digital.sogood.livestreamfails.remote.test.factory.DataFactory.Factory.randomUuid
 
 /**
@@ -12,7 +13,7 @@ class FailFactory {
     companion object Factory {
 
         fun makeFailModel(): FailModel {
-            return FailModel(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
+            return FailModel(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomLong())
         }
 
         fun makeFailModelList(count: Int): List<FailModel> {

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -121,7 +120,7 @@ class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit
             }
 
             // Shared element transition setup
-            ViewCompat.setTransitionName(thumbnailImage, item.detailsUrl)
+            //ViewCompat.setTransitionName(thumbnailImage, item.postId)
         }
     }
 
@@ -152,7 +151,7 @@ class FailAdapter constructor(private val timeframeListener: (TimeFrame) -> Unit
 
     class ItemDiffCallback : DiffUtil.ItemCallback<FailViewModel>() {
         override fun areItemsTheSame(oldItem: FailViewModel, newItem: FailViewModel): Boolean {
-            return oldItem.detailsUrl == newItem.detailsUrl
+            return oldItem.postId == newItem.postId
         }
 
         override fun areContentsTheSame(oldItem: FailViewModel, newItem: FailViewModel): Boolean {

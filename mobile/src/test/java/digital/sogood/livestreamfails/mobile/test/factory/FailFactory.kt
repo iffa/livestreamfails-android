@@ -3,6 +3,7 @@ package digital.sogood.livestreamfails.mobile.test.factory
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.test.factory.DataFactory.Factory.randomBoolean
 import digital.sogood.livestreamfails.mobile.test.factory.DataFactory.Factory.randomInt
+import digital.sogood.livestreamfails.mobile.test.factory.DataFactory.Factory.randomLong
 import digital.sogood.livestreamfails.mobile.test.factory.DataFactory.Factory.randomUuid
 import digital.sogood.livestreamfails.presentation.model.FailView
 
@@ -13,11 +14,11 @@ import digital.sogood.livestreamfails.presentation.model.FailView
 class FailFactory {
     companion object Factory {
         fun makeFailView(): FailView {
-            return FailView(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
+            return FailView(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomLong())
         }
 
         fun makeFailViewModel(): FailViewModel {
-            return FailViewModel(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomUuid())
+            return FailViewModel(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomLong())
         }
 
         fun makeFailViewModelList(count: Int): List<FailViewModel> {

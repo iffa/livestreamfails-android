@@ -36,6 +36,6 @@ class FailMapperTest {
         assertEquals(entity.points, item.points)
         assertEquals(entity.nsfw, item.nsfw)
         assertEquals(entity.thumbnailUrl, item.thumbnailUrl)
-        assertEquals(entity.detailsUrl, item.detailsUrl)
+        assertEquals(entity.postId, item.postId)
     }
 }

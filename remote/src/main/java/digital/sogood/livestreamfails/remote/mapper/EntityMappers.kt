@@ -33,7 +33,7 @@ open class StreamerEntityMapper @Inject constructor() : EntityMapper<StreamerMod
  */
 open class FailEntityMapper @Inject constructor() : EntityMapper<FailModel, FailEntity> {
     override fun mapFromRemote(type: FailModel): FailEntity {
-        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.detailsUrl)
+        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.postId)
     }
 }
 

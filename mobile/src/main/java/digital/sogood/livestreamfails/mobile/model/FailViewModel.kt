@@ -13,4 +13,4 @@ class FailViewModel(val title: String,
                     val points: Int,
                     val nsfw: Boolean,
                     val thumbnailUrl: String,
-                    val detailsUrl: String) : Parcelable
+                    val postId: Long) : Parcelable

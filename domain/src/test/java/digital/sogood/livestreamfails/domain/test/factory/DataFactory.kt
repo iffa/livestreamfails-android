@@ -20,5 +20,9 @@ class DataFactory {
         fun randomBoolean(): Boolean {
             return Math.random() < 0.5
         }
+
+        fun randomLong(): Long {
+            return ThreadLocalRandom.current().nextLong(0, 1000 + 1)
+        }
     }
 }

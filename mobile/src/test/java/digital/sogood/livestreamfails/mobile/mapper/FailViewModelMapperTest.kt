@@ -21,6 +21,6 @@ class FailViewModelMapperTest {
         Assert.assertEquals(item.points, mapped.points)
         Assert.assertEquals(item.nsfw, mapped.nsfw)
         Assert.assertEquals(item.thumbnailUrl, mapped.thumbnailUrl)
-        Assert.assertEquals(item.detailsUrl, mapped.detailsUrl)
+        Assert.assertEquals(item.postId, mapped.postId)
     }
 }

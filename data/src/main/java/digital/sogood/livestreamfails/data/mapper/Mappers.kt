@@ -41,11 +41,11 @@ open class StreamerMapper @Inject constructor() : Mapper<StreamerEntity, Streame
  */
 open class FailMapper @Inject constructor() : Mapper<FailEntity, Fail> {
     override fun mapFromEntity(type: FailEntity): Fail {
-        return Fail(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.detailsUrl)
+        return Fail(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.postId)
     }
 
     override fun mapToEntity(type: Fail): FailEntity {
-        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.detailsUrl)
+        return FailEntity(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.postId)
     }
 }
 

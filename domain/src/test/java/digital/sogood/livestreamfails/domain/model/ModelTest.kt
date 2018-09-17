@@ -24,7 +24,7 @@ class ModelTest {
 
     @Test
     fun failTest() {
-        val item = Fail("Title", "Streamer", "Game", 0, false, "thumbnail", "details")
+        val item = Fail("Title", "Streamer", "Game", 0, false, "thumbnail", 0)
 
         assertEquals("Title", item.title)
         assertEquals("Streamer", item.streamer)
@@ -32,7 +32,7 @@ class ModelTest {
         assertEquals(0, item.points)
         assertEquals(false, item.nsfw)
         assertEquals("thumbnail", item.thumbnailUrl)
-        assertEquals("details", item.detailsUrl)
+        assertEquals(0, item.postId)
     }
 
     @Test

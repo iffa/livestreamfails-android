@@ -6,4 +6,4 @@ data class FailEntity(val title: String,
                       val points: Int,
                       val nsfw: Boolean,
                       val thumbnailUrl: String,
-                      val detailsUrl: String)
+                      val postId: Long)

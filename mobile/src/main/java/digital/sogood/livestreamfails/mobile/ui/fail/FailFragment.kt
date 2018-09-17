@@ -116,10 +116,9 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
                     Timber.d { "${it.name} chip selected" }
                 },
                 itemClickListener = {
-                    val postId = it.detailsUrl.split('/', ignoreCase = true).last().toLong()
-                    Timber.d { "$postId fail clicked" }
+                    Timber.d { "${it.postId} fail clicked" }
 
-                    startActivity(DetailsActivity.getStartIntent(requireActivity(), postId))
+                    startActivity(DetailsActivity.getStartIntent(requireActivity(), it.postId))
                 })
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())

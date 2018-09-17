@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 open class FailViewModelMapper @Inject constructor() : Mapper<FailViewModel, FailView> {
     override fun mapToViewModel(type: FailView): FailViewModel {
-        return FailViewModel(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.detailsUrl)
+        return FailViewModel(type.title, type.streamer, type.game, type.points, type.nsfw, type.thumbnailUrl, type.postId)
     }
 }
 
