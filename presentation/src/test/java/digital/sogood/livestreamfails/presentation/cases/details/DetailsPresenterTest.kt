@@ -6,6 +6,7 @@ import digital.sogood.livestreamfails.domain.interactor.cases.GetDetails
 import digital.sogood.livestreamfails.domain.model.Details
 import digital.sogood.livestreamfails.domain.repository.DetailsRepository
 import digital.sogood.livestreamfails.presentation.mapper.DetailsViewMapper
+import digital.sogood.livestreamfails.presentation.test.TestDetailsPresenter
 import digital.sogood.livestreamfails.presentation.test.factory.DetailsFactory
 import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
@@ -34,7 +35,7 @@ class DetailsPresenterTest {
         mockViewMapper = mock()
 
         // Create presenter and attach  the view to it
-        presenter = DetailsPresenter(mockUseCase, mockViewMapper)
+        presenter = TestDetailsPresenter(mockUseCase, mockViewMapper)
         testPresenter = TiTestPresenter(presenter)
         testPresenter.attachView(mockContract)
     }
@@ -46,11 +47,11 @@ class DetailsPresenterTest {
     fun retrieveShowsAndHidesProgress() {
         val item = DetailsFactory.makeDetails()
 
-        presenter.retrieveDetails(DetailsParams(0))
+        presenter.retrieveDetails()
 
         verify(mockContract).showProgress()
 
-        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(presenter.postId)))
 
         captor.firstValue.onSuccess(item)
 
@@ -65,9 +66,9 @@ class DetailsPresenterTest {
     fun retrieveHidesEmptyAndErrorState() {
         val item = DetailsFactory.makeDetails()
 
-        presenter.retrieveDetails(DetailsParams(0))
+        presenter.retrieveDetails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(presenter.postId)))
 
         captor.firstValue.onSuccess(item)
 
@@ -81,9 +82,9 @@ class DetailsPresenterTest {
     fun retrieveShowsResults() {
         val item = DetailsFactory.makeDetails()
 
-        presenter.retrieveDetails(DetailsParams(0))
+        presenter.retrieveDetails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(presenter.postId)))
 
         captor.firstValue.onSuccess(item)
 
@@ -95,9 +96,9 @@ class DetailsPresenterTest {
      */
     @Test
     fun retrieveShowsErrorState() {
-        presenter.retrieveDetails(DetailsParams(0))
+        presenter.retrieveDetails()
 
-        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(0)))
+        verify(mockUseCase).execute(captor.capture(), eq(DetailsParams(presenter.postId)))
 
         captor.firstValue.onError(RuntimeException())
 

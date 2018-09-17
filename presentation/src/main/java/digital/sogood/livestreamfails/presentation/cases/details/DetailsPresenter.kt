@@ -24,7 +24,7 @@ open class DetailsPresenter @Inject constructor(private val useCase: GetDetails,
         firstLoad()
     }
 
-    private fun firstLoad() {
+    internal open fun firstLoad() {
         retrieveDetails()
     }
 
