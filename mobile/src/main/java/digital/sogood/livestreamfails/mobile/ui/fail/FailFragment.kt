@@ -111,15 +111,15 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
     private fun setupRecyclerView() {
         adapter = FailAdapter(
-                selectedTimeFrame = failPresenter.getCurrentTimeFrame(),
-                selectedOrder = failPresenter.getCurrentOrder(),
+                selectedTimeFrame = presenter.getCurrentTimeFrame(),
+                selectedOrder = presenter.getCurrentOrder(),
                 timeframeListener = {
                     Timber.d { "${it.name} chip selected" }
-                    failPresenter.onTimeFrameChanged(it)
+                    presenter.onTimeFrameChanged(it)
                 },
                 orderListener = {
                     Timber.d { "${it.name} chip selected" }
-                    failPresenter.onOrderChanged(it)
+                    presenter.onOrderChanged(it)
                 },
                 itemClickListener = { item, thumbnail -> showDetails(item, thumbnail) })
 

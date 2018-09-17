@@ -11,12 +11,10 @@ import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.TiPresenter
 import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
-import javax.inject.Singleton
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-@Singleton
 open class FailPresenter @Inject constructor(private val useCase: GetFails,
                                              private val mapper: FailViewMapper)
     : TiPresenter<FailContract>() {
