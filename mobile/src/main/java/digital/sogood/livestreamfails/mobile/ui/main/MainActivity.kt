@@ -1,10 +1,13 @@
 package digital.sogood.livestreamfails.mobile.ui.main
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import dagger.android.support.DaggerAppCompatActivity
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.mobile.ui.base.view.FloatingTextButton
 import digital.sogood.livestreamfails.mobile.ui.fail.FailFragment
+import digital.sogood.livestreamfails.mobile.ui.menu.MenuDialogFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -37,6 +40,19 @@ class MainActivity : DaggerAppCompatActivity() {
         if (outState != null) {
             supportFragmentManager.putFragment(outState, FAIL_FRAGMENT_KEY, failFragment)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_menu -> MenuDialogFragment()
+                    .show(supportFragmentManager, MenuDialogFragment::class.java.name)
+        }
+        return true
     }
 
     fun getScrollToTopButton(): FloatingTextButton? {

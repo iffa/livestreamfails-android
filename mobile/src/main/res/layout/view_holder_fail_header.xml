@@ -34,7 +34,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/todayFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -42,28 +42,28 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/thisWeekFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_time_this_week" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/thisMonthFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_time_this_month" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/thisYearFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_time_this_year" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/allTimeFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/content_padding"
@@ -103,7 +103,7 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/hotFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/content_padding"
@@ -111,21 +111,21 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/newFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_order_new" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/topFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/filter_order_top" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/randomFilterChip"
-                style="@style/Widget.LiveStreamFails.Chip.Choice"
+                style="@style/Widget.LivestreamFails.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/content_padding"

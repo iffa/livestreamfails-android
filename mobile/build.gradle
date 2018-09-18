@@ -132,6 +132,8 @@ dependencies {
 
     implementation mobileUiDependencies.dragDismissActivity
 
+    implementation mobileUiDependencies.listItemView
+
     implementation mobileUiDependencies.exoPlayer
 
     // Test dependencies

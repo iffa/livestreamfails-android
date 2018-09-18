@@ -12,7 +12,7 @@
     android:layout_marginBottom="@dimen/content_padding_small"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?selectableItemBackground"
+    android:background="?android:selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardUseCompatPadding="true"
     tools:showIn="@layout/fragment_fail">
@@ -102,7 +102,7 @@
 
         <ImageButton
             android:id="@+id/actionMenuButton"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:contentDescription="@string/cd_fail_source_link"

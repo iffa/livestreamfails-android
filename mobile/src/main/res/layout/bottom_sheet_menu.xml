@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/preferencesTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/content_padding"
+        android:text="@string/menu_preferences_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textSize="18sp" />
+
+    <com.lucasurbas.listitemview.ListItemView
+        android:id="@+id/nsfwToggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        app:liv_displayMode="icon"
+        app:liv_icon="@drawable/ic_alert_colored_24dp"
+        app:liv_menuActionColor="@color/color_state_menu"
+        app:liv_title="@string/menu_nsfw_toggle_title" />
+
+    <TextView
+        android:id="@+id/aboutTitleText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/content_padding"
+        android:text="@string/menu_about_title"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+        android:textSize="18sp" />
+
+    <com.lucasurbas.listitemview.ListItemView
+        android:id="@+id/sourceItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        app:liv_displayMode="icon"
+        app:liv_icon="@drawable/ic_github"
+        app:liv_title="@string/menu_source_title" />
+
+    <com.lucasurbas.listitemview.ListItemView
+        android:id="@+id/licensesItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        app:liv_displayMode="icon"
+        app:liv_icon="@drawable/ic_library"
+        app:liv_title="@string/menu_licenses_title" />
+
+    <com.lucasurbas.listitemview.ListItemView
+        android:id="@+id/feedbackItem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        app:liv_displayMode="icon"
+        app:liv_icon="@drawable/ic_feedback"
+        app:liv_title="@string/menu_feedback_title" />
+
+    <TextView
+        android:id="@+id/versionText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:padding="@dimen/content_padding_small"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+        tools:text="Version 1.0.0" />
+
+</LinearLayout>

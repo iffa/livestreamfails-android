@@ -29,4 +29,13 @@
     <string name="exo_controls_mute_description">Mute</string>
     <string name="exo_controls_unmute_description">Unmute</string>
     <string name="exo_position_duration_split">/</string>
+    <string name="action_menu">Menu</string>
+    <string name="menu_nsfw_toggle_title">Show age-restricted (NSFW) content</string>
+    <string name="version_text">Version %1$s</string>
+    <string name="action_checkable">Checkable</string>
+    <string name="menu_licenses_title">Third party licenses</string>
+    <string name="menu_preferences_title">Preferences</string>
+    <string name="menu_about_title">About</string>
+    <string name="menu_feedback_title">Send feedback</string>
+    <string name="menu_source_title">Source code</string>
 </resources>
