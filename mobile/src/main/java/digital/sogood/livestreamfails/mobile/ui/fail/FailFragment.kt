@@ -1,7 +1,9 @@
 package digital.sogood.livestreamfails.mobile.ui.fail
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +24,7 @@ import digital.sogood.livestreamfails.mobile.ui.base.config
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsAltActivity
 import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
+import digital.sogood.livestreamfails.mobile.ui.menu.MenuDialogFragment.Companion.PREF_SHOW_NSFW
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
 import digital.sogood.livestreamfails.presentation.cases.fail.FailPresenter
 import digital.sogood.livestreamfails.presentation.model.FailView
@@ -31,12 +34,14 @@ import javax.inject.Inject
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContract {
+class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContract, SharedPreferences.OnSharedPreferenceChangeListener {
     @Inject
     lateinit var failPresenter: FailPresenter
 
     @Inject
     lateinit var mapper: FailViewModelMapper
+
+    private lateinit var preferences: SharedPreferences
 
     private lateinit var adapter: FailAdapter
 
@@ -55,6 +60,9 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        presenter.onNsfwChanged(preferences.getBoolean(PREF_SHOW_NSFW, false))
 
         setupRecyclerView()
 
@@ -173,12 +181,30 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+
+        preferences.unregisterOnSharedPreferenceChangeListener(this)
+    }
+
     override fun onResume() {
         super.onResume()
 
         listState?.let {
             Timber.v { "Restoring RecyclerView state" }
             recyclerView.layoutManager?.onRestoreInstanceState(it)
+        }
+
+        preferences.registerOnSharedPreferenceChangeListener(this)
+    }
+
+    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
+        when (key) {
+            PREF_SHOW_NSFW -> {
+                val showNsfw = preferences.getBoolean(PREF_SHOW_NSFW, false)
+                Timber.d { "Show NSFW flag changed, new value: $showNsfw" }
+                presenter.onNsfwChanged(showNsfw)
+            }
         }
     }
 }

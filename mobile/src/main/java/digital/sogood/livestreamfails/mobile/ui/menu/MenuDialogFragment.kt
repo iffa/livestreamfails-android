@@ -7,12 +7,14 @@ import android.graphics.drawable.Animatable
 import android.graphics.drawable.AnimatedStateListDrawable
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
+import com.github.ajalt.timberkt.Timber
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lucasurbas.listitemview.ListItemView
@@ -29,6 +31,8 @@ class MenuDialogFragment : BottomSheetDialogFragment() {
         private const val SOURCE_URL = "https://github.com/iffa/livestreamfails-android"
         private const val LICENSES_URL = SOURCE_URL
         private const val FEEDBACK_URL = "https://github.com/iffa/livestreamfails-android/issues"
+
+        const val PREF_SHOW_NSFW = "show_nsfw"
     }
 
     override fun getTheme(): Int = R.style.Theme_LivestreamFails_BottomSheet
@@ -62,6 +66,30 @@ class MenuDialogFragment : BottomSheetDialogFragment() {
         feedbackItem.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(FEEDBACK_URL))
             startActivity(intent)
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        PreferenceManager.getDefaultSharedPreferences(requireContext())
+                .edit()
+                .putBoolean(PREF_SHOW_NSFW, nsfwToggle.isChecked)
+                .apply()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        updateNsfwCheckedState()
+    }
+
+    private fun updateNsfwCheckedState() {
+        val showNsfw = PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean(PREF_SHOW_NSFW, false)
+        Timber.d { "Show NSFW should be checked: $showNsfw" }
+
+        if ((showNsfw && !nsfwToggle.isChecked) || (!showNsfw && nsfwToggle.isChecked)) {
+            toggleCheckBoxMenu(nsfwToggle, true)
         }
     }
 
