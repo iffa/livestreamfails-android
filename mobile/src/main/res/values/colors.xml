@@ -15,4 +15,5 @@
     <color name="alert">#E53935</color>
 
     <color name="dragdismiss_windowBackground">@android:color/black</color>
+    <color name="dragdismiss_toolbarBackground">@android:color/transparent</color>
 </resources>

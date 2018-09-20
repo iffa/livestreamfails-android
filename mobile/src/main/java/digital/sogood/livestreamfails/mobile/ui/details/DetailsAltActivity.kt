@@ -5,9 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import com.github.ajalt.timberkt.Timber
 import com.google.android.exoplayer2.C
@@ -80,7 +78,7 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
 
             DragDismissIntentBuilder(context)
                     .setShowToolbar(false)
-                    .setDrawUnderStatusBar(false)
+                    .setDrawUnderStatusBar(true)
                     .setDragElasticity(XXLARGE)
                     .build(intent)
 
@@ -96,6 +94,10 @@ class DetailsAltActivity : DaggerTiActivity<DetailsPresenter, DetailsContract>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Fullscreen flags
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         super.onCreate(savedInstanceState)
 
         dragDismissDelegate = DragDismissDelegate(this, this)
