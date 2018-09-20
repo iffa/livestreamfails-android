@@ -38,4 +38,5 @@
     <string name="menu_about_title">About</string>
     <string name="menu_feedback_title">Send feedback</string>
     <string name="menu_source_title">Source code</string>
+    <string name="menu_night_mode_toggle_title">Enable night mode</string>
 </resources>

@@ -25,6 +25,16 @@
         app:liv_menuActionColor="@color/color_state_menu"
         app:liv_title="@string/menu_nsfw_toggle_title" />
 
+    <com.lucasurbas.listitemview.ListItemView
+        android:id="@+id/nightModeToggle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:selectableItemBackground"
+        app:liv_displayMode="icon"
+        app:liv_icon="@drawable/ic_style"
+        app:liv_menuActionColor="@color/color_state_menu"
+        app:liv_title="@string/menu_night_mode_toggle_title" />
+
     <TextView
         android:id="@+id/aboutTitleText"
         android:layout_width="match_parent"

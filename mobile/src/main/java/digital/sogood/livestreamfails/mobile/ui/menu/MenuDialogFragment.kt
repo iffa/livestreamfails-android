@@ -53,6 +53,11 @@ class MenuDialogFragment : BottomSheetDialogFragment() {
             toggleCheckBoxMenu(it as ListItemView, true)
         }
 
+        setupCheckBoxMenu(nightModeToggle)
+        nightModeToggle.setOnClickListener {
+            toggleCheckBoxMenu(it as ListItemView, true)
+        }
+
         sourceItem.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(SOURCE_URL))
             startActivity(intent)
