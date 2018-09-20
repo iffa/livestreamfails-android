@@ -1,5 +1,6 @@
 package digital.sogood.livestreamfails.mobile.test.factory
 
+import digital.sogood.livestreamfails.domain.model.Fail
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.test.factory.DataFactory.Factory.randomBoolean
 import digital.sogood.livestreamfails.mobile.test.factory.DataFactory.Factory.randomInt
@@ -21,6 +22,10 @@ class FailFactory {
             return FailViewModel(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomLong())
         }
 
+        fun makeFail(): Fail {
+            return Fail(randomUuid(), randomUuid(), randomUuid(), randomInt(), randomBoolean(), randomUuid(), randomLong())
+        }
+
         fun makeFailViewModelList(count: Int): List<FailViewModel> {
             val entities = mutableListOf<FailViewModel>()
             repeat(count) {
@@ -33,6 +38,14 @@ class FailFactory {
             val entities = mutableListOf<FailView>()
             repeat(count) {
                 entities.add(makeFailView())
+            }
+            return entities
+        }
+
+        fun makeFailList(count: Int): List<Fail> {
+            val entities = mutableListOf<Fail>()
+            repeat(count) {
+                entities.add(makeFail())
             }
             return entities
         }
