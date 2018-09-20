@@ -12,11 +12,13 @@ import androidx.core.util.Pair
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
+import com.google.android.material.snackbar.Snackbar
 import com.mikepenz.itemanimators.AlphaCrossFadeAnimator
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
+import digital.sogood.livestreamfails.mobile.ui.base.config
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsAltActivity
 import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
@@ -58,7 +60,7 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
         (activity as MainActivity).getScrollToTopButton()?.let {
             it.setOnClickListener { _ ->
-                recyclerView.smoothScrollToPosition(0)
+                recyclerView.scrollToPosition(0)
                 it.animateOut()
             }
         }
@@ -67,10 +69,16 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     override fun providePresenter(): FailPresenter = failPresenter
 
     override fun showProgress() {
-        Toast.makeText(context, R.string.loading, Toast.LENGTH_SHORT).show()
+        progressBar.show()
+    }
+
+    override fun showLoadingMoreProgress() {
+        loadMoreProgressBar.show()
     }
 
     override fun hideProgress() {
+        progressBar.hide()
+        loadMoreProgressBar.hide()
     }
 
     override fun showFails(fails: List<FailView>) {
@@ -105,8 +113,8 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     }
 
     override fun showNoMoreResultsState() {
-        Toast.makeText(context, R.string.no_more_results, Toast.LENGTH_LONG).show()
-        // TODO
+        Snackbar.make(rootLayout, R.string.no_more_results, Snackbar.LENGTH_LONG)
+                .config(requireContext()).show()
     }
 
     private fun setupRecyclerView() {

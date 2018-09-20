@@ -9,6 +9,11 @@ import net.grandcentrix.thirtyinch.TiView
 interface FailContract : TiView {
     fun showProgress()
 
+    fun showLoadingMoreProgress()
+
+    /**
+     * Called when any progress indicators should be hidden.
+     */
     fun hideProgress()
 
     /**

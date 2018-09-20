@@ -100,11 +100,15 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
 
         loading = true
 
-        deliverToView {
-            showProgress()
-        }
-
         currentPage++
+
+        deliverToView {
+            if (currentPage == 0) {
+                showProgress()
+            } else {
+                showLoadingMoreProgress()
+            }
+        }
 
         Timber.d { "Starting retrieval of fails, params: $currentParams, page: $currentPage, loading: $loading" }
         currentParams?.let {
