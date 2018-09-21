@@ -1,5 +1,7 @@
 package digital.sogood.livestreamfails.mobile.ui.fail
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +9,7 @@ import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -85,10 +88,46 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
                         itemClickListener(getItem(holder.adapterPosition))
                     }
                 }
+                holder.actionMenuButton.setOnClickListener {
+                    val position = holder.adapterPosition
+
+                    Timber.d { "Action menu button clicked @ pos $position" }
+                    if (position != RecyclerView.NO_POSITION) {
+                        showOverflowMenu(it, listener = {
+                            startShareIntent(getItem(position), holder.view.context)
+                        })
+                    }
+                }
 
                 return holder
             }
         }
+    }
+
+    private fun startShareIntent(item: FailViewModel, context: Context) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, item.detailsUrl)
+            type = "text/plain"
+        }
+        context.startActivity(Intent.createChooser(intent, context.resources.getText(R.string.send_to)))
+    }
+
+    private fun showOverflowMenu(view: View, listener: () -> Unit) {
+        val popup = PopupMenu(view.context, view)
+
+        popup.inflate(R.menu.view_holder_fail)
+        popup.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.action_share -> {
+                    listener()
+                    true
+                }
+                else -> false
+            }
+        }
+
+        popup.show()
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -116,8 +155,8 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
         private val subtitleText: TextView = view.findViewById(R.id.subtitleText)
         private val pointsText: TextView = view.findViewById(R.id.pointsText)
         private val nsfwText: TextView = view.findViewById(R.id.nsfwText)
-        private val actionMenuButton: ImageButton = view.findViewById(R.id.actionMenuButton)
         val cardView: MaterialCardView = view.findViewById(R.id.cardView)
+        val actionMenuButton: ImageButton = view.findViewById(R.id.actionMenuButton)
         val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
 
         /**
