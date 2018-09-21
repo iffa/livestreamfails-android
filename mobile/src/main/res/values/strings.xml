@@ -41,4 +41,5 @@
     <string name="menu_night_mode_toggle_title">Enable night mode</string>
     <string name="action_share">Share</string>
     <string name="send_to">Send link to</string>
+    <string name="tv_filter_order">Sort by</string>
 </resources>
