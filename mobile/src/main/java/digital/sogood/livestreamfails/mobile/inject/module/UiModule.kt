@@ -7,8 +7,7 @@ import digital.sogood.livestreamfails.domain.executor.PostExecutionThread
 import digital.sogood.livestreamfails.mobile.executor.UiThread
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsActivity
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsAltActivity
-import digital.sogood.livestreamfails.mobile.ui.fail.FailFragment
-import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
+import digital.sogood.livestreamfails.mobile.ui.fail.FailActivity
 import digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity
 
 /**
@@ -22,13 +21,10 @@ abstract class UiModule {
     abstract fun bindPostExecutionThread(uiThread: UiThread): PostExecutionThread
 
     @ContributesAndroidInjector
-    abstract fun contributeMainActivity(): MainActivity
+    abstract fun contributeFailActivity(): FailActivity
 
     @ContributesAndroidInjector
     abstract fun contributeStreamerActivity(): StreamerActivity
-
-    @ContributesAndroidInjector
-    abstract fun contributeFailFragment(): FailFragment
 
     @ContributesAndroidInjector
     abstract fun contributeDetailsActivity(): DetailsActivity

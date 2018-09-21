@@ -4,14 +4,10 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
 import android.preference.PreferenceManager
-import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.core.app.ActivityOptionsCompat
-import androidx.core.util.Pair
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.snackbar.Snackbar
@@ -19,22 +15,19 @@ import com.mikepenz.itemanimators.AlphaCrossFadeAnimator
 import digital.sogood.livestreamfails.R
 import digital.sogood.livestreamfails.mobile.mapper.FailViewModelMapper
 import digital.sogood.livestreamfails.mobile.model.FailViewModel
-import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiFragment
+import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiActivity
 import digital.sogood.livestreamfails.mobile.ui.base.config
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
+import digital.sogood.livestreamfails.mobile.ui.base.view.FloatingTextButton
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsAltActivity
-import digital.sogood.livestreamfails.mobile.ui.main.MainActivity
-import digital.sogood.livestreamfails.mobile.ui.menu.MenuDialogFragment.Companion.PREF_SHOW_NSFW
+import digital.sogood.livestreamfails.mobile.ui.menu.MenuDialogFragment
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
 import digital.sogood.livestreamfails.presentation.cases.fail.FailPresenter
 import digital.sogood.livestreamfails.presentation.model.FailView
-import kotlinx.android.synthetic.main.fragment_fail.*
+import kotlinx.android.synthetic.main.activity_fail.*
 import javax.inject.Inject
 
-/**
- * @author Santeri Elo <me@santeri.xyz>
- */
-class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContract, SharedPreferences.OnSharedPreferenceChangeListener {
+class FailActivity : DaggerTiActivity<FailPresenter, FailContract>(), FailContract, SharedPreferences.OnSharedPreferenceChangeListener {
     @Inject
     lateinit var failPresenter: FailPresenter
 
@@ -52,25 +45,21 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
         private const val LIST_CONTENTS_KEY = "recycler_contents"
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
-        return inflater.inflate(R.layout.fragment_fail, container, false)
-    }
+        setContentView(R.layout.activity_fail)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        setSupportActionBar(toolbar)
 
-        preferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
-        presenter.onNsfwChanged(preferences.getBoolean(PREF_SHOW_NSFW, false))
+        preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        presenter.onNsfwChanged(preferences.getBoolean(MenuDialogFragment.PREF_SHOW_NSFW, false))
 
         setupRecyclerView()
 
-        (activity as MainActivity).getScrollToTopButton()?.let {
-            it.setOnClickListener { _ ->
-                recyclerView.scrollToPosition(0)
-                it.animateOut()
-            }
+        scrollToTopFab.setOnClickListener {
+            recyclerView.scrollToPosition(0)
+            (it as FloatingTextButton).animateOut()
         }
     }
 
@@ -103,7 +92,7 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     }
 
     override fun showErrorState() {
-        Toast.makeText(context, R.string.loading_error, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.loading_error, Toast.LENGTH_SHORT).show()
         // TODO
     }
 
@@ -112,7 +101,7 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     }
 
     override fun showEmptyState() {
-        Toast.makeText(context, R.string.empty_list, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, R.string.empty_list, Toast.LENGTH_SHORT).show()
         emptyListText.visibility = View.VISIBLE
     }
 
@@ -122,8 +111,9 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
 
     override fun showNoMoreResultsState() {
         Snackbar.make(rootLayout, R.string.no_more_results, Snackbar.LENGTH_LONG)
-                .config(requireContext()).show()
+                .config(this).show()
     }
+
 
     private fun setupRecyclerView() {
         adapter = FailAdapter(
@@ -137,9 +127,9 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
                     Timber.d { "${it.name} chip selected" }
                     presenter.onOrderChanged(it)
                 },
-                itemClickListener = { item, thumbnail -> showDetails(item, thumbnail) })
+                itemClickListener = { item -> showDetails(item) })
 
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
         recyclerView.itemAnimator = AlphaCrossFadeAnimator()
         recyclerView.addOnScrollListener(EndlessScrollListener {
@@ -147,38 +137,12 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
         })
     }
 
-    private fun showDetails(item: FailViewModel, thumbnail: ImageView) {
+    private fun showDetails(item: FailViewModel) {
         Timber.d { "${item.postId} fail clicked" }
 
-        val startIntent = DetailsAltActivity.getStartIntent(requireActivity(), item)
-
-        @Suppress("UNUSED_VARIABLE")
-        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                requireActivity(),
-                Pair(thumbnail, ViewCompat.getTransitionName(thumbnail))
-        )
+        val startIntent = DetailsAltActivity.getStartIntent(this, item)
 
         startActivity(startIntent)
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.putParcelable(LIST_STATE_KEY, recyclerView.layoutManager?.onSaveInstanceState())
-        outState.putParcelableArrayList(LIST_CONTENTS_KEY, ArrayList(adapter.getItems()))
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        if (savedInstanceState != null) {
-            Timber.v { "Restoring view state" }
-
-            listState = savedInstanceState.getParcelable(LIST_STATE_KEY)
-            savedInstanceState.getParcelableArrayList<FailViewModel>(LIST_CONTENTS_KEY)?.let {
-                adapter.submitList(it.toList())
-            }
-        }
     }
 
     override fun onPause() {
@@ -190,20 +154,53 @@ class FailFragment : DaggerTiFragment<FailPresenter, FailContract>(), FailContra
     override fun onResume() {
         super.onResume()
 
+        preferences.registerOnSharedPreferenceChangeListener(this)
+
         listState?.let {
             Timber.v { "Restoring RecyclerView state" }
             recyclerView.layoutManager?.onRestoreInstanceState(it)
         }
+    }
 
-        preferences.registerOnSharedPreferenceChangeListener(this)
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+
+        outState?.putParcelable(LIST_STATE_KEY, recyclerView.layoutManager?.onSaveInstanceState())
+        outState?.putParcelableArrayList(LIST_CONTENTS_KEY, ArrayList(adapter.getItems()))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.activity_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_menu -> MenuDialogFragment()
+                    .show(supportFragmentManager, MenuDialogFragment::class.java.name)
+        }
+        return true
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         when (key) {
-            PREF_SHOW_NSFW -> {
-                val showNsfw = preferences.getBoolean(PREF_SHOW_NSFW, false)
+            MenuDialogFragment.PREF_SHOW_NSFW -> {
+                val showNsfw = preferences.getBoolean(MenuDialogFragment.PREF_SHOW_NSFW, false)
                 Timber.d { "Show NSFW flag changed, new value: $showNsfw" }
                 presenter.onNsfwChanged(showNsfw)
+            }
+        }
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
+        super.onRestoreInstanceState(savedInstanceState)
+
+        if (savedInstanceState != null) {
+            Timber.v { "Restoring view state" }
+
+            listState = savedInstanceState.getParcelable(LIST_STATE_KEY)
+            savedInstanceState.getParcelableArrayList<FailViewModel>(LIST_CONTENTS_KEY)?.let {
+                adapter.submitList(it.toList())
             }
         }
     }

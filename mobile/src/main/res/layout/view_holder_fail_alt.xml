@@ -10,12 +10,12 @@
     android:layout_marginTop="@dimen/content_padding_small"
     android:layout_marginEnd="@dimen/content_padding_small"
     android:layout_marginBottom="@dimen/content_padding_small"
+    android:background="?android:selectableItemBackground"
     android:clickable="true"
     android:focusable="true"
-    android:background="?android:selectableItemBackground"
     app:cardCornerRadius="4dp"
     app:cardUseCompatPadding="true"
-    tools:showIn="@layout/fragment_fail">
+    tools:showIn="@layout/activity_fail">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -102,9 +102,9 @@
 
         <ImageButton
             android:id="@+id/actionMenuButton"
-            android:background="?android:selectableItemBackgroundBorderless"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:background="?android:selectableItemBackgroundBorderless"
             android:contentDescription="@string/cd_fail_source_link"
             android:src="@drawable/ic_more_24dp"
             android:tint="?android:textColorSecondary"

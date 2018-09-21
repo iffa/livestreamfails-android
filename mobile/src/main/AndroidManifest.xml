@@ -16,7 +16,7 @@
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="android:allowBackup,android:label,android:supportsRtl">
         <activity
-            android:name="digital.sogood.livestreamfails.mobile.ui.main.MainActivity"
+            android:name="digital.sogood.livestreamfails.mobile.ui.fail.FailActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,13 +28,13 @@
         <activity
             android:name=".mobile.ui.details.DetailsActivity"
             android:label="@string/activity_details"
-            android:parentActivityName=".mobile.ui.main.MainActivity" />
+            android:parentActivityName=".mobile.ui.fail.FailActivity" />
 
         <activity
             android:name=".mobile.ui.details.DetailsAltActivity"
-            android:label="@string/activity_details"
             android:configChanges="orientation"
-            android:parentActivityName=".mobile.ui.main.MainActivity"
+            android:label="@string/activity_details"
+            android:parentActivityName=".mobile.ui.fail.FailActivity"
             android:theme="@style/Theme.LivestreamFails.DragDismiss" />
 
         <activity android:name="digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity" />

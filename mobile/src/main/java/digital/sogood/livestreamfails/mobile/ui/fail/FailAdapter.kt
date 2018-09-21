@@ -8,7 +8,6 @@ import android.view.animation.ScaleAnimation
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -32,7 +31,7 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
                               private val selectedOrder: Order,
                               private val timeframeListener: (TimeFrame) -> Unit,
                               private val orderListener: (Order) -> Unit,
-                              private val itemClickListener: (item: FailViewModel, thumbnail: ImageView) -> Unit)
+                              private val itemClickListener: (item: FailViewModel) -> Unit)
     : ListAdapterWithHeader<FailViewModel, RecyclerView.ViewHolder>(ItemDiffCallback()) {
     private val items: MutableList<FailViewModel> = mutableListOf()
 
@@ -83,7 +82,7 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
                 holder.cardView.setOnClickListener {
                     val position = holder.adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
-                        itemClickListener(getItem(holder.adapterPosition), holder.thumbnailImage)
+                        itemClickListener(getItem(holder.adapterPosition))
                     }
                 }
 
@@ -144,9 +143,6 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
                     .load(item.thumbnailUrl)
                     .apply(RequestOptions().centerCrop())
                     .into(thumbnailImage)
-
-            // Shared element transition setup
-            ViewCompat.setTransitionName(thumbnailImage, item.postId.toString())
         }
     }
 
