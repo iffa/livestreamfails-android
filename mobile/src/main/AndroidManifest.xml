@@ -32,7 +32,7 @@
 
         <activity
             android:name=".mobile.ui.details.DetailsAltActivity"
-            android:configChanges="orientation"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:label="@string/activity_details"
             android:parentActivityName=".mobile.ui.fail.FailActivity"
             android:theme="@style/Theme.LivestreamFails.DragDismiss" />
