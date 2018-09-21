@@ -32,6 +32,8 @@ dependencies {
 
     implementation presentationDependencies.timberKt
 
+    implementation presentationDependencies.espressoIdlingResource
+
     testImplementation presentationTestDependencies.thirtyInchTest
     testImplementation presentationTestDependencies.junit
     testImplementation presentationTestDependencies.kotlinJUnit

@@ -146,6 +146,8 @@ dependencies {
 
     implementation mobileUiDependencies.exoPlayer
 
+    implementation mobileUiDependencies.espressoIdlingResource
+
     // Test dependencies
     testImplementation mobileUiTestDependencies.kotlinJUnit
 
@@ -157,6 +159,8 @@ dependencies {
     androidTestImplementation mobileUiTestDependencies.espressoCore
     androidTestImplementation mobileUiTestDependencies.espressoIntents
     androidTestImplementation mobileUiTestDependencies.espressoContrib
+    androidTestImplementation mobileUiTestDependencies.espressoIdlingResource
+    androidTestImplementation mobileUiTestDependencies.espressoIdling
 
     androidTestImplementation mobileUiTestDependencies.supportRunner
     androidTestImplementation mobileUiTestDependencies.supportRules

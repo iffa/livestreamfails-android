@@ -7,6 +7,7 @@ import digital.sogood.livestreamfails.domain.model.Fail
 import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.presentation.mapper.FailViewMapper
+import digital.sogood.livestreamfails.presentation.util.EspressoIdlingResource
 import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.TiPresenter
 import net.grandcentrix.thirtyinch.kotlin.deliverToView
@@ -111,6 +112,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         }
 
         Timber.d { "Starting retrieval of fails, params: $currentParams, page: $currentPage, loading: $loading" }
+        EspressoIdlingResource.increment()
         currentParams?.let {
             useCase.execute(Subscriber(), FailParams(currentPage, it.timeFrame,
                     it.order, it.nsfw, it.game, it.streamer))
@@ -141,6 +143,10 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     }
 
     internal fun handleSuccess(fails: List<Fail>) {
+        if (!EspressoIdlingResource.idlingResource.isIdleNow) {
+            EspressoIdlingResource.decrement()
+        }
+
         loading = false
 
         deliverToView {
@@ -170,6 +176,10 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
          */
         override fun onError(e: Throwable) {
             Timber.e(e) { "Failed to retrieve fails" }
+
+            if (!EspressoIdlingResource.idlingResource.isIdleNow) {
+                EspressoIdlingResource.decrement()
+            }
 
             loading = false
 

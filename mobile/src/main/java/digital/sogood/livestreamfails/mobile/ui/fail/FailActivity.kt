@@ -18,7 +18,6 @@ import digital.sogood.livestreamfails.mobile.model.FailViewModel
 import digital.sogood.livestreamfails.mobile.ui.base.DaggerTiActivity
 import digital.sogood.livestreamfails.mobile.ui.base.config
 import digital.sogood.livestreamfails.mobile.ui.base.list.EndlessScrollListener
-import digital.sogood.livestreamfails.mobile.ui.base.view.FloatingTextButton
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsAltActivity
 import digital.sogood.livestreamfails.mobile.ui.menu.MenuDialogFragment
 import digital.sogood.livestreamfails.presentation.cases.fail.FailContract
@@ -59,7 +58,7 @@ class FailActivity : DaggerTiActivity<FailPresenter, FailContract>(), FailContra
 
         scrollToTopFab.setOnClickListener {
             recyclerView.scrollToPosition(0)
-            (it as FloatingTextButton).animateOut()
+            scrollToTopFab.animateOut()
         }
     }
 

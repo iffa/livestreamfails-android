@@ -22,5 +22,7 @@ class DataFactory {
         fun randomLong(): Long {
             return ThreadLocalRandom.current().nextLong(0, 1000 + 1)
         }
+
+        const val THUMBNAIL_PLACEHOLDER_URL = "https://placeimg.com/640/360/any"
     }
 }
