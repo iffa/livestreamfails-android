@@ -12,15 +12,14 @@ buildscript {
         ]
 
         versions = [
-                'android_gradle'       : '3.2.0-rc03',
-                'kotlin'               : '1.2.70',
+                'android_gradle'       : '3.2.0',
+                'kotlin'               : '1.2.71',
                 'ktlint'               : '0.19.0',
                 'androidx'             : [
-                        'appcompat'        : '1.0.0-rc02',
+                        'appcompat'        : '1.0.0',
                         'constraint_layout': '1.1.3',
-                        'design'           : '1.0.0-rc02',
-                        'core_ktx'         : '1.0.0-rc02',
-                        'lifecycle'        : '2.0.0-rc01',
+                        'design'           : '1.0.0',
+                        'core_ktx'         : '1.0.0',
                         'test_runner'      : '1.1.0-alpha4',
                         'test_rules'       : '1.1.0-alpha4'
                 ],
@@ -37,7 +36,7 @@ buildscript {
                 'javax_inject'         : '1',
                 'glide'                : '4.8.0',
                 'custom_fab'           : '0.0.4',
-                'item_animators'       : '1.1.0-rc01',
+                'item_animators'       : '1.1.0',
                 'drag_dismiss_activity': '1.6.0',
                 'listitemview'         : '1.1.1',
                 'timberkt'             : '1.5.1',
