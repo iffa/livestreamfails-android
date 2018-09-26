@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="@color/colorPrimary_38" android:state_enabled="true" android:state_selected="true" />
-    <item android:color="#EBEBEB" android:state_enabled="true" />
-    <item android:color="#F7F7F7" />
+    <item android:color="@color/chip_unselected_bg" android:state_enabled="true" />
+    <item android:color="@color/chip_unselected_bg" />
 </selector>

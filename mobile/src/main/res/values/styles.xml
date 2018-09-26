@@ -1,18 +1,18 @@
 <resources>
 
-    <!-- Main app styles -->
     <style name="Theme.LivestreamFails" parent="Theme.LivestreamFails.Base" />
 
-    <style name="Theme.LivestreamFails.Base" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.LivestreamFails.Base" parent="Base.Theme.LivestreamFails.DayNight">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
 
-        <item name="android:navigationBarColor">@android:color/white</item>
-
         <item name="android:windowEnterTransition">@transition/default_window_fade</item>
         <item name="android:windowExitTransition">@transition/default_window_fade</item>
     </style>
+
+    <!-- Also in values-night/ -->
+    <style name="Base.Theme.LivestreamFails.DayNight" parent="Theme.MaterialComponents.Light.NoActionBar" />
 
     <style name="Theme.LivestreamFails.DragDismiss" parent="DragDismissTheme">
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -20,20 +20,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <!-- Custom view styles -->
     <style name="Widget.LivestreamFails.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/mtrl_chip_background</item>
         <item name="android:textColor">@color/mtrl_chip_text</item>
     </style>
 
-    <style name="Theme.LivestreamFails.BottomSheet" parent="@style/Theme.Design.Light.BottomSheetDialog">
+    <style name="Theme.LivestreamFails.BottomSheet" parent="Base.Theme.LivestreamFails.BottomSheet">
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
         <item name="android:windowIsFloating">false</item>
         <item name="bottomSheetStyle">@style/Widget.LivestreamFails.BottomSheet</item>
     </style>
 
-    <style name="Widget.LivestreamFails.BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+    <!-- Also in values-night/ -->
+    <style name="Base.Theme.LivestreamFails.BottomSheet" parent="Theme.MaterialComponents.Light.BottomSheetDialog" />
+
+    <style name="Widget.LivestreamFails.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_sheet_dialog_fragment</item>
     </style>
 </resources>

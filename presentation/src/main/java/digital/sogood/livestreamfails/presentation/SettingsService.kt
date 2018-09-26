@@ -14,11 +14,17 @@ interface SettingsService {
 
     fun getDefaultOrder(): Order
 
+    fun isNightModeEnabled(): Boolean
+
     fun shouldShowNsfwContentObservable(): Observable<Boolean>
+
+    fun isNightModeEnabledObservable(): Observable<Boolean>
 
     fun setDefaultTimeFrame(timeFrame: TimeFrame)
 
     fun setDefaultOrder(order: Order)
 
     fun setShowNsfwContent(showNsfw: Boolean)
+
+    fun setNightModeEnabled(night: Boolean)
 }

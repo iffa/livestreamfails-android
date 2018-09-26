@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/colorPrimary_87" android:state_checked="true" android:state_enabled="true" />
-
-    <!-- 87% opacity. -->
-    <item android:color="#DE000000" android:state_enabled="true" />
-    <!-- 38% of 87% opacity. -->
-    <item android:color="#54000000" />
+    <item android:color="@color/colorPrimary" android:state_checked="true" android:state_enabled="true" />
+    <item android:color="?android:textColorSecondary" android:state_enabled="true" />
+    <item android:color="?android:textColorSecondary" />
 </selector>

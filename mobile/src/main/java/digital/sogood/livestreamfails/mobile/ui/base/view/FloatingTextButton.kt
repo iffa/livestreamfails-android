@@ -5,13 +5,16 @@ import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.ScaleAnimation
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import ru.dimorinny.floatingtextbutton.FloatingTextButton
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-class FloatingTextButton(context: Context?, attrs: AttributeSet?) : FloatingTextButton(context, attrs) {
-
+class FloatingTextButton(context: Context?, private val attrs: AttributeSet?) : FloatingTextButton(context, attrs), CoordinatorLayout.AttachedBehavior {
+    override fun getBehavior(): CoordinatorLayout.Behavior<*> {
+        return FloatingTextButtonBehavior(context, attrs)
+    }
 
     fun animateIn() {
         val anim = ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)

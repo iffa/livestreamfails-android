@@ -84,7 +84,6 @@
         app:floating_background_color="@color/colorAccent"
         app:floating_left_icon="@drawable/ic_arrow_up_white_24dp"
         app:floating_title="@string/fab_scroll_to_top"
-        app:floating_title_color="@android:color/white"
-        app:layout_behavior="digital.sogood.livestreamfails.mobile.ui.base.FloatingTextButtonBehavior" />
+        app:floating_title_color="@android:color/white" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

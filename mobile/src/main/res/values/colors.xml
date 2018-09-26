@@ -16,4 +16,6 @@
 
     <color name="dragdismiss_windowBackground">@android:color/black</color>
     <color name="dragdismiss_toolbarBackground">@android:color/transparent</color>
+
+    <color name="chip_unselected_bg">#EBEBEB</color>
 </resources>

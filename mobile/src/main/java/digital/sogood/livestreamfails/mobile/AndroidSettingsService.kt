@@ -18,12 +18,14 @@ class AndroidSettingsService @Inject constructor(context: Context) : SettingsSer
         private const val PREFS_SHOW_NSFW = "show_nsfw"
         private const val PREFS_TIME_FRAME = "default_time_frame"
         private const val PREFS_ORDER = "default_order"
+        private const val PREFS_NIGHT = "night_mode"
     }
 
     private val prefs = RxkPrefs(context, PREFS_GENERAL_KEY)
     private val showNsfwContent = prefs.boolean(PREFS_SHOW_NSFW, false)
     private val defaultTimeFrame = prefs.string(PREFS_TIME_FRAME, TimeFrame.DAY.name)
     private val defaultOrder = prefs.string(PREFS_ORDER, Order.HOT.name)
+    private val nightMode = prefs.boolean(PREFS_NIGHT, false)
 
     override fun shouldShowNsfwContent(): Boolean = showNsfwContent.get()
 
@@ -38,4 +40,10 @@ class AndroidSettingsService @Inject constructor(context: Context) : SettingsSer
     override fun setDefaultOrder(order: Order) = defaultOrder.set(order.name)
 
     override fun setShowNsfwContent(showNsfw: Boolean) = showNsfwContent.set(showNsfw)
+
+    override fun isNightModeEnabled(): Boolean = nightMode.get()
+
+    override fun isNightModeEnabledObservable(): Observable<Boolean> = nightMode.observe()
+
+    override fun setNightModeEnabled(night: Boolean) = nightMode.set(night)
 }

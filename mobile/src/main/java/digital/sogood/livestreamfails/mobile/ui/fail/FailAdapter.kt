@@ -27,6 +27,7 @@ import digital.sogood.livestreamfails.mobile.ui.base.list.ListAdapterWithHeader
 
 /**
  * TODO: Split into multiple classes and clean up
+ * TODO: Handle string formatting beforehand?
  *
  * @author Santeri Elo <me@santeri.xyz>
  */
@@ -159,9 +160,6 @@ class FailAdapter constructor(private val selectedTimeFrame: TimeFrame,
         val actionMenuButton: ImageButton = view.findViewById(R.id.actionMenuButton)
         val thumbnailImage: ImageView = view.findViewById(R.id.thumbnailImage)
 
-        /**
-         * TODO: Handle string formatting beforehand?
-         */
         fun bind(item: FailViewModel) {
             titleText.text = item.title
 

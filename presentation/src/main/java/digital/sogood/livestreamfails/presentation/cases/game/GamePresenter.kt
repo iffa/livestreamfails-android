@@ -10,6 +10,8 @@ import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
 
 /**
+ * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
+ *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class GamePresenter @Inject constructor(private val useCase: GetGames,
@@ -55,9 +57,6 @@ open class GamePresenter @Inject constructor(private val useCase: GetGames,
     inner class Subscriber : DisposableSingleObserver<List<Game>>() {
         override fun onSuccess(t: List<Game>) = handleSuccess(t)
 
-        /**
-         * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
-         */
         override fun onError(e: Throwable) {
             deliverToView {
                 hideProgress()

@@ -30,4 +30,6 @@ interface ApplicationComponent : AndroidInjector<DaggerApplication> {
 
         fun build(): ApplicationComponent
     }
+
+    fun inject(application: FailsApplication)
 }

@@ -80,20 +80,28 @@ class MenuDialogFragment : DaggerAppCompatDialogFragment() {
         super.onStop()
 
         settings.setShowNsfwContent(nsfwToggle.isChecked)
+        settings.setNightModeEnabled(nightModeToggle.isChecked)
     }
 
     override fun onStart() {
         super.onStart()
 
-        updateNsfwCheckedState()
+        updateCheckedState()
     }
 
-    private fun updateNsfwCheckedState() {
+    private fun updateCheckedState() {
         val showNsfw = settings.shouldShowNsfwContent()
+        val nightModeEnabled = settings.isNightModeEnabled()
+
         Timber.d { "Show NSFW should be checked: $showNsfw" }
+        Timber.d { "Night mode should be checked: $nightModeEnabled" }
 
         if ((showNsfw && !nsfwToggle.isChecked) || (!showNsfw && nsfwToggle.isChecked)) {
             toggleCheckBoxMenu(nsfwToggle, true)
+        }
+
+        if ((nightModeEnabled && !nightModeToggle.isChecked) || (!nightModeEnabled && nightModeToggle.isChecked)) {
+            toggleCheckBoxMenu(nightModeToggle, true)
         }
     }
 
