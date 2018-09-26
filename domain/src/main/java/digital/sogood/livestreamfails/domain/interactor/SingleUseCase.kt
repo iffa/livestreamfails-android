@@ -40,6 +40,13 @@ abstract class SingleUseCase<T, in Params> constructor(
     }
 
     /**
+     * Clears current [CompositeDisposable], allowing it to be reused.
+     */
+    open fun clear() {
+        disposables.clear()
+    }
+
+    /**
      * Dispose from current [CompositeDisposable].
      */
     private fun addDisposable(disposable: Disposable) {

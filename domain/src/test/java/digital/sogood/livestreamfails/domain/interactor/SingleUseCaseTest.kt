@@ -1,7 +1,6 @@
 package digital.sogood.livestreamfails.domain.interactor
 
 import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
 import digital.sogood.livestreamfails.domain.executor.PostExecutionThread
 import digital.sogood.livestreamfails.domain.executor.ThreadExecutor
 import digital.sogood.livestreamfails.domain.test.executor.TestPostExecutionThread
@@ -11,6 +10,7 @@ import io.reactivex.observers.DisposableSingleObserver
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 /**
@@ -34,13 +34,22 @@ class SingleUseCaseTest {
     fun useCaseExecutesAndDisposes() {
         useCase.execute(TestSubscriber(), "")
 
-        assertTrue(useCase.disposables.size() == 1)
+        assertEquals(useCase.disposables.size(), 1)
 
         useCase.dispose()
 
         assertTrue(useCase.disposables.isDisposed)
+    }
 
-        verify(useCase).dispose()
+    @Test
+    fun useCaseExecutesAndClears() {
+        useCase.execute(TestSubscriber(), "")
+
+        assertEquals(useCase.disposables.size(), 1)
+
+        useCase.clear()
+
+        assertEquals(useCase.disposables.size(), 0)
     }
 
     open inner class TestUseCase(threadExecutor: ThreadExecutor, postExecutionThread: PostExecutionThread)

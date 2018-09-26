@@ -130,6 +130,9 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
             if (!it.equalsIgnorePage(newParams)) {
                 Timber.d { "Query params have changed, resetting state" }
 
+                // Clear use case, in case it is already loading something that is now outdated
+                useCase.clear()
+
                 noMoreResults = false
                 currentPage = -1
                 deliverToView {
