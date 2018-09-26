@@ -10,7 +10,7 @@ class SimpleCountingIdlingResource(private val resourceName: String) : IdlingRes
     private val counter = AtomicInteger(0)
 
     @Volatile
-    private var resourceCallback: IdlingResource.ResourceCallback? = null
+    internal var resourceCallback: IdlingResource.ResourceCallback? = null
 
     override fun getName(): String = resourceName
 

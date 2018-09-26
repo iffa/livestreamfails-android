@@ -30,8 +30,6 @@ dependencies {
     implementation presentationDependencies.thirtyInchRx
     implementation presentationDependencies.thirtyInchKt
 
-    implementation presentationDependencies.timberKt
-
     implementation presentationDependencies.espressoIdlingResource
 
     testImplementation presentationTestDependencies.thirtyInchTest

@@ -4,6 +4,7 @@ import com.nhaarman.mockito_kotlin.*
 import digital.sogood.livestreamfails.domain.interactor.cases.FailParams
 import digital.sogood.livestreamfails.domain.interactor.cases.GetFails
 import digital.sogood.livestreamfails.domain.model.Fail
+import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.domain.repository.FailRepository
 import digital.sogood.livestreamfails.presentation.mapper.FailViewMapper
@@ -197,8 +198,7 @@ class FailPresenterTest {
     }
 
     /**
-     * [FailContract.clearFails] should be triggered and [FailPresenter.currentPage] reset to 0
-     * when parameters change.
+     * Presenter state should be "reset" when parameters have changed between requests.
      */
     @Test
     fun retrieveChangedParameters() {
@@ -225,25 +225,75 @@ class FailPresenterTest {
 
         // Expect current page to be 0, as it should've been reset
         assertEquals(0, presenter.currentPage)
+        assertEquals(false, presenter.noMoreResults)
 
         verify(mockContract).clearFails()
+        verify(mockUseCase).clear()
     }
 
+    /**
+     * [FailPresenter.onScrollToEnd] should call [FailPresenter.retrieveFails].
+     */
+    @Test
+    fun onScrollToEndCallsRetrieve() {
+        presenter.onScrollToEnd()
+
+        verify(mockUseCase).execute(any(), any())
+    }
+
+    /**
+     * If the view tells the presenter that params have changed, but they are actually the same
+     * as the current ones, no fails are retrieved.
+     */
+    @Test
+    fun sameParamsDontCallRetrieve() {
+        presenter.onNsfwChanged(presenter.nsfw)
+        presenter.onOrderChanged(presenter.order)
+        presenter.onTimeFrameChanged(presenter.timeFrame)
+
+        verify(mockUseCase, never()).execute(any(), any())
+    }
+
+    /**
+     * If [FailPresenter.onNsfwChanged] is called with a new value, fails are retrieved.
+     */
+    @Test
+    fun nsfwChangeRetrievesFails() {
+        presenter.onNsfwChanged(true)
+
+        verify(mockUseCase).execute(any(), any())
+        assertEquals(true, presenter.nsfw)
+    }
+
+    /**
+     * If [FailPresenter.onTimeFrameChanged] is called with a new value, fails are retrieved.
+     */
+    @Test
+    fun timeFrameChangeRetrievesFails() {
+        presenter.onTimeFrameChanged(TimeFrame.ALL_TIME)
+
+        verify(mockUseCase).execute(any(), any())
+        assertEquals(TimeFrame.ALL_TIME, presenter.timeFrame)
+    }
+
+    /**
+     * If [FailPresenter.onOrderChanged] is called with a new value, fails are retrieved.
+     */
+    @Test
+    fun orderChangeRetrievesFails() {
+        presenter.onOrderChanged(Order.RANDOM)
+
+        verify(mockUseCase).execute(any(), any())
+        assertEquals(Order.RANDOM, presenter.order)
+    }
+
+    /**
+     * [GetFails.dispose] should be called when the presenter is destroyed.
+     */
     @Test
     fun onDestroyDisposesUseCase() {
         testPresenter.destroy()
 
         verify(mockUseCase).dispose()
-    }
-
-    @Test
-    fun setCurrentPageTest() {
-        presenter.currentPage = 10
-
-        assertEquals(10, presenter.currentPage)
-
-        presenter.currentPage = -1
-
-        assertEquals(-1, presenter.currentPage)
     }
 }

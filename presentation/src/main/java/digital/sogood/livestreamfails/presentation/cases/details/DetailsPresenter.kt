@@ -1,6 +1,5 @@
 package digital.sogood.livestreamfails.presentation.cases.details
 
-import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.domain.interactor.cases.DetailsParams
 import digital.sogood.livestreamfails.domain.interactor.cases.GetDetails
 import digital.sogood.livestreamfails.domain.model.Details
@@ -35,8 +34,6 @@ open class DetailsPresenter @Inject constructor(private val useCase: GetDetails,
     }
 
     internal fun retrieveDetails() {
-        Timber.d { "Retrieving details for id $postId" }
-
         deliverToView {
             showProgress()
         }

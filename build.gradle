@@ -104,7 +104,6 @@ buildscript {
                 thirtyInch            : "net.grandcentrix.thirtyinch:thirtyinch:${versions.thirtyinch}",
                 thirtyInchRx          : "net.grandcentrix.thirtyinch:thirtyinch-rx2:${versions.thirtyinch}",
                 thirtyInchKt          : "net.grandcentrix.thirtyinch:thirtyinch-kotlin:${versions.thirtyinch}",
-                timberKt              : "com.github.ajalt:timberkt:${versions.timberkt}",
                 espressoIdlingResource: "androidx.test.espresso:espresso-idling-resource:${versions.espresso}",
         ]
 

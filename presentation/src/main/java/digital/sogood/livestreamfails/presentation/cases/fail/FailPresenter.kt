@@ -1,6 +1,5 @@
 package digital.sogood.livestreamfails.presentation.cases.fail
 
-import com.github.ajalt.timberkt.Timber
 import digital.sogood.livestreamfails.domain.interactor.cases.FailParams
 import digital.sogood.livestreamfails.domain.interactor.cases.GetFails
 import digital.sogood.livestreamfails.domain.model.Fail
@@ -14,6 +13,10 @@ import net.grandcentrix.thirtyinch.kotlin.deliverToView
 import javax.inject.Inject
 
 /**
+ * TODO: Error logging without having Timber as a dependency for this module
+ * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
+ * TODO: Get default parameters from outside source
+ *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class FailPresenter @Inject constructor(private val useCase: GetFails,
@@ -43,18 +46,6 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         useCase.dispose()
     }
 
-    override fun onAttachView(view: FailContract) {
-        super.onAttachView(view)
-
-        Timber.d { "Attached: $timeFrame, $order, $nsfw" }
-    }
-
-    override fun onDetachView() {
-        super.onDetachView()
-
-        Timber.d { "Detached: $timeFrame, $order, $nsfw" }
-    }
-
     fun onTimeFrameChanged(newTimeFrame: TimeFrame) {
         if (timeFrame != newTimeFrame) {
             this.timeFrame = newTimeFrame
@@ -80,9 +71,6 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         retrieveFails()
     }
 
-    /**
-     * TODO: Get default parameters from outside source
-     */
     internal open fun firstLoad() {
         retrieveFails()
     }
@@ -111,7 +99,6 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
             }
         }
 
-        Timber.d { "Starting retrieval of fails, params: $currentParams, page: $currentPage, loading: $loading" }
         EspressoIdlingResource.increment()
         currentParams?.let {
             useCase.execute(Subscriber(), FailParams(currentPage, it.timeFrame,
@@ -128,8 +115,6 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         var changed = false
         currentParams?.let {
             if (!it.equalsIgnorePage(newParams)) {
-                Timber.d { "Query params have changed, resetting state" }
-
                 // Clear use case, in case it is already loading something that is now outdated
                 useCase.clear()
 
@@ -174,12 +159,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
     inner class Subscriber : DisposableSingleObserver<List<Fail>>() {
         override fun onSuccess(t: List<Fail>) = handleSuccess(t)
 
-        /**
-         * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
-         */
         override fun onError(e: Throwable) {
-            Timber.e(e) { "Failed to retrieve fails" }
-
             if (!EspressoIdlingResource.idlingResource.isIdleNow) {
                 EspressoIdlingResource.decrement()
             }
