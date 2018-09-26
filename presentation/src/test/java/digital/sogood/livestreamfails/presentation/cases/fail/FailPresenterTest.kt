@@ -7,9 +7,11 @@ import digital.sogood.livestreamfails.domain.model.Fail
 import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
 import digital.sogood.livestreamfails.domain.repository.FailRepository
+import digital.sogood.livestreamfails.presentation.SettingsService
 import digital.sogood.livestreamfails.presentation.mapper.FailViewMapper
 import digital.sogood.livestreamfails.presentation.test.TestFailPresenter
 import digital.sogood.livestreamfails.presentation.test.factory.FailFactory
+import io.reactivex.Observable
 import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.test.TiTestPresenter
 import org.junit.Before
@@ -24,6 +26,7 @@ class FailPresenterTest {
     private lateinit var mockUseCase: GetFails
     private lateinit var mockRepository: FailRepository
     private lateinit var mockViewMapper: FailViewMapper
+    private lateinit var mockSettings: SettingsService
 
     private lateinit var captor: KArgumentCaptor<DisposableSingleObserver<List<Fail>>>
     private lateinit var presenter: FailPresenter
@@ -37,8 +40,11 @@ class FailPresenterTest {
         mockRepository = mock()
         mockViewMapper = mock()
 
+        mockSettings = mock()
+        stubSettingsValues()
+
         // Create presenter and attach  the view to it
-        presenter = TestFailPresenter(mockUseCase, mockViewMapper)
+        presenter = TestFailPresenter(mockUseCase, mockViewMapper, mockSettings)
 
         testPresenter = TiTestPresenter(presenter)
         testPresenter.attachView(mockContract)
@@ -295,5 +301,12 @@ class FailPresenterTest {
         testPresenter.destroy()
 
         verify(mockUseCase).dispose()
+    }
+
+    private fun stubSettingsValues() {
+        whenever(mockSettings.shouldShowNsfwContent()).thenReturn(false)
+        whenever(mockSettings.getDefaultTimeFrame()).thenReturn(TimeFrame.DAY)
+        whenever(mockSettings.getDefaultOrder()).thenReturn(Order.HOT)
+        whenever(mockSettings.shouldShowNsfwContentObservable()).thenReturn(Observable.empty())
     }
 }

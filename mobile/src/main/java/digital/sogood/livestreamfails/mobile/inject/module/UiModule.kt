@@ -8,6 +8,7 @@ import digital.sogood.livestreamfails.mobile.executor.UiThread
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsActivity
 import digital.sogood.livestreamfails.mobile.ui.details.DetailsAltActivity
 import digital.sogood.livestreamfails.mobile.ui.fail.FailActivity
+import digital.sogood.livestreamfails.mobile.ui.menu.MenuDialogFragment
 import digital.sogood.livestreamfails.mobile.ui.streamer.StreamerActivity
 
 /**
@@ -31,4 +32,7 @@ abstract class UiModule {
 
     @ContributesAndroidInjector
     abstract fun contributeDetailsAltActivity(): DetailsAltActivity
+
+    @ContributesAndroidInjector
+    abstract fun contributeMenuDialogFragment(): MenuDialogFragment
 }

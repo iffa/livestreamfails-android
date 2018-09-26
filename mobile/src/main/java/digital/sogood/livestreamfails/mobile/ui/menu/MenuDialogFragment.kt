@@ -7,7 +7,6 @@ import android.graphics.drawable.Animatable
 import android.graphics.drawable.AnimatedStateListDrawable
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,24 +15,27 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.github.ajalt.timberkt.Timber
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lucasurbas.listitemview.ListItemView
+import dagger.android.support.DaggerAppCompatDialogFragment
 import digital.sogood.livestreamfails.BuildConfig
 import digital.sogood.livestreamfails.R
+import digital.sogood.livestreamfails.presentation.SettingsService
 import kotlinx.android.synthetic.main.bottom_sheet_menu.*
+import javax.inject.Inject
 
 
 /**
  * @author Santeri Elo <me@santeri.xyz>
  */
-class MenuDialogFragment : BottomSheetDialogFragment() {
+class MenuDialogFragment : DaggerAppCompatDialogFragment() {
     companion object {
         private const val SOURCE_URL = "https://github.com/iffa/livestreamfails-android"
         private const val LICENSES_URL = SOURCE_URL
         private const val FEEDBACK_URL = "https://github.com/iffa/livestreamfails-android/issues"
-
-        const val PREF_SHOW_NSFW = "show_nsfw"
     }
+
+    @Inject
+    lateinit var settings: SettingsService
 
     override fun getTheme(): Int = R.style.Theme_LivestreamFails_BottomSheet
 
@@ -77,10 +79,7 @@ class MenuDialogFragment : BottomSheetDialogFragment() {
     override fun onStop() {
         super.onStop()
 
-        PreferenceManager.getDefaultSharedPreferences(requireContext())
-                .edit()
-                .putBoolean(PREF_SHOW_NSFW, nsfwToggle.isChecked)
-                .apply()
+        settings.setShowNsfwContent(nsfwToggle.isChecked)
     }
 
     override fun onStart() {
@@ -90,7 +89,7 @@ class MenuDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun updateNsfwCheckedState() {
-        val showNsfw = PreferenceManager.getDefaultSharedPreferences(requireContext()).getBoolean(PREF_SHOW_NSFW, false)
+        val showNsfw = settings.shouldShowNsfwContent()
         Timber.d { "Show NSFW should be checked: $showNsfw" }
 
         if ((showNsfw && !nsfwToggle.isChecked) || (!showNsfw && nsfwToggle.isChecked)) {

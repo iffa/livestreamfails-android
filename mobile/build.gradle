@@ -146,6 +146,8 @@ dependencies {
 
     implementation mobileUiDependencies.exoPlayer
 
+    implementation mobileUiDependencies.rxkPrefs
+
     implementation mobileUiDependencies.espressoIdlingResource
 
     // Test dependencies

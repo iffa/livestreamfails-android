@@ -5,8 +5,10 @@ import digital.sogood.livestreamfails.domain.interactor.cases.GetFails
 import digital.sogood.livestreamfails.domain.model.Fail
 import digital.sogood.livestreamfails.domain.model.Order
 import digital.sogood.livestreamfails.domain.model.TimeFrame
+import digital.sogood.livestreamfails.presentation.SettingsService
 import digital.sogood.livestreamfails.presentation.mapper.FailViewMapper
 import digital.sogood.livestreamfails.presentation.util.EspressoIdlingResource
+import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableSingleObserver
 import net.grandcentrix.thirtyinch.TiPresenter
 import net.grandcentrix.thirtyinch.kotlin.deliverToView
@@ -15,24 +17,28 @@ import javax.inject.Inject
 /**
  * TODO: Error logging without having Timber as a dependency for this module
  * TODO: When encountering an error, the implementing party should have the option of retrying the request, if we are on page 10 for example. We don't want to lose all previous results.
- * TODO: Get default parameters from outside source
  *
  * @author Santeri Elo <me@santeri.xyz>
  */
 open class FailPresenter @Inject constructor(private val useCase: GetFails,
-                                             private val mapper: FailViewMapper)
+                                             private val mapper: FailViewMapper,
+                                             settings: SettingsService)
     : TiPresenter<FailContract>() {
     private var currentParams: FailParams? = null
     internal var currentPage = -1
     internal var loading = false
     internal var noMoreResults = false
 
-    var timeFrame = TimeFrame.DAY
+    var timeFrame = settings.getDefaultTimeFrame()
         private set
-    var order = Order.HOT
+    var order = settings.getDefaultOrder()
         private set
-    var nsfw = false
+    var nsfw = settings.shouldShowNsfwContent()
         private set
+
+    private val nsfwSubscriber: Disposable = settings.shouldShowNsfwContentObservable().subscribe {
+        onNsfwChanged(it)
+    }
 
     public override fun onCreate() {
         super.onCreate()
@@ -44,6 +50,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         super.onDestroy()
 
         useCase.dispose()
+        nsfwSubscriber.dispose()
     }
 
     fun onTimeFrameChanged(newTimeFrame: TimeFrame) {
@@ -60,7 +67,7 @@ open class FailPresenter @Inject constructor(private val useCase: GetFails,
         }
     }
 
-    fun onNsfwChanged(newNsfw: Boolean) {
+    internal fun onNsfwChanged(newNsfw: Boolean) {
         if (nsfw != newNsfw) {
             nsfw = newNsfw
             retrieveFails()

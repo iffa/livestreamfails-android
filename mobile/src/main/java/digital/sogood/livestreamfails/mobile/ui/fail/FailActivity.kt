@@ -1,9 +1,7 @@
 package digital.sogood.livestreamfails.mobile.ui.fail
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Parcelable
-import android.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -26,14 +24,12 @@ import digital.sogood.livestreamfails.presentation.model.FailView
 import kotlinx.android.synthetic.main.activity_fail.*
 import javax.inject.Inject
 
-class FailActivity : DaggerTiActivity<FailPresenter, FailContract>(), FailContract, SharedPreferences.OnSharedPreferenceChangeListener {
+class FailActivity : DaggerTiActivity<FailPresenter, FailContract>(), FailContract {
     @Inject
     lateinit var failPresenter: FailPresenter
 
     @Inject
     lateinit var mapper: FailViewModelMapper
-
-    private lateinit var preferences: SharedPreferences
 
     private lateinit var adapter: FailAdapter
 
@@ -50,9 +46,6 @@ class FailActivity : DaggerTiActivity<FailPresenter, FailContract>(), FailContra
         setContentView(R.layout.activity_fail)
 
         setSupportActionBar(toolbar)
-
-        preferences = PreferenceManager.getDefaultSharedPreferences(this)
-        presenter.onNsfwChanged(preferences.getBoolean(MenuDialogFragment.PREF_SHOW_NSFW, false))
 
         setupRecyclerView()
 
@@ -144,16 +137,8 @@ class FailActivity : DaggerTiActivity<FailPresenter, FailContract>(), FailContra
         startActivity(startIntent)
     }
 
-    override fun onPause() {
-        super.onPause()
-
-        preferences.unregisterOnSharedPreferenceChangeListener(this)
-    }
-
     override fun onResume() {
         super.onResume()
-
-        preferences.registerOnSharedPreferenceChangeListener(this)
 
         listState?.let {
             Timber.v { "Restoring RecyclerView state" }
@@ -179,16 +164,6 @@ class FailActivity : DaggerTiActivity<FailPresenter, FailContract>(), FailContra
                     .show(supportFragmentManager, MenuDialogFragment::class.java.name)
         }
         return true
-    }
-
-    override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        when (key) {
-            MenuDialogFragment.PREF_SHOW_NSFW -> {
-                val showNsfw = preferences.getBoolean(MenuDialogFragment.PREF_SHOW_NSFW, false)
-                Timber.d { "Show NSFW flag changed, new value: $showNsfw" }
-                presenter.onNsfwChanged(showNsfw)
-            }
-        }
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
