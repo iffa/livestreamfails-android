@@ -38,7 +38,7 @@ android:
 #  - adb shell input keyevent 82 &
 
 script:
-  - ./gradlew clean assembleDebug testDebug mergeJacocoReports --stacktrace --parallel
+  - ./gradlew clean assembleDebug testDebug createDebugCoverageReport mergeJacocoReports --stacktrace --parallel
 
 branches:
   except:
